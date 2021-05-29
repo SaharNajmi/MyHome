@@ -8,21 +8,21 @@ import view.SellHomeFragment
 
 class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
-        when(position){
+        when (position) {
             0 -> return SellHomeFragment()
-            1 -> return  RentHomeFragment()
+            1 -> return RentHomeFragment()
         }
         return null!!
     }
 
     override fun getCount(): Int {
-     return 2
+        return 2
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        when(position){
+        when (position) {
             0 -> return "خرید و فروش"
-            1 -> return  "اجاره"
+            1 -> return "اجاره"
         }
         return null!!
 

@@ -4,12 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorBottom"
-   android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:layoutDirection="rtl">
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -28,12 +28,12 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
-            android:background="@color/backgroundColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            app:itemIconTint="@drawable/state_bottom_navigation_color"
+            android:background="@color/backgroundColor"
+            app:itemIconTint="@drawable/state_bottom_navigation_text_color"
             app:itemTextColor="@color/colorNavSelected"
             app:labelVisibilityMode="selected"
             app:layout_constraintBottom_toBottomOf="parent"

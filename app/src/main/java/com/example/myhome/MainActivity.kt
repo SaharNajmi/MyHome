@@ -47,34 +47,5 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        /*
-
-                }
-                R.id.chat -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.switch_fragment, ChatFragment())
-                        .commit()
-                }
-                R.id.home -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.switch_fragment, AdListFragment())
-                        .commit()
-                }
-                R.id.favorite -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.switch_fragment, FavoriteFragment())
-                        .commit()
-                }
-            }
-            true
-        }
-
-        floatingAdd.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.switch_fragment, NewAdFragment())
-                .commit()
-        }
-*/
     }
 }
