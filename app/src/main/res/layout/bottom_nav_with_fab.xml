@@ -8,7 +8,6 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
-    android:background="@android:color/transparent"
     android:layoutDirection="rtl">
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -17,28 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="60dp"
-        android:paddingBottom="0dp"
         android:theme="@style/Theme.MaterialComponents.Light"
-        app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:fabAlignmentMode="end"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="25dp"
-        app:fabCradleVerticalOffset="0dp">
+        app:fabAlignmentMode="end">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:background="@color/backgroundColor"
-            app:itemIconTint="@drawable/state_bottom_navigation_text_color"
-            app:itemTextColor="@color/colorNavSelected"
-            app:labelVisibilityMode="selected"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            style="@style/myBottomNavigationView"
             app:menu="@menu/bottom_nav_view" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 

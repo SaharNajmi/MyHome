@@ -19,7 +19,7 @@
             android:id="@+id/mainTab"
             android:layoutDirection="rtl"
             app:tabSelectedTextColor="@color/colorNavSelected"
-            app:tabTextColor="@color/colorSelected"
+            app:tabTextColor="@color/blue"
             android:layout_width="match_parent"
             app:tabIndicatorColor="@color/colorNavSelected"
             android:layout_height="50dp" />

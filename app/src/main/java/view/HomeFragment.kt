@@ -12,11 +12,6 @@ import kotlinx.android.synthetic.main.layout_category.*
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
-    var cateOne = false
-    var cateTwo = false
-    var cateThree = false
-    var cateFour = false
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         radio_button_cate_2.setOnClickListener(this)
         radio_button_cate_3.setOnClickListener(this)
         radio_button_cate_4.setOnClickListener(this)
+        radio_button_cate_1.isChecked = true
     }
 
     override fun onClick(view: View) {
