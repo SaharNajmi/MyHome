@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add"
+    app:startDestination="@id/newAdFragment">
+    <fragment
+        android:id="@+id/newAdFragment"
+        android:name="view.NewAdFragment"
+        android:label="fragment_new_ad"
+        tools:layout="@layout/fragment_new_ad" />
+</navigation>

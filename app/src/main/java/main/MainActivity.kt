@@ -16,45 +16,7 @@ import view.NewAdFragment
 import view.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
-    /*   override fun onCreate(savedInstanceState: Bundle?) {
-           super.onCreate(savedInstanceState)
-           setContentView(R.layout.activity_main)
 
-           *//*=====================Switch between Fragments in BottomNavigationView==================*//*
-        //بک گراند fab خالی میشه ->  fab روی باتن نویگیشن به حالت نیم دایره درمیاد
-        bottomNavigationView.background = null
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.switch_fragment, HomeFragment())
-            .commit()
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.home -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.switch_fragment, HomeFragment())
-                        .commit()
-                }
-                R.id.fav -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.switch_fragment, FavoriteFragment())
-                        .commit()
-                }
-                R.id.profile -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.switch_fragment, ProfileFragment())
-                        .commit()
-                }
-                R.id.add -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.switch_fragment, NewAdFragment())
-                        .commit()
-                }
-            }
-            true
-        }
-
-    }*/
     private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +39,14 @@ class MainActivity : AppCompatActivity() {
      * Called on first creation and when restoring state.
      */
     private fun setupBottomNavigationBar() {
+
+        //بک گراند fab خالی میشه ->  fab روی باتن نویگیشن به حالت نیم دایره درمیاد
+        bottomNavigationView.background = null
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        val navGraphIds = listOf(R.navigation.home, R.navigation.profile, R.navigation.favorite)
+        val navGraphIds =
+            listOf(R.navigation.home, R.navigation.profile, R.navigation.favorite, R.navigation.add)
 
         // Setup the bottom navigation view with a list of navigation graphs
         val controller = bottomNavigationView.setupWithNavController(
