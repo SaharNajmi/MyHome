@@ -3,17 +3,11 @@ package main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.myhome.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sevenlearn.nikestore.common.setupWithNavController
 import kotlinx.android.synthetic.main.bottom_nav_with_fab.*
-import view.FavoriteFragment
-import view.HomeFragment
-import view.NewAdFragment
-import view.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
