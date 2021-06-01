@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myhome.MainActivity
+import main.MainActivity
 import com.example.myhome.R
 
 class SplashScreenActivity : AppCompatActivity() {

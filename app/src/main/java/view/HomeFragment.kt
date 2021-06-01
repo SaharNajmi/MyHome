@@ -23,8 +23,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Toast.makeText(requireContext(),cate_1.parent.toString(), Toast.LENGTH_LONG).show()
-
         /*-----------------------------tab layout-------------------------------------*/
         viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
         mainTab.setupWithViewPager(viewPagerShowBanner)
