@@ -23,24 +23,24 @@ abstract class MyHomeActivity : AppCompatActivity(), MyHomeView {
         get() = this
 }
 
-    interface MyHomeView {
-        val rootView: CoordinatorLayout?
-        val viewContext: Context?
+interface MyHomeView {
+    val rootView: CoordinatorLayout?
+    val viewContext: Context?
 
-        fun setProgress(mustShow: Boolean) {
-            //اگر rootView خالی نبود
-            rootView?.let {
-                viewContext?.let { context ->
-                    //ست شده CoordinatorLayout چک کن که روت ویو قبلا داخل
-                    var loadView = it.findViewById<View>(R.id.loadingView)
-                    //اگر loadView بهCoordinatorLayout اضافه نشده بود آن را اضافه میکند
-                    if (loadView == null && mustShow) {
-                        loadView=LayoutInflater.from(context).inflate(R.layout.view_loading,it,false)
-                        it.addView(loadView)
-
-                    }
-                    loadView?.visibility = if (mustShow) View.VISIBLE else View.GONE
+    fun setProgress(mustShow: Boolean) {
+        //اگر rootView خالی نبود
+        rootView?.let {
+            viewContext?.let { context ->
+                //ست شده CoordinatorLayout چک کن که روت ویو قبلا داخل
+                var loadView = it.findViewById<View>(R.id.loadingView)
+                //اگر loadView بهCoordinatorLayout اضافه نشده بود آن را اضافه میکند
+                if (loadView == null && mustShow) {
+                    loadView =
+                        LayoutInflater.from(context).inflate(R.layout.view_loading, it, false)
+                    it.addView(loadView)
                 }
+                loadView?.visibility = if (mustShow) View.VISIBLE else View.GONE
             }
         }
     }
+}
