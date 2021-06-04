@@ -4,6 +4,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+    }
+    // Add Maven Central to your repositories if needed
+    repositories {
         mavenCentral()
     }
     dependencies {
