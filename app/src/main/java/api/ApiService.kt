@@ -15,7 +15,7 @@ interface ApiService {
 
 fun createApiServiceInstance(): ApiService {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.1/myhome/")
+        .baseUrl("http://192.168.1.103/myhome/")
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
