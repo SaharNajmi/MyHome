@@ -28,11 +28,10 @@ class ProfileFragment : MyHomeFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // برای نشان دادن یا ندادن پروگرس بار فقط کافیه مقدار true false بدیم
-      //  setProgress(true)
+        //  setProgress(true)
 
-        mainViewModel.bannerLiveData.observe(this){
+        mainViewModel.bannerLiveData.observe(this) {
             Timber.i(it.toString())
         }
-
     }
 }
