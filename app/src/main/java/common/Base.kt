@@ -1,4 +1,4 @@
-package main
+package common
 
 import android.content.Context
 import android.view.LayoutInflater

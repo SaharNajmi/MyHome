@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.observe
 import com.example.myhome.R
 import main.MainViewModel
-import main.MyHomeFragment
+import common.MyHomeFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -25,8 +25,9 @@ class SellHomeFragment : MyHomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      /*  mainViewModel.bannerLiveData.observe(viewLifecycleOwner){
+
+        mainViewModel.bannerLiveData.observe(viewLifecycleOwner){
             Timber.i(it.toString())
-        }*/
+        }
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
-import main.MyHomeView
 
 class FavoriteFragment : Fragment() {
 

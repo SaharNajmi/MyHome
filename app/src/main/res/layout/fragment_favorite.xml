@@ -4,16 +4,10 @@
     android:layout_height="match_parent"
     tools:context="view.FavoriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="favorite" />
-
-    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/imageView2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/custom_image_view"/>
+        android:textAppearance="?textAppearanceHeadline1"
+        android:text="Favorite"/>
 </FrameLayout>

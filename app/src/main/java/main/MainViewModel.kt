@@ -1,13 +1,12 @@
 package main
 
 import androidx.lifecycle.MutableLiveData
+import common.MyHomeSingleObserver
+import common.MyHomeViewModel
 import data.Banner
 import data.repository.BannerRepository
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
 
 class MainViewModel(bannerRepository: BannerRepository) : MyHomeViewModel() {
@@ -18,17 +17,9 @@ class MainViewModel(bannerRepository: BannerRepository) : MyHomeViewModel() {
         bannerRepository.getBanners()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<List<Banner>> {
+            .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
                     bannerLiveData.value = t
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    compositeDisposable.add(d)
-                }
-
-                override fun onError(e: Throwable) {
-                    Timber.e(e)
                 }
             })
     }

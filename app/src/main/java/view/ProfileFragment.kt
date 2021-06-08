@@ -4,17 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.example.myhome.R
-import main.MainViewModel
-import main.MyHomeFragment
-import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
+import common.MyHomeFragment
 
 class ProfileFragment : MyHomeFragment() {
-
-    //از ویو مدل کوین استفاده میکنیم
-    val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +22,5 @@ class ProfileFragment : MyHomeFragment() {
 
         // برای نشان دادن یا ندادن پروگرس بار فقط کافیه مقدار true false بدیم
         //  setProgress(true)
-
-        mainViewModel.bannerLiveData.observe(this) {
-            Timber.i(it.toString())
-        }
     }
 }
