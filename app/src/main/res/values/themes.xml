@@ -26,6 +26,6 @@
         <item name="textAppearanceCaption">@style/TextAppearance.MyTheme.Caption</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MyTheme.Overline</item>
         <item name="android:textColorSecondary">@color/darkGray</item>
-        <item name="textColorSearch">@color/blue</item>
+        <item name="textColorBlue">@color/blue</item>
     </style>
 </resources>

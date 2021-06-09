@@ -80,4 +80,7 @@ dependencies {
 
     //for error 64k method
     implementation 'com.android.support:multidex:1.0.3'
+
+    //کتابخانه Fresco برای لود عکس
+    implementation 'com.facebook.fresco:fresco:2.4.0'
 }

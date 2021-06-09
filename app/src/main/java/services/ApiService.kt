@@ -1,4 +1,4 @@
-package api
+package services
 
 import data.Banner
 import io.reactivex.Single

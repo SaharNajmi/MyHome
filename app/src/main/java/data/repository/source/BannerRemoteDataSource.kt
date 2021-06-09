@@ -1,6 +1,6 @@
 package data.repository.source
 
-import api.ApiService
+import services.ApiService
 import data.Banner
 import io.reactivex.Completable
 import io.reactivex.Single

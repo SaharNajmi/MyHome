@@ -18,7 +18,7 @@
         android:hint="جستجو"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:textColor="?textColorSearch"
+        android:textColor="?attr/textColorBlue"
         android:textColorHint="?android:textColorSecondary"
         android:textSize="15sp"
         tools:ignore="RtlCompat" />
