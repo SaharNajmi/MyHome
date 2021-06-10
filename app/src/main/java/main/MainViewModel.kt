@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
+import data.CATEGORY
+import data.SELL_OR_RENT
 import data.repository.BannerRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +16,7 @@ class MainViewModel(bannerRepository: BannerRepository) : MyHomeViewModel() {
 
     init {
         //وقتی کانستراکتورش call شد ریکوست به سرور میفرستیم و لیست داده ها را از سرور مییگیریم
-        bannerRepository.getBanners()
+        bannerRepository.getBanners(SELL_OR_RENT, CATEGORY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {

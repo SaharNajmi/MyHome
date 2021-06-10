@@ -8,7 +8,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import com.example.myhome.R
+import data.Banner
 import io.reactivex.disposables.CompositeDisposable
+import view.MyHomeImageView
 
 //کلاس های پایه نرم افزار اینجا قرار میگیره مثلا اگه بخایم یگ ویژگی را به همه اکتیویتی ها یا فرگمنت ها اضافه کنیم از اینجا یکبار تغیر میدیم
 //قراره همه ی فرگمنت ها موارد داخل این کلاس را اکستند کنند و دیگر نیازی نباشد داخل همه فرگمنت ها هر سری اضافه کنیم- یکبار مینویسیم همیشه ازش استفاده میکنیم
@@ -49,6 +51,9 @@ interface MyHomeView {
     }
 }
 
+fun cate(cate:Int): Int {
+    return cate
+}
 abstract class MyHomeViewModel : ViewModel() {
     val compositeDisposable = CompositeDisposable()
     override fun onCleared() {

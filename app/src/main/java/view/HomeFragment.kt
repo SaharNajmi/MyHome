@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import data.CATEGORY
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
 
@@ -37,21 +38,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
+                CATEGORY = 1
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
+                CATEGORY = 2
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
+                CATEGORY = 3
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
+                CATEGORY = 4
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false

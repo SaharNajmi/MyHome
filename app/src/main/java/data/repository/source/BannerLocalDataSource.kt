@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class BannerLocalDataSource : BannerDataSource {
-    override fun getBanners(): Single<List<Banner>> {
+    override fun getBanners(sellOrRent: Int, category: Int): Single<List<Banner>> {
         TODO("Not yet implemented")
     }
 

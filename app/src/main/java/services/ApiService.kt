@@ -6,11 +6,15 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 interface ApiService {
     @GET("GetBanner.php")
-    fun getAllBanner(): Single<List<Banner>>
+    fun getAllBanner(
+        @Query("sellOrRent") sellOrRent: Int,
+        @Query("category") category: Int
+    ): Single<List<Banner>>
 }
 
 fun createApiServiceInstance(): ApiService {

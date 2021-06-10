@@ -8,6 +8,7 @@
     android:padding="5dp">
 
     <view.MyHomeImageView
+        app:roundedCornerRadius="12dp"
         android:id="@+id/image_banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"

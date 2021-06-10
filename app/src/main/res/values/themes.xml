@@ -27,5 +27,6 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MyTheme.Overline</item>
         <item name="android:textColorSecondary">@color/darkGray</item>
         <item name="textColorBlue">@color/blue</item>
+        <item name="android:lineSpacingExtra">6dp</item>
     </style>
 </resources>

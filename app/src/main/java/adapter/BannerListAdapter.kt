@@ -9,6 +9,7 @@ import com.example.myhome.R
 import data.Banner
 import services.ImageLoadingService
 import view.MyHomeImageView
+import java.lang.String.format
 
 class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
     RecyclerView.Adapter<BannerListAdapter.ViewHolder>() {
@@ -28,13 +29,13 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         val location: TextView = itemView.findViewById(R.id.txt_location)
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
-
         fun bindBanner(banner: Banner) {
             imageLoadingService.load(image, banner.image)
             title.text = banner.title
-            price.text = "${banner.price}تومان "
+            price.text = "${format("%,d", banner.price)} تومان "
             location.text = banner.location
-
+            room.text = banner.numberOfRooms.toString()
+            homeSize.text = banner.homeSize.toString()
             itemView.setOnClickListener { }
         }
     }

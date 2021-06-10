@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface BannerDataSource {
 
-    fun getBanners(): Single<List<Banner>>
+    fun getBanners(sellOrRent: Int, category: Int): Single<List<Banner>>
 
     fun getFavoriteBanners(): Single<List<Banner>>
 
