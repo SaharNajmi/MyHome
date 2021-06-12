@@ -11,7 +11,7 @@
         android:title="پروفایل"/>
     <item
         android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_bookmarked"
         android:title="علاقه مندی"/>
     <item
         android:id="@+id/add"

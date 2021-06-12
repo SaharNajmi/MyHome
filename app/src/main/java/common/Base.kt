@@ -51,9 +51,6 @@ interface MyHomeView {
     }
 }
 
-fun cate(cate:Int): Int {
-    return cate
-}
 abstract class MyHomeViewModel : ViewModel() {
     val compositeDisposable = CompositeDisposable()
     override fun onCleared() {

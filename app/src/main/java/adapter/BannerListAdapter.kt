@@ -14,6 +14,8 @@ import java.lang.String.format
 class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
     RecyclerView.Adapter<BannerListAdapter.ViewHolder>() {
 
+    var bannerOnClickListener: BannerOnClickListener? = null
+
     var banner = ArrayList<Banner>()
         //به خاطر اینکه مقدار عوض میشه وقتی صفحه لود شد
         set(value) {
@@ -36,7 +38,11 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             location.text = banner.location
             room.text = banner.numberOfRooms.toString()
             homeSize.text = banner.homeSize.toString()
-            itemView.setOnClickListener { }
+
+            // نباید از خود آداپتر کاربر را به اکتیویتی بفرستیم اطلاعات را به فرگمنت پاس بده فرگمنت تصمیم میگیره که دیتا را به کجا بفرسته
+            itemView.setOnClickListener {
+                bannerOnClickListener!!.onBannerClick(banner)
+            }
         }
     }
 
@@ -44,11 +50,14 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_banner, parent, false)
         )
-
     }
 
     override fun getItemCount(): Int = banner.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bindBanner(banner[position])
+}
+
+interface BannerOnClickListener {
+    fun onBannerClick(banner: Banner)
 }

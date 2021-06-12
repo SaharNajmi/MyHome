@@ -2,11 +2,13 @@ package com.example.myhome
 
 import adapter.BannerListAdapter
 import android.app.Application
+import android.os.Bundle
 import com.facebook.drawee.backends.pipeline.Fresco
 import data.repository.BannerRepository
 import data.repository.BannerRepositoryImplement
 import data.repository.source.BannerLocalDataSource
 import data.repository.source.BannerRemoteDataSource
+import main.BannerDetailViewModel
 import main.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -46,6 +48,7 @@ class App : Application() {
             factory { BannerListAdapter(get()) }
 
             viewModel { MainViewModel(get()) }
+            viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
         }
         startKoin {
             androidContext(this@App)
