@@ -24,10 +24,6 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             notifyDataSetChanged()
         }
 
-    fun setData(list: ArrayList<Banner>) {
-        this.banner = list
-        notifyDataSetChanged()
-    }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val image: MyHomeImageView = itemView.findViewById(R.id.image_banner)

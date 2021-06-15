@@ -1,25 +1,32 @@
 package view
 
 import adapter.BannerListAdapter
+import adapter.BannerOnClickListener
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
+import common.EXTRA_KEY_DATA
+import common.MyHomeFragment
 import data.Banner
+import data.CATEGORY
 import data.SELL_OR_RENT
 import kotlinx.android.synthetic.main.fragment_rent_home.*
+import main.BannerDetailActivity
 import main.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
-class RentHomeFragment : Fragment() {
+class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
 
-    //val mainViewModel: MainViewModel by viewModel()
+    val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
     val bannerArrayList: BannerListAdapter by inject()
 
     override fun onCreateView(
@@ -35,15 +42,27 @@ class RentHomeFragment : Fragment() {
 
         SELL_OR_RENT = 2
 
+        //setOnClickListener item recyclerView
+        bannerArrayList.bannerOnClickListener = this
+
         //show banner in recyclerView
         recycler_view_rent.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recycler_view_rent.adapter = bannerArrayList
 
-      /*  mainViewModel.bannerLiveData.observe(viewLifecycleOwner){
-            bannerArrayList.banner= it as ArrayList<Banner>
-            Timber.i(it.toString())
-        }*/
+        mainViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
+            override fun onChanged(t: List<Banner>?) {
+                bannerArrayList.banner = t as ArrayList<Banner>
+                Timber.i(t.toString())
+            }
+        })
+
+    }
+
+    override fun onBannerClick(banner: Banner) {
+        startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
+            putExtra(EXTRA_KEY_DATA, banner)
+        })
     }
 
 }

@@ -43,8 +43,7 @@ class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyH
     }
 
     fun chaneCategory(cate: Int) {
-
-        this.CATE = cate
+        this.CATE =2
         this.categoryLiveData.value = categories[cate]
         getBanner()
     }
