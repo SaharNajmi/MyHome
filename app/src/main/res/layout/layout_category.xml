@@ -25,7 +25,7 @@
                 android:background="@color/state_radio_button"
                 android:button="@android:color/transparent"
                 android:gravity="center"
-                android:text="آپارتمان و سوئیت"
+                android:text="@string/cate2"
                 android:textColor="@color/state_radio_button_text_color"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -45,7 +45,7 @@
                 android:background="@color/state_radio_button"
                 android:button="@android:color/transparent"
                 android:gravity="center"
-                android:text="خانه و ویلا"
+                android:text="@string/cate1"
                 android:textColor="@color/state_radio_button_text_color"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -78,7 +78,7 @@
                     android:background="@color/state_radio_button"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:text="زمین و باغ"
+                    android:text="@string/cate4"
                     android:textColor="@color/state_radio_button_text_color"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -99,7 +99,7 @@
                     android:background="@color/state_radio_button"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:text="اداری و تجاری"
+                    android:text="@string/cate3"
                     android:textColor="@color/state_radio_button_text_color"
                     android:textSize="12sp"
                     android:textStyle="bold" />

@@ -47,7 +47,7 @@ class App : Application() {
             }
             factory { BannerListAdapter(get()) }
 
-            viewModel { MainViewModel(get()) }
+            viewModel { (cate: Int) -> MainViewModel(get(), cate) }
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
         }
         startKoin {

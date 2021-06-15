@@ -1,28 +1,51 @@
 package main
 
 import androidx.lifecycle.MutableLiveData
+import com.example.myhome.R
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
 import data.repository.BannerRepository
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-class MainViewModel(bannerRepository: BannerRepository) : MyHomeViewModel() {
+class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
+
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
+    //برای موقعی که دستبندی عوض میشه
+    val categoryLiveData = MutableLiveData<Int>()
+    val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)
+
     init {
-        //وقتی کانستراکتورش call شد ریکوست به سرور میفرستیم و لیست داده ها را از سرور مییگیریم
-        bannerRepository.getBanners(SELL_OR_RENT, CATEGORY)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        getBanner()
+        categoryLiveData.value = categories[CATE]
+    }
+
+    fun getBanner() {
+        bannerRepository.getBanners(SELL_OR_RENT, CATE)
+            .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
                     bannerLiveData.value = t
                 }
             })
+    }
+
+    fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
+        //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
+        return subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun chaneCategory(cate: Int) {
+
+        this.CATE = cate
+        this.categoryLiveData.value = categories[cate]
+        getBanner()
     }
 }

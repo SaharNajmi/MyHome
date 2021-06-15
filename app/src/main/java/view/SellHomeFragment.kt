@@ -7,24 +7,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import common.EXTRA_KEY_DATA
 import common.MyHomeFragment
 import data.Banner
+import data.CATEGORY
 import kotlinx.android.synthetic.main.fragment_sell_home.*
 import main.BannerDetailActivity
 import main.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     //از ویو مدل کوین استفاده میکنیم
-    val mainViewModel: MainViewModel by viewModel()
+    val mainViewModel: MainViewModel by viewModel{ parametersOf(CATEGORY)}
     val bannerArrayList: BannerListAdapter by inject()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +47,22 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recycler_view_sell.adapter = bannerArrayList
 
-        mainViewModel.bannerLiveData.observe(viewLifecycleOwner) {
-            bannerArrayList.banner = it as ArrayList<Banner>
-            Timber.i(it.toString())
-            bannerArrayList.notifyDataSetChanged()
+        mainViewModel.bannerLiveData.observe(viewLifecycleOwner,object :Observer<List<Banner>>{
+            override fun onChanged(t: List<Banner>?) {
+                bannerArrayList.banner = t as ArrayList<Banner>
+                Timber.i(t.toString())
+            }
+        })
+
+        btn_Cate_1.setOnClickListener {
+            mainViewModel.chaneCategory(CATEGORY)
+
+            mainViewModel.bannerLiveData.observe(viewLifecycleOwner,object :Observer<List<Banner>>{
+                override fun onChanged(t: List<Banner>?) {
+                    bannerArrayList.banner = t as ArrayList<Banner>
+                    Timber.i(t.toString())
+                }
+            })
         }
     }
 

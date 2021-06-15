@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import common.EXTRA_KEY_ID
 import data.CATEGORY
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
+import main.MainViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class HomeFragment : Fragment(), View.OnClickListener {
+
+    val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,25 +44,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
-                CATEGORY = 1
+                mainViewModel.chaneCategory(0)
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
-                CATEGORY = 2
+                mainViewModel.chaneCategory(1)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
-                CATEGORY = 3
+                mainViewModel.chaneCategory(2)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
-                CATEGORY = 4
+                mainViewModel.chaneCategory(3)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false

@@ -1,9 +1,11 @@
 package main
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.example.myhome.R
 import common.MyHomeActivity
+import data.Banner
 import kotlinx.android.synthetic.main.activity_banner_detail.*
 import kotlinx.android.synthetic.main.layout_profile.*
 import org.koin.android.ext.android.inject
@@ -26,25 +28,25 @@ class BannerDetailActivity : MyHomeActivity() {
 
 
         //send value when clicked item recyclerView and Show detail values in next activity
-        bannerDetailViewModel.bannerLiveData.observe(this) {
-            Timber.i(it.toString())
-            imageLoadingService.load(image_detail_banner, it.image)
-            imageLoadingService.load(image_profile, it.image)
+        bannerDetailViewModel.bannerLiveData.observe(this,
+            Observer<Banner> {
+                Timber.i(it.toString())
+                imageLoadingService.load(image_detail_banner, it.image)
+                imageLoadingService.load(image_profile, it.image)
 
 
-            title_banner_show.text = it.title
-            txt_location_show.text = it.location
-            txt_number_of_rooms_show.text = it.numberOfRooms.toString()
-            txt_home_size_show.text = it.homeSize.toString()
-            price_banner_show.text = "قیمت: ${String.format("%,d", it.price)} تومان "
+                title_banner_show.text = it.title
+                txt_location_show.text = it.location
+                txt_number_of_rooms_show.text = it.numberOfRooms.toString()
+                txt_home_size_show.text = it.homeSize.toString()
+                price_banner_show.text = "قیمت: ${String.format("%,d", it.price)} تومان "
 
-            title_banner_hide.text = it.title
-            txt_location_hide.text = it.location
-            txt_number_of_rooms_hide.text = it.numberOfRooms.toString()
-            txt_home_size_hide.text = it.homeSize.toString()
-            price_banner_hide.text = "قیمت: ${String.format("%,d", it.price)} تومان "
-
-        }
+                title_banner_hide.text = it.title
+                txt_location_hide.text = it.location
+                txt_number_of_rooms_hide.text = it.numberOfRooms.toString()
+                txt_home_size_hide.text = it.homeSize.toString()
+                price_banner_hide.text = "قیمت: ${String.format("%,d", it.price)} تومان "
+            })
 
 
         //یعنی تمام کارهای یو انجام و محاسبه شده

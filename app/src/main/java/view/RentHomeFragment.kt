@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class RentHomeFragment : Fragment() {
 
-    val mainViewModel: MainViewModel by viewModel()
+    //val mainViewModel: MainViewModel by viewModel()
     val bannerArrayList: BannerListAdapter by inject()
 
     override fun onCreateView(
@@ -40,10 +40,10 @@ class RentHomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recycler_view_rent.adapter = bannerArrayList
 
-        mainViewModel.bannerLiveData.observe(viewLifecycleOwner){
+      /*  mainViewModel.bannerLiveData.observe(viewLifecycleOwner){
             bannerArrayList.banner= it as ArrayList<Banner>
             Timber.i(it.toString())
-        }
+        }*/
     }
 
 }

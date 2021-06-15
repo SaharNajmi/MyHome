@@ -2,4 +2,17 @@
     <string name="app_name">MyHome</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="cate1">خانه و ویلا</string>
+    <string name="cate2">آپارتمان و سوئیت</string>
+    <string name="cate3">اداری و تجاری</string>
+    <string name="cate4">زمین و باغ</string>
+
+    <string-array name="category">
+        <item>@string/cate1</item>
+        <item>@string/cate2</item>
+        <item>@string/cate3</item>
+        <item>@string/cate4</item>
+    </string-array>
+
 </resources>
