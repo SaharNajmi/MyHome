@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
-import common.EXTRA_KEY_ID
 import data.CATEGORY
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
@@ -16,7 +15,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class HomeFragment : Fragment(), View.OnClickListener {
-
     val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
 
     override fun onCreateView(

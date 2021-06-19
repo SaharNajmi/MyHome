@@ -17,12 +17,12 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/mainTab"
-            android:layoutDirection="rtl"
-            app:tabSelectedTextColor="@color/colorNavSelected"
-            app:tabTextColor="@color/blue"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layoutDirection="rtl"
             app:tabIndicatorColor="@color/colorNavSelected"
-            android:layout_height="50dp" />
+            app:tabSelectedTextColor="@color/colorNavSelected"
+            app:tabTextColor="@color/blue" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerShowBanner"

@@ -15,6 +15,7 @@ import common.EXTRA_KEY_DATA
 import common.MyHomeFragment
 import data.Banner
 import data.CATEGORY
+import data.SELL_OR_RENT
 import kotlinx.android.synthetic.main.fragment_sell_home.*
 import main.BannerDetailActivity
 import main.MainViewModel
@@ -25,9 +26,8 @@ import timber.log.Timber
 
 class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     //از ویو مدل کوین استفاده میکنیم
-    val mainViewModel: MainViewModel by viewModel{ parametersOf(CATEGORY)}
+    val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
     val bannerArrayList: BannerListAdapter by inject()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +40,11 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        SELL_OR_RENT = 1
+
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
+
         //show banner in recyclerView
         recycler_view_sell.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -53,17 +56,6 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
                 Timber.i(t.toString())
             }
         })
-
-        btn_Cate_1.setOnClickListener {
-            mainViewModel.chaneCategory(CATEGORY)
-
-            mainViewModel.bannerLiveData.observe(viewLifecycleOwner,object :Observer<List<Banner>>{
-                override fun onChanged(t: List<Banner>?) {
-                    bannerArrayList.banner = t as ArrayList<Banner>
-                    Timber.i(t.toString())
-                }
-            })
-        }
     }
 
     override fun onBannerClick(banner: Banner) {
