@@ -1,15 +1,21 @@
 package com.example.myhome
 
-import adapter.BannerListAdapter
+import feature.adapter.BannerListAdapter
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.facebook.drawee.backends.pipeline.Fresco
 import data.repository.BannerRepository
 import data.repository.BannerRepositoryImplement
+import data.repository.UserRepository
+import data.repository.UserRepositoryImplement
 import data.repository.source.BannerLocalDataSource
 import data.repository.source.BannerRemoteDataSource
-import main.BannerDetailViewModel
-import main.MainViewModel
+import data.repository.source.UserLocalDataSource
+import data.repository.source.UserRemoteDataSource
+import feature.main.BannerDetailViewModel
+import feature.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -38,6 +44,15 @@ class App : Application() {
             single<ApiService> { createApiServiceInstance() }
             //یعنی اینکه برای لود تصاویر از Fresco استفاده میکنیم
             single<ImageLoadingService> { FrescoImageLoadingService() }
+
+            single<SharedPreferences> { this@App.getSharedPreferences("app", Context.MODE_PRIVATE) }
+
+            single<UserRepository> {
+                UserRepositoryImplement(
+                    UserLocalDataSource(get()),
+                    UserRemoteDataSource(get())
+                )
+            }
 
             factory<BannerRepository> {
                 BannerRepositoryImplement(

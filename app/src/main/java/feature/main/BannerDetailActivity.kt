@@ -1,8 +1,7 @@
-package main
+package feature.main
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.example.myhome.R
 import common.MyHomeActivity
 import data.Banner

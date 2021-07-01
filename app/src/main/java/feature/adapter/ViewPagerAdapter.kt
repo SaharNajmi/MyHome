@@ -1,10 +1,10 @@
-package adapter
+package feature.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import view.RentHomeFragment
-import view.SellHomeFragment
+import feature.home.RentHomeFragment
+import feature.home.SellHomeFragment
 
 class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

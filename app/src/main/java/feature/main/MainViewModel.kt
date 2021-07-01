@@ -1,4 +1,4 @@
-package main
+package feature.main
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,6 @@ import io.reactivex.schedulers.Schedulers
 
 
 class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
-
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
     //برای موقعی که دستبندی عوض میشه

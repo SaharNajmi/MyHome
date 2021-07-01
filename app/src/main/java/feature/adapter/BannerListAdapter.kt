@@ -1,4 +1,4 @@
-package adapter
+package feature.adapter
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,7 +1,5 @@
-package view
+package feature.home
 
-import adapter.BannerListAdapter
-import adapter.BannerOnClickListener
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,9 +14,11 @@ import common.MyHomeFragment
 import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
+import feature.adapter.BannerListAdapter
+import feature.adapter.BannerOnClickListener
+import feature.main.BannerDetailActivity
+import feature.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_sell_home.*
-import main.BannerDetailActivity
-import main.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -50,7 +50,7 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recycler_view_sell.adapter = bannerArrayList
 
-        mainViewModel.bannerLiveData.observe(viewLifecycleOwner,object :Observer<List<Banner>>{
+        mainViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
             override fun onChanged(t: List<Banner>?) {
                 bannerArrayList.banner = t as ArrayList<Banner>
                 Timber.i(t.toString())

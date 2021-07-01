@@ -8,15 +8,18 @@
     <string name="cate3">اداری و تجاری</string>
     <string name="cate4">زمین و باغ</string>
     <string name="phone">شماره موبایل</string>
+    <string name="username">نام کاربری</string>
     <string name="password">رمز عبور</string>
     <string name="loginTitle">ورود</string>
     <string name="signUpHint">حساب کاربری ندارید؟</string>
     <string name="signUp">ثبت نام</string>
     <string name="login">ورود</string>
+    <string name="logOut">خروج از حساب</string>
+    <string name="editProf">ویرایش حساب کاربری</string>
     <string name="loginScreenTitle">ورود به حساب کاربری</string>
     <string name="loginHint">قبلا ثبت نام کردید؟</string>
-    <string name="signUpScreenTitle">ایجاد حساب کارری</string>
-    <string name="authHint">شماره موبایل و رمز عبور خود را وارد کنید</string>
+    <string name="signUpScreenTitle">ایجاد حساب کاربری</string>
+    <string name="authHint">شماره موبایل، نام کاربری و رمز عبور خود را وارد کنید</string>
 
     <string-array name="category">
         <item>@string/cate1</item>

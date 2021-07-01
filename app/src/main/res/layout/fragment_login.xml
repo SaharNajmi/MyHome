@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:background="@color/myBlue">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,15 +15,23 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/app_logo"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_app_logo"
             app:tint="@color/white" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyHome"
+            android:textColor="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="26dp"
             android:text="@string/loginScreenTitle"
-            android:textAppearance="?textAppearanceHeadline5"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/white" />
 
         <TextView
@@ -32,18 +40,19 @@
             android:layout_marginTop="8dp"
             android:alpha="0.8"
             android:text="@string/authHint"
-            android:textAppearance="?textAppearanceBody1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white" />
 
         <EditText
-            android:id="@+id/emailEt"
+            android:id="@+id/phoneEt"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="@dimen/authViewWidth"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="24dp"
             android:gravity="right|center_vertical"
             android:hint="@string/phone"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
+            android:maxLength="11"
             android:textColorHint="@color/darkGray" />
 
         <EditText
@@ -57,7 +66,7 @@
             android:inputType="textPassword"
             android:textColorHint="@color/darkGray" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/loginBtn"
             android:layout_width="@dimen/authViewWidth"
             android:layout_height="wrap_content"
@@ -65,7 +74,7 @@
             android:gravity="center"
             android:minHeight="48dp"
             android:text="@string/loginTitle"
-            android:textColor="@color/blue" />
+            android:textColor="@color/myBlue" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,10 +90,10 @@
             android:layout_height="wrap_content"
             android:alpha="0.4"
             android:text="@string/signUpHint"
-            android:textAppearance="?textAppearanceBody1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/white" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/signUpLinkBtn"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"

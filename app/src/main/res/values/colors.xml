@@ -2,9 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#0F0F6C</color>
-    <color name="colorNavSelected">#FADF272D</color>
-    <color name="surfaceColor">#C4D9FF</color>
+    <color name="myBlue">#0F0F6C</color>
+    <color name="myRed">#FADF272D</color>
+    <color name="backgroundColor">#C4D9FF</color>
     <color name="gray">#EFEFEF</color>
     <color name="darkGray">#B3B6BE</color>
 </resources>

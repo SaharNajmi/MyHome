@@ -6,7 +6,7 @@
     app:startDestination="@id/newAdFragment">
     <fragment
         android:id="@+id/newAdFragment"
-        android:name="view.NewAdFragment"
+        android:name="feature.add.NewAdFragment"
         android:label="fragment_new_ad"
         tools:layout="@layout/fragment_new_ad" />
 </navigation>

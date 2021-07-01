@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHome"
         android:usesCleartextTraffic="true">
-        <activity android:name="main.BannerDetailActivity"/>
-        <activity android:name="view.SplashScreenActivity" />
-        <activity android:name="main.MainActivity">
+        <activity android:name="feature.login.LoginOrSignUpActivity"/>
+        <activity android:name="feature.main.BannerDetailActivity" />
+        <activity android:name="feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
