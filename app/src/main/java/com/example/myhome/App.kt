@@ -14,6 +14,7 @@ import data.repository.source.*
 import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
 import feature.main.MainViewModel
+import feature.profile.ProfileViewModel
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -65,6 +66,7 @@ class App : Application() {
             viewModel { (cate: Int) -> MainViewModel(get(), cate) }
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
             viewModel { AuthViewModel(get()) }
+            viewModel { ProfileViewModel(get()) }
         }
         startKoin {
             androidContext(this@App)

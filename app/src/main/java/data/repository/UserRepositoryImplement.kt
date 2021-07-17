@@ -17,4 +17,8 @@ class UserRepositoryImplement(
 
     override fun checkLogin() = userLocalDataSource.checkLogin()
 
+    override fun signOut() {
+        userLocalDataSource.signOut()
+        LoginUpdate.update(false)
+    }
 }

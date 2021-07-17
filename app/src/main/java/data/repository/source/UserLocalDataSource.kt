@@ -22,4 +22,8 @@ class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSo
             sharedPreferences.getBoolean(LOGIN, false)
         )
     }
+
+    override fun signOut() = sharedPreferences.edit().apply() {
+        clear()
+    }.apply()
 }

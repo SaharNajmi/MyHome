@@ -18,11 +18,12 @@
     <string name="editProf">ویرایش حساب کاربری</string>
     <string name="myBanner">آگهی های من</string>
     <string name="myPhoto">عکس پروفایل</string>
-    <string name="loginScreenTitle">ورود به حساب کاربری</string>
+    <string name="signIn">ورود به حساب کاربری</string>
     <string name="loginHint">قبلا ثبت نام کردید؟</string>
     <string name="signUpScreenTitle">ایجاد حساب کاربری</string>
     <string name="authHint">شماره موبایل و رمز عبور خود را وارد کنید</string>
     <string name="signOut">خروج از حساب کاربری</string>
+    <string name="guest_user">کاربر مهمان</string>
 
     <string-array name="category">
         <item>@string/cate1</item>

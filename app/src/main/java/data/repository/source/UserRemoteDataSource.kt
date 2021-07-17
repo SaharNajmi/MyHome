@@ -15,4 +15,8 @@ class UserRemoteDataSource(val apiService: ApiService) : UserDataSource {
     override fun checkLogin() {
         TODO("Not yet implemented")
     }
+
+    override fun signOut() {
+        TODO("Not yet implemented")
+    }
 }

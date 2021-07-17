@@ -7,4 +7,6 @@ interface UserRepository {
     fun login(phone: String, password: String): Single<AuthState>
 
     fun checkLogin()
+
+    fun signOut()
 }

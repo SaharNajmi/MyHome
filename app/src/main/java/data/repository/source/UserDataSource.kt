@@ -9,4 +9,6 @@ interface UserDataSource {
     fun saveLogin(login: Boolean)
 
     fun checkLogin()
+
+    fun signOut()
 }

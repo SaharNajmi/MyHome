@@ -36,6 +36,7 @@
 
             <TextView
                 android:id="@+id/prf_phone"
+                android:visibility="gone"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,6 +60,7 @@
                 android:layout_marginTop="40dp">
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/myBannerBtn"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -68,6 +70,7 @@
 
                 <TextView
                     android:id="@+id/edtBtn"
+                    android:visibility="gone"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/myBannerBtn"
@@ -82,9 +85,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/edtBtn"
                     android:layout_margin="5dp"
-                    android:text="@string/signOut"
+                    android:text="@string/signIn"
                     android:textColor="@color/myBlue"
-                    app:drawableStartCompat="@drawable/ic_sign_out" />
+                    app:drawableStartCompat="@drawable/ic_sign_in" />
 
             </RelativeLayout>
         </RelativeLayout>
