@@ -7,12 +7,12 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class BannerRepositoryImplement(
-    val bannerDataSource: BannerDataSource,
+    val bannerRemoteDataSource: BannerDataSource,
     val bannerLocalDataSource: BannerLocalDataSource
 ) : BannerRepository {
 
     override fun getBanners(sellOrRent: Int, category: Int): Single<List<Banner>> =
-        bannerDataSource.getBanners(sellOrRent, category)
+        bannerRemoteDataSource.getBanners(sellOrRent, category)
 
     override fun getFavoriteBanners(): Single<List<Banner>> {
         TODO("Not yet implemented")

@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <RelativeLayout
-        android:id="@+id/relMain"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/layout_radius"
-        android:orientation="horizontal">
-
-        <view.MyHomeImageView
-            android:id="@+id/prf_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            app:roundAsCircle="true" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/prf_image"
-            android:layoutDirection="rtl">
+            android:background="@color/myBlue"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/prf_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/myimage" />
 
             <TextView
                 android:id="@+id/prf_name"
-                style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/username"
-                android:textColor="@color/myBlue" />
-
-            <TextView
-                android:id="@+id/prf_phone"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/prf_image"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="@string/username"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/prf_phone"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/prf_name"
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
                 android:text="@string/phone"
-                android:textColor="@color/myBlue" />
+                android:textColor="@color/white" />
         </RelativeLayout>
 
-    </RelativeLayout>
-    <Button
-        android:id="@+id/editLinkBtn"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/relMain"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:text="@string/editProf"
-        android:textColor="@color/myBlue" />
+        <RelativeLayout
+             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layoutDirection="rtl">
 
-    <Button
-        android:id="@+id/logOutLinkBtn"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editLinkBtn"
-        android:layout_centerHorizontal="true"
-        android:text="@string/logOut"
-        android:textColor="@color/myRed" />
-</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/myBannerBtn"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myBanner"
+                    android:textColor="@color/myBlue"
+                    app:drawableStartCompat="@drawable/ic_list" />
+
+                <TextView
+                    android:id="@+id/edtBtn"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/myBannerBtn"
+                    android:layout_margin="5dp"
+                    android:text="@string/editProf"
+                    android:textColor="@color/myBlue"
+                    app:drawableStartCompat="@drawable/ic_edit" />
+
+                <TextView
+                    android:id="@+id/authBtn"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edtBtn"
+                    android:layout_margin="5dp"
+                    android:text="@string/signOut"
+                    android:textColor="@color/myBlue"
+                    app:drawableStartCompat="@drawable/ic_sign_out" />
+
+            </RelativeLayout>
+        </RelativeLayout>
 
 
-
-
-
-
-
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

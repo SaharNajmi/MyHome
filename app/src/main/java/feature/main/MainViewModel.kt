@@ -42,7 +42,7 @@ class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyH
         getBanner()
     }
 
-    fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
+     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
         return subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

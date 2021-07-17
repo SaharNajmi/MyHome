@@ -8,10 +8,7 @@ import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface ApiService {
@@ -21,8 +18,14 @@ interface ApiService {
         @Query("category") category: Int
     ): Single<List<Banner>>
 
+    /*@POST("login.php")
+    fun login(@Body jsonObject: JsonObject): Single<Login>*/
+    @FormUrlEncoded
     @POST("login.php")
-    fun login(@Body jsonObject: JsonObject): Single<Login>
+    fun login(
+        @Field("phoneNumber") phoneNumber: String,
+        @Field("password") password: String
+    ): Single<Login>
 
     @POST("register.php")
     fun signUp(@Body jsonObject: JsonObject): Single<MSG>

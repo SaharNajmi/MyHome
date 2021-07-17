@@ -1,4 +1,4 @@
-package feature.adapter
+package feature.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import data.Banner
 import services.ImageLoadingService
-import view.MyHomeImageView
 import java.lang.String.format
 
 
@@ -25,15 +24,14 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val image: MyHomeImageView = itemView.findViewById(R.id.image_banner)
+        val myHomeImage: view.MyHomeImageView = itemView.findViewById(R.id.image_banner)
         val title: TextView = itemView.findViewById(R.id.txt_price)
         val price: TextView = itemView.findViewById(R.id.txt_title)
         val location: TextView = itemView.findViewById(R.id.txt_location)
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
         fun bindBanner(banner: Banner) {
-            imageLoadingService.load(image, banner.image)
+            imageLoadingService.load(myHomeImage, banner.image)
             title.text = banner.title
             price.text = "${format("%,d", banner.price)} تومان "
             location.text = banner.location

@@ -14,8 +14,7 @@ import common.MyHomeFragment
 import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
-import feature.adapter.BannerListAdapter
-import feature.adapter.BannerOnClickListener
+import feature.home.BannerOnClickListener
 import feature.main.BannerDetailActivity
 import feature.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_sell_home.*
