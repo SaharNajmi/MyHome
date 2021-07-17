@@ -10,13 +10,11 @@ import data.repository.BannerRepository
 import data.repository.BannerRepositoryImplement
 import data.repository.UserRepository
 import data.repository.UserRepositoryImplement
-import data.repository.source.BannerLocalDataSource
-import data.repository.source.BannerRemoteDataSource
-import data.repository.source.UserLocalDataSource
-import data.repository.source.UserRemoteDataSource
+import data.repository.source.*
 import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
 import feature.main.MainViewModel
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -59,7 +57,7 @@ class App : Application() {
 
             single<UserRepository> {
                 UserRepositoryImplement(
-                    UserLocalDataSource(),
+                    UserLocalDataSource(get()),
                     UserRemoteDataSource(get())
                 )
             }
@@ -72,5 +70,12 @@ class App : Application() {
             androidContext(this@App)
             modules(myModules)
         }
+
+        //auto login
+        //موقع لود اپلیکیشن، این کلاس فراخوانی میشه و وضعیت لاگین را چک می کند
+        //نمونه یا اینستنس ساختن از کلاس ریپازیتوری با استفاده از get کوین
+        val userRepository: UserRepository = get()
+        userRepository.checkLogin()
+
     }
 }
