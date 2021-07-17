@@ -8,8 +8,13 @@ import android.os.Bundle
 import com.facebook.drawee.backends.pipeline.Fresco
 import data.repository.BannerRepository
 import data.repository.BannerRepositoryImplement
+import data.repository.UserRepository
+import data.repository.UserRepositoryImplement
 import data.repository.source.BannerLocalDataSource
 import data.repository.source.BannerRemoteDataSource
+import data.repository.source.UserLocalDataSource
+import data.repository.source.UserRemoteDataSource
+import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
 import feature.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
@@ -52,8 +57,16 @@ class App : Application() {
             }
             factory { BannerListAdapter(get()) }
 
+            single<UserRepository> {
+                UserRepositoryImplement(
+                    UserLocalDataSource(),
+                    UserRemoteDataSource(get())
+                )
+            }
+
             viewModel { (cate: Int) -> MainViewModel(get(), cate) }
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
+            viewModel { AuthViewModel(get()) }
         }
         startKoin {
             androidContext(this@App)

@@ -1,9 +1,7 @@
 package services
 
-import com.google.gson.JsonObject
+import data.AuthState
 import data.Banner
-import data.Login
-import data.MSG
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -18,17 +16,13 @@ interface ApiService {
         @Query("category") category: Int
     ): Single<List<Banner>>
 
-    /*@POST("login.php")
-    fun login(@Body jsonObject: JsonObject): Single<Login>*/
     @FormUrlEncoded
     @POST("login.php")
     fun login(
         @Field("phoneNumber") phoneNumber: String,
         @Field("password") password: String
-    ): Single<Login>
+    ): Single<AuthState>
 
-    @POST("register.php")
-    fun signUp(@Body jsonObject: JsonObject): Single<MSG>
 }
 
 fun createApiServiceInstance(): ApiService {
