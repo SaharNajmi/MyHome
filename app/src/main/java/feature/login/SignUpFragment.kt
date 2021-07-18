@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import common.MyHomeSingleObserver
 import data.AuthState
-import feature.profile.ProfileFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

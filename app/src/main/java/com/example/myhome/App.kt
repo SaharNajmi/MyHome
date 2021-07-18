@@ -1,6 +1,5 @@
 package com.example.myhome
 
-import feature.home.BannerListAdapter
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,6 +10,7 @@ import data.repository.BannerRepositoryImplement
 import data.repository.UserRepository
 import data.repository.UserRepositoryImplement
 import data.repository.source.*
+import feature.home.BannerListAdapter
 import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
 import feature.main.MainViewModel

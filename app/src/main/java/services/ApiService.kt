@@ -1,7 +1,9 @@
 package services
 
+import common.BASE_URL
 import data.AuthState
 import data.Banner
+import data.UserInformation
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,7 +27,6 @@ interface ApiService {
         @Field("password") password: String
     ): Single<AuthState>
 
-
     //برای آپلود یا ویرایش عکس باید از MultipartBody.Part استفاده کنیم
     //RequestBody: برای اینکه مقدار سمت سرور داخل "" ذخیره نشوند
     @Multipart
@@ -37,11 +38,17 @@ interface ApiService {
         @Part image: MultipartBody.Part?
     ): Single<AuthState>
 
+
+    @GET(" getUserUsingPhone.php")
+    fun getUser(
+        @Query("phoneNumber") phoneNumber: String
+    ): Single<UserInformation>
+
 }
 
 fun createApiServiceInstance(): ApiService {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.102/myhome/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()

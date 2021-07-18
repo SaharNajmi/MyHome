@@ -6,7 +6,6 @@ import data.repository.UserRepository
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import services.ApiService
 
 class AuthViewModel(val repository: UserRepository) : MyHomeViewModel() {
     fun login(phone: String, password: String): Single<AuthState> =

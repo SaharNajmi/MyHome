@@ -1,6 +1,7 @@
 package data.repository.source
 
 import data.AuthState
+import data.UserInformation
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,4 +25,6 @@ interface UserDataSource {
     fun savePhoneNumber(phoneNumber: String)
 
     fun getPhoneNumber(): String
+
+    fun getUser(phone: String): Single<UserInformation>
 }

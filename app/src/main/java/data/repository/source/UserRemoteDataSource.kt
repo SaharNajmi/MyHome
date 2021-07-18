@@ -1,6 +1,7 @@
 package data.repository.source
 
 import data.AuthState
+import data.UserInformation
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,4 +37,6 @@ class UserRemoteDataSource(val apiService: ApiService) : UserDataSource {
     override fun getPhoneNumber(): String {
         TODO("Not yet implemented")
     }
+
+    override fun getUser(phone: String): Single<UserInformation> = apiService.getUser(phone)
 }

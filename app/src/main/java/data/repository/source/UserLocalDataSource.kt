@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import common.LOGIN
 import common.PHONE
 import data.AuthState
+import data.UserInformation
 import data.repository.LoginUpdate
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -44,4 +45,8 @@ class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSo
     }.apply()
 
     override fun getPhoneNumber(): String = sharedPreferences.getString(PHONE, "") ?: ""
+
+    override fun getUser(phone: String): Single<UserInformation> {
+        TODO("Not yet implemented")
+    }
 }

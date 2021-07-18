@@ -1,6 +1,7 @@
 package data.repository
 
 import data.AuthState
+import data.UserInformation
 import data.repository.source.UserDataSource
 import data.repository.source.UserLocalDataSource
 import io.reactivex.Single
@@ -14,7 +15,7 @@ class UserRepositoryImplement(
 ) : UserRepository {
     override fun login(phone: String, password: String): Single<AuthState> =
         userRemoteDataSource.login(phone, password).doOnSuccess {
-            onSuccessfulLogin(phone,it)
+            onSuccessfulLogin(phone, it)
         }
 
     override fun signUp(
@@ -30,7 +31,7 @@ class UserRepositoryImplement(
                 requestBodyToString(phoneNumber),
                 requestBodyToString(password)
             ).doOnSuccess {
-                onSuccessfulLogin(requestBodyToString(phoneNumber),it)
+                onSuccessfulLogin(requestBodyToString(phoneNumber), it)
             }
         }
 
@@ -43,6 +44,9 @@ class UserRepositoryImplement(
     }
 
     override fun getPhoneNumber(): String = userLocalDataSource.getPhoneNumber()
+
+    override fun getUser(phone: String): Single<UserInformation> =
+        userRemoteDataSource.getUser(phone)
 
     fun onSuccessfulLogin(phone: String, login: AuthState) {
         LoginUpdate.update(login.state)

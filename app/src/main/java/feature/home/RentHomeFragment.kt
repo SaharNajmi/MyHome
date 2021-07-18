@@ -14,9 +14,9 @@ import common.MyHomeFragment
 import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
-import kotlinx.android.synthetic.main.fragment_rent_home.*
 import feature.main.BannerDetailActivity
 import feature.main.MainViewModel
+import kotlinx.android.synthetic.main.fragment_rent_home.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

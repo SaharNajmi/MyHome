@@ -14,4 +14,5 @@ class ProfileViewModel(val userRepository: UserRepository) : MyHomeViewModel() {
 
     fun signOut() = userRepository.signOut()
 
+    fun getUser(phone: String) = userRepository.getUser(phone)
 }
