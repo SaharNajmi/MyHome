@@ -10,6 +10,7 @@ import common.MyHomeFragment
 import feature.login.LoginOrSignUpActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class ProfileFragment : MyHomeFragment() {
     val viewModel: ProfileViewModel by viewModel()
@@ -24,6 +25,7 @@ class ProfileFragment : MyHomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.i("phone: "+viewModel.phoneNumber)
     }
 
     private fun checkAuthState() {
@@ -31,7 +33,6 @@ class ProfileFragment : MyHomeFragment() {
             //visible view
             edtBtn.visibility = View.VISIBLE
             myBannerBtn.visibility = View.VISIBLE
-            val a = viewModel.isSignIn
             prf_phone.visibility = View.VISIBLE
             authBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_out, 0)
             authBtn.text = getString(R.string.signOut)

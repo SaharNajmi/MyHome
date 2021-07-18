@@ -9,6 +9,9 @@ class ProfileViewModel(val userRepository: UserRepository) : MyHomeViewModel() {
     val isSignIn: Boolean
         get() = LoginUpdate.login != false
 
+    val phoneNumber: String
+        get() = userRepository.getPhoneNumber()
+
     fun signOut() = userRepository.signOut()
 
 }

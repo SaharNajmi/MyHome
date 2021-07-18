@@ -16,12 +16,12 @@
             android:layout_height="0dp"
             android:layout_weight="2">
 
-            <ImageView
+            <view.MyHomeImageView
                 android:id="@+id/prf_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/myimage" />
+                app:srcCompat="@drawable/ic_profile" />
 
             <TextView
                 android:id="@+id/prf_name"

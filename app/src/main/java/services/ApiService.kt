@@ -3,6 +3,8 @@ package services
 import data.AuthState
 import data.Banner
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,6 +23,18 @@ interface ApiService {
     fun login(
         @Field("phoneNumber") phoneNumber: String,
         @Field("password") password: String
+    ): Single<AuthState>
+
+
+    //برای آپلود یا ویرایش عکس باید از MultipartBody.Part استفاده کنیم
+    //RequestBody: برای اینکه مقدار سمت سرور داخل "" ذخیره نشوند
+    @Multipart
+    @POST("signUp.php")
+    fun signUp(
+        @Part("phoneNumber") phoneNumber: RequestBody,
+        @Part("username") username: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part image: MultipartBody.Part?
     ): Single<AuthState>
 
 }
