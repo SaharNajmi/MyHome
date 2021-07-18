@@ -49,4 +49,15 @@ class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSo
     override fun getUser(phone: String): Single<UserInformation> {
         TODO("Not yet implemented")
     }
+
+    override fun editUser(
+        id: RequestBody,
+        phoneNumber: RequestBody,
+        username: RequestBody,
+        password: RequestBody,
+        image: MultipartBody.Part?
+    ): Single<AuthState> {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -24,4 +24,12 @@ interface UserRepository {
     fun getPhoneNumber(): String
 
     fun getUser(phone: String): Single<UserInformation>
+
+    fun editUser(
+        id: RequestBody,
+        phoneNumber: RequestBody,
+        username: RequestBody,
+        password: RequestBody,
+        image: MultipartBody.Part?
+    ): Single<AuthState>
 }

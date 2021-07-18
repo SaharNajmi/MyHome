@@ -24,6 +24,8 @@
     <string name="authHint">شماره موبایل و رمز عبور خود را وارد کنید</string>
     <string name="signOut">خروج از حساب کاربری</string>
     <string name="guest_user">کاربر مهمان</string>
+    <string name="oldPassword">رمز عبور قبلی</string>
+    <string name="newPassword">رمز عبور جدید</string>
 
     <string-array name="category">
         <item>@string/cate1</item>

@@ -24,9 +24,9 @@ class UserRepositoryImplement(
         password: RequestBody,
         imageProfile: MultipartBody.Part?
     ): Single<AuthState> =
-        userRemoteDataSource.signUp(phoneNumber, username, password, imageProfile).doFinally {
+        userRemoteDataSource.signUp(phoneNumber, username, password, imageProfile).flatMap {
             //وقتی کاربر ثبتام میکنه هم ثبتنام انجام میشه هم لاگین
-            //flatMap: برای اینکه چند تا رکوست با هم انجام بشه
+            //.flatMap: برای اینکه چند تا رکوست با هم انجام بشه
             userRemoteDataSource.login(
                 requestBodyToString(phoneNumber),
                 requestBodyToString(password)
@@ -47,6 +47,23 @@ class UserRepositoryImplement(
 
     override fun getUser(phone: String): Single<UserInformation> =
         userRemoteDataSource.getUser(phone)
+
+    override fun editUser(
+        id: RequestBody,
+        phoneNumber: RequestBody,
+        username: RequestBody,
+        password: RequestBody,
+        image: MultipartBody.Part?
+    ): Single<AuthState> =userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
+        //وقتی کاربر پروفایلش را ویرایش کند هم ویرایش انجام میشه هم لاگین
+        //doFinally: برای اینکه چند تا رکوست با هم انجام بشه
+        userRemoteDataSource.login(
+            requestBodyToString(phoneNumber),
+            requestBodyToString(password)
+        ).doOnSuccess {
+            onSuccessfulLogin(requestBodyToString(phoneNumber), it)
+        }
+    }
 
     fun onSuccessfulLogin(phone: String, login: AuthState) {
         LoginUpdate.update(login.state)

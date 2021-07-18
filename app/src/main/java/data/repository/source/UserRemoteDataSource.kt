@@ -39,4 +39,12 @@ class UserRemoteDataSource(val apiService: ApiService) : UserDataSource {
     }
 
     override fun getUser(phone: String): Single<UserInformation> = apiService.getUser(phone)
+
+    override fun editUser(
+        id: RequestBody,
+        phoneNumber: RequestBody,
+        username: RequestBody,
+        password: RequestBody,
+        image: MultipartBody.Part?
+    ): Single<AuthState> = apiService.editUser(id, phoneNumber, username, password, image)
 }

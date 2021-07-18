@@ -57,6 +57,8 @@ class SignUpFragment : Fragment() {
             startActivityForResult(gallery, pickImage)
         }
 
+        //default image add user
+        img_add.setImageResource(R.drawable.ic_add_a_photo)
 
         // sign up
         signUpBtn.setOnClickListener {

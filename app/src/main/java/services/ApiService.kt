@@ -39,11 +39,20 @@ interface ApiService {
     ): Single<AuthState>
 
 
-    @GET(" getUserUsingPhone.php")
+    @GET("getUserUsingPhone.php")
     fun getUser(
         @Query("phoneNumber") phoneNumber: String
     ): Single<UserInformation>
 
+    @Multipart
+    @POST("editUser.php")
+    fun editUser(
+        @Part("id") id: RequestBody?,
+        @Part("phoneNumber") phoneNumber: RequestBody?,
+        @Part("username") username: RequestBody?,
+        @Part("password") password: RequestBody?,
+        @Part image: MultipartBody.Part?
+    ): Single<AuthState>
 }
 
 fun createApiServiceInstance(): ApiService {
