@@ -6,9 +6,12 @@ import io.reactivex.Single
 import services.ApiService
 
 class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
-
-    override fun getBanners(sellOrRent: Int, category: Int): Single<List<Banner>> {
-        return apiService.getAllBanner(sellOrRent, category)
+    override fun getBanners(
+        sellOrRent: Int,
+        category: Int,
+        phone: String
+    ): Single<List<Banner>> {
+        return apiService.getAllBanner(sellOrRent, category, phone)
     }
 
     override fun getFavoriteBanners(): Single<List<Banner>> {

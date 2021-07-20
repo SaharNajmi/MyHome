@@ -15,7 +15,7 @@ import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
 import feature.main.BannerDetailActivity
-import feature.main.MainViewModel
+import feature.main.BannerViewModel
 import kotlinx.android.synthetic.main.fragment_rent_home.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,8 +23,7 @@ import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
-
-    val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
+    val mainViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
     val bannerArrayList: BannerListAdapter by inject()
 
     override fun onCreateView(
@@ -54,7 +53,6 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
                 Timber.i(t.toString())
             }
         })
-
     }
 
     override fun onBannerClick(banner: Banner) {

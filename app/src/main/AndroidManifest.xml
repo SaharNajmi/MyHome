@@ -3,7 +3,7 @@
     package="com.example.myhome">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHome"
         android:usesCleartextTraffic="true">
-        <activity android:name="feature.login.LoginOrSignUpActivity"/>
+        <activity android:name="feature.profile.UserBannerActivity"></activity>
+        <activity android:name="feature.login.LoginOrSignUpActivity" />
         <activity android:name="feature.main.BannerDetailActivity" />
         <activity android:name="feature.main.MainActivity">
             <intent-filter>

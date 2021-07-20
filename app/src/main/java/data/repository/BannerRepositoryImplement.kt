@@ -11,8 +11,12 @@ class BannerRepositoryImplement(
     val bannerLocalDataSource: BannerLocalDataSource
 ) : BannerRepository {
 
-    override fun getBanners(sellOrRent: Int, category: Int): Single<List<Banner>> =
-        bannerRemoteDataSource.getBanners(sellOrRent, category)
+    override fun getBanners(
+        sellOrRent: Int,
+        category: Int,
+        phone: String
+    ): Single<List<Banner>> = bannerRemoteDataSource.getBanners(sellOrRent, category, phone)
+
 
     override fun getFavoriteBanners(): Single<List<Banner>> {
         TODO("Not yet implemented")

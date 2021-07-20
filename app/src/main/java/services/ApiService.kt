@@ -17,7 +17,8 @@ interface ApiService {
     @GET("GetBanner.php")
     fun getAllBanner(
         @Query("sellOrRent") sellOrRent: Int,
-        @Query("category") category: Int
+        @Query("category") category: Int,
+        @Query("phoneNumber") phone: String
     ): Single<List<Banner>>
 
     @FormUrlEncoded

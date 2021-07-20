@@ -15,7 +15,7 @@ import data.Banner
 import data.CATEGORY
 import data.SELL_OR_RENT
 import feature.main.BannerDetailActivity
-import feature.main.MainViewModel
+import feature.main.BannerViewModel
 import kotlinx.android.synthetic.main.fragment_sell_home.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -24,7 +24,7 @@ import timber.log.Timber
 
 class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     //از ویو مدل کوین استفاده میکنیم
-    val mainViewModel: MainViewModel by viewModel { parametersOf(CATEGORY) }
+    val mainViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
     val bannerArrayList: BannerListAdapter by inject()
 
     override fun onCreateView(

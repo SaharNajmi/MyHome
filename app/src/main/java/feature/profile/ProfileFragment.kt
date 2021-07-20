@@ -35,7 +35,8 @@ import java.util.*
 
 class ProfileFragment : MyHomeFragment() {
 
-    val viewModel: ProfileViewModel by viewModel()
+    val viewModel: UserViewModel by viewModel()
+
     val imageLoadingService: ImageLoadingService by inject()
     val compositeDisposable = CompositeDisposable()
     lateinit var customLayout: View
@@ -80,6 +81,12 @@ class ProfileFragment : MyHomeFragment() {
             edtBtn.setOnClickListener {
                 showDialogEditUser()
             }
+
+            //get user banner
+            myBannerBtn.setOnClickListener {
+                startActivity(Intent(requireContext(), UserBannerActivity::class.java))
+            }
+
             //get user
             viewModel.getUser(viewModel.phoneNumber)
                 .subscribeOn(Schedulers.io())

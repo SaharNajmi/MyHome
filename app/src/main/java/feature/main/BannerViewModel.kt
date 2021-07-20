@@ -1,6 +1,5 @@
 package feature.main
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.myhome.R
 import common.MyHomeSingleObserver
@@ -12,8 +11,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-
-class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
+class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
     //برای موقعی که دستبندی عوض میشه
@@ -26,11 +24,10 @@ class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyH
     }
 
     fun getBanner() {
-        bannerRepository.getBanners(SELL_OR_RENT, CATE)
+        bannerRepository.getBanners(SELL_OR_RENT, CATE, "all")
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
-                    Log.d("sel----cate", SELL_OR_RENT.toString() + CATE.toString())
                     bannerLiveData.value = t
                 }
             })
@@ -42,7 +39,7 @@ class MainViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyH
         getBanner()
     }
 
-     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
+    fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
         return subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
