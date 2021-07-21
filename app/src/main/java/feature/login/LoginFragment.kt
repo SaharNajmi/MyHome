@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import common.MyHomeSingleObserver
-import data.AuthState
+import data.State
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -41,8 +41,8 @@ class LoginFragment : Fragment() {
             viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MyHomeSingleObserver<AuthState>(compositeDisposable) {
-                    override fun onSuccess(t: AuthState) {
+                .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
+                    override fun onSuccess(t: State) {
                         if (t.state)
                             requireActivity().finish()
                         else

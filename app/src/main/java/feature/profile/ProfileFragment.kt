@@ -17,7 +17,7 @@ import com.example.myhome.R
 import common.BASE_URL
 import common.MyHomeFragment
 import common.MyHomeSingleObserver
-import data.AuthState
+import data.State
 import data.UserInformation
 import feature.login.LoginOrSignUpActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -74,7 +74,7 @@ class ProfileFragment : MyHomeFragment() {
             authBtn.text = getString(R.string.signOut)
             authBtn.setOnClickListener {
                 viewModel.signOut()
-                checkAuthState()
+              checkAuthState()
             }
 
             //edit user
@@ -131,6 +131,7 @@ class ProfileFragment : MyHomeFragment() {
         }
     }
 
+    //edit user
     private fun showDialogEditUser() {
         customLayout = layoutInflater.inflate(R.layout.dialog_edit, null)
 
@@ -187,8 +188,8 @@ class ProfileFragment : MyHomeFragment() {
                     postImage
                 ).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : MyHomeSingleObserver<AuthState>(compositeDisposable) {
-                        override fun onSuccess(t: AuthState) {
+                    .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
+                        override fun onSuccess(t: State) {
                             if (t.state) {
                                 Toast.makeText(
                                     requireContext(),
@@ -211,8 +212,6 @@ class ProfileFragment : MyHomeFragment() {
                 Toast.makeText(requireContext(), "اطاعات ورودی اشتباه است!!!", Toast.LENGTH_SHORT)
                     .show()
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

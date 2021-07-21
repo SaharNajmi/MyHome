@@ -1,8 +1,8 @@
 package services
 
 import common.BASE_URL
-import data.AuthState
 import data.Banner
+import data.State
 import data.UserInformation
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -26,7 +26,7 @@ interface ApiService {
     fun login(
         @Field("phoneNumber") phoneNumber: String,
         @Field("password") password: String
-    ): Single<AuthState>
+    ): Single<State>
 
     //برای آپلود یا ویرایش عکس باید از MultipartBody.Part استفاده کنیم
     //RequestBody: برای اینکه مقدار سمت سرور داخل "" ذخیره نشوند
@@ -37,7 +37,7 @@ interface ApiService {
         @Part("username") username: RequestBody,
         @Part("password") password: RequestBody,
         @Part image: MultipartBody.Part?
-    ): Single<AuthState>
+    ): Single<State>
 
 
     @GET("getUserUsingPhone.php")
@@ -53,7 +53,12 @@ interface ApiService {
         @Part("username") username: RequestBody?,
         @Part("password") password: RequestBody?,
         @Part image: MultipartBody.Part?
-    ): Single<AuthState>
+    ): Single<State>
+
+    @GET("DeleteBanner.php")
+    fun deleteBanner(
+        @Query("id") id: Int
+    ): Single<State>
 }
 
 fun createApiServiceInstance(): ApiService {

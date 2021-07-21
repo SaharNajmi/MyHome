@@ -39,6 +39,9 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
         getBanner()
     }
 
+
+    fun deleteBanner(id: Int) = bannerRepository.deleteBanner(id)
+
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
         return subscribeOn(Schedulers.io())

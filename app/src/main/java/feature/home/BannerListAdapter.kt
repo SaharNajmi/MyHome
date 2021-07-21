@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import data.Banner
 import services.ImageLoadingService
-import java.lang.String.format
 
 
 class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
@@ -25,15 +24,15 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val myHomeImage: view.MyHomeImageView = itemView.findViewById(R.id.image_banner)
-        val title: TextView = itemView.findViewById(R.id.txt_price)
-        val price: TextView = itemView.findViewById(R.id.txt_title)
+        val price: TextView = itemView.findViewById(R.id.txt_price)
+        val title: TextView = itemView.findViewById(R.id.txt_title)
         val location: TextView = itemView.findViewById(R.id.txt_location)
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
         fun bindBanner(banner: Banner) {
-            imageLoadingService.load(myHomeImage, banner.image)
+            imageLoadingService.load(myHomeImage, banner.bannerImage)
             title.text = banner.title
-            price.text = "${format("%,d", banner.price)} تومان "
+            price.text = "${banner.price} تومان "
             location.text = banner.location
             room.text = banner.numberOfRooms.toString()
             homeSize.text = banner.homeSize.toString()

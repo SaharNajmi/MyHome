@@ -3,7 +3,7 @@ package data.repository.source
 import android.content.SharedPreferences
 import common.LOGIN
 import common.PHONE
-import data.AuthState
+import data.State
 import data.UserInformation
 import data.repository.LoginUpdate
 import io.reactivex.Single
@@ -11,7 +11,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSource {
-    override fun login(phone: String, password: String): Single<AuthState> {
+    override fun login(phone: String, password: String): Single<State> {
         TODO("Not yet implemented")
     }
 
@@ -20,7 +20,7 @@ class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSo
         username: RequestBody,
         password: RequestBody,
         imageProfile: MultipartBody.Part?
-    ): Single<AuthState> {
+    ): Single<State> {
         TODO("Not yet implemented")
     }
 
@@ -56,7 +56,7 @@ class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSo
         username: RequestBody,
         password: RequestBody,
         image: MultipartBody.Part?
-    ): Single<AuthState> {
+    ): Single<State> {
         TODO("Not yet implemented")
     }
 

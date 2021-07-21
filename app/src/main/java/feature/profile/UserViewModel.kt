@@ -3,8 +3,8 @@ package feature.profile
 import androidx.lifecycle.MutableLiveData
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
-import data.AuthState
 import data.Banner
+import data.State
 import data.repository.BannerRepository
 import data.repository.LoginUpdate
 import data.repository.UserRepository
@@ -16,6 +16,10 @@ import okhttp3.RequestBody
 
 class UserViewModel(val userRepository: UserRepository, val bannerRepository: BannerRepository) :
     MyHomeViewModel() {
+
+    init {
+        getBanner()
+    }
 
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
@@ -35,11 +39,7 @@ class UserViewModel(val userRepository: UserRepository, val bannerRepository: Ba
         username: RequestBody,
         password: RequestBody,
         image: MultipartBody.Part?
-    ): Single<AuthState> = userRepository.editUser(id, phoneNumber, username, password, image)
-
-    init {
-        getBanner()
-    }
+    ): Single<State> = userRepository.editUser(id, phoneNumber, username, password, image)
 
     fun getBanner() {
         bannerRepository.getBanners(0, 0, phoneNumber)
@@ -50,6 +50,10 @@ class UserViewModel(val userRepository: UserRepository, val bannerRepository: Ba
                     bannerLiveData.value = t
                 }
             })
+    }
+
+    fun refresh(){
+        getBanner()
     }
 
 }

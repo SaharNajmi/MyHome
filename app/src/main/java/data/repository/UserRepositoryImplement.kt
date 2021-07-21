@@ -1,6 +1,6 @@
 package data.repository
 
-import data.AuthState
+import data.State
 import data.UserInformation
 import data.repository.source.UserDataSource
 import data.repository.source.UserLocalDataSource
@@ -13,7 +13,7 @@ class UserRepositoryImplement(
     val userLocalDataSource: UserLocalDataSource,
     val userRemoteDataSource: UserDataSource
 ) : UserRepository {
-    override fun login(phone: String, password: String): Single<AuthState> =
+    override fun login(phone: String, password: String): Single<State> =
         userRemoteDataSource.login(phone, password).doOnSuccess {
             onSuccessfulLogin(phone, it)
         }
@@ -23,7 +23,7 @@ class UserRepositoryImplement(
         username: RequestBody,
         password: RequestBody,
         imageProfile: MultipartBody.Part?
-    ): Single<AuthState> =
+    ): Single<State> =
         userRemoteDataSource.signUp(phoneNumber, username, password, imageProfile).flatMap {
             //وقتی کاربر ثبتام میکنه هم ثبتنام انجام میشه هم لاگین
             //.flatMap: برای اینکه چند تا رکوست با هم انجام بشه
@@ -54,7 +54,7 @@ class UserRepositoryImplement(
         username: RequestBody,
         password: RequestBody,
         image: MultipartBody.Part?
-    ): Single<AuthState> =userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
+    ): Single<State> =userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
         //وقتی کاربر پروفایلش را ویرایش کند هم ویرایش انجام میشه هم لاگین
         //doFinally: برای اینکه چند تا رکوست با هم انجام بشه
         userRemoteDataSource.login(
@@ -65,7 +65,7 @@ class UserRepositoryImplement(
         }
     }
 
-    fun onSuccessfulLogin(phone: String, login: AuthState) {
+    fun onSuccessfulLogin(phone: String, login: State) {
         LoginUpdate.update(login.state)
         userLocalDataSource.saveLogin(login.state)
         userLocalDataSource.savePhoneNumber(phone)

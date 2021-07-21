@@ -15,8 +15,11 @@ data class Banner(
     val location: String,
     val homeSize: Int,
     val numberOfRooms: Int,
-    val price: Int,
-    val image: String,
+    val price: String,
+    val bannerImage: String,
+    val phone: String,
+    val username: String,
+    val userImage: String,
     val date: Int,
     val status: Int
 ) : Parcelable

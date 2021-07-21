@@ -4,4 +4,4 @@ package data
 json
 {"state":true}
 */
-data class AuthState(val state: Boolean)
+data class State(val state: Boolean)
