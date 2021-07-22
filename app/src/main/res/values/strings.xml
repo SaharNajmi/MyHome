@@ -26,8 +26,16 @@
     <string name="guest_user">کاربر مهمان</string>
     <string name="oldPassword">رمز عبور قبلی</string>
     <string name="newPassword">رمز عبور جدید</string>
+    <string name="titleBanner">عنوان آگهی</string>
+    <string name="description">توضیحات</string>
+    <string name="price">قیمت (تومان)</string>
+    <string name="location">موقعیت مکانی</string>
+    <string name="category">دسته بندی</string>
+    <string name="sellOrRent">فروش یا اجاره</string>
+    <string name="homeSize">متراژ (متر)</string>
+    <string name="roomHome">تعداد اتاق خواب</string>
 
-    <string-array name="category">
+    <string-array name="array_category">
         <item>@string/cate1</item>
         <item>@string/cate2</item>
         <item>@string/cate3</item>

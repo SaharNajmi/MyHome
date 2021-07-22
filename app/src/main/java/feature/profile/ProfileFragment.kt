@@ -23,7 +23,7 @@ import feature.login.LoginOrSignUpActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.dialog_edit.view.*
+import kotlinx.android.synthetic.main.dialog_user_edit.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -133,7 +133,7 @@ class ProfileFragment : MyHomeFragment() {
 
     //edit user
     private fun showDialogEditUser() {
-        customLayout = layoutInflater.inflate(R.layout.dialog_edit, null)
+        customLayout = layoutInflater.inflate(R.layout.dialog_user_edit, null)
 
         //create alert dialog
         val dialog: AlertDialog = Builder(requireContext())
