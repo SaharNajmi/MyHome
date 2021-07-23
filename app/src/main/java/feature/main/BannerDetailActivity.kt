@@ -1,7 +1,11 @@
 package feature.main
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
@@ -9,6 +13,7 @@ import com.example.myhome.R
 import common.BASE_URL
 import common.MyHomeActivity
 import common.MyHomeSingleObserver
+import common.REQUEST_CODE
 import data.Banner
 import data.CATEGORY
 import data.State
@@ -25,12 +30,15 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_edit_banner.*
 import kotlinx.android.synthetic.main.layout_profile.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import services.ImageLoadingService
+import services.UriToUploadable
 import view.scroll.ObservableScrollViewCallbacks
 import view.scroll.ScrollState
+import java.util.*
 
 class BannerDetailActivity : MyHomeActivity() {
 
@@ -40,6 +48,7 @@ class BannerDetailActivity : MyHomeActivity() {
     val imageLoadingService: ImageLoadingService by inject()
     val compositeDisposable = CompositeDisposable()
     var bannerId: Int? = null
+    var userId: Int? = null
     lateinit var customLayout: View
     var location = ""
     var title = ""
@@ -51,6 +60,7 @@ class BannerDetailActivity : MyHomeActivity() {
     var numberOfRoom: Int? = null
     var image: String = ""
     private var postImage: MultipartBody.Part? = null
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,10 +112,11 @@ class BannerDetailActivity : MyHomeActivity() {
     fun detailBanner() {
         bannerDetailViewModel.bannerLiveData.observe(this,
             Observer<Banner> {
-                imageLoadingService.load(image_detail_banner, it.bannerImage)
-                imageLoadingService.load(image_profile, it.bannerImage)
+                imageLoadingService.load(image_detail_banner, "$BASE_URL${it.bannerImage}")
 
                 //save value in variable
+                userId = it.userID
+                bannerId = it.id
                 location = it.location
                 title = it.title
                 description = it.description
@@ -208,6 +219,13 @@ class BannerDetailActivity : MyHomeActivity() {
             imageLoadingService.load(customLayout.edit_banner_image, "${BASE_URL}${image}")
         else
             customLayout.edit_banner_image.setImageResource(R.drawable.ic_add_photo)
+
+        //load image in gallery
+        customLayout.edit_banner_image.setOnClickListener {
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, REQUEST_CODE)
+        }
+
         //spinner select sell or rent
         spinnerSellOrRent()
         //spinner select category
@@ -219,19 +237,58 @@ class BannerDetailActivity : MyHomeActivity() {
             .setNegativeButton("خیر", null)
             .setPositiveButton("بله") { dialogInterface, which ->
 
-                /*val category: Int? = null*/
-                if (image != "")
-                    imageLoadingService.load(customLayout.edit_banner_image, "${BASE_URL}${image}")
-                else
-                    customLayout.edit_banner_image.setImageResource(R.drawable.ic_add_photo)
-
                 title = customLayout.edit_title.text.toString()
                 description = customLayout.edit_description.text.toString()
                 price = customLayout.edit_price.text.toString()
+                location = customLayout.edit_location.text.toString()
                 homeSize = customLayout.edit_home_size.text.toString().toInt()
                 numberOfRoom = customLayout.edit_number_of_room.text.toString().toInt()
 
-                Toast.makeText(this, homeSize.toString(), Toast.LENGTH_SHORT).show()
+                bannerViewModel.editBanner(
+                    bannerId!!,
+                    userId!!,
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        title
+                    ),
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        description
+                    ),
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        price
+                    ), RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        location
+                    ),
+                    category!!,
+                    sellOrRent!!,
+                    homeSize!!,
+                    numberOfRoom!!,
+                    postImage
+                ).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
+                        override fun onSuccess(t: State) {
+                            if (t.state) {
+
+                                this@BannerDetailActivity.finish()
+
+                                Toast.makeText(
+                                    this@BannerDetailActivity,
+                                    "آگهی مورد نظر با موفقیت آپدیت شد منتظر تایید آگهیتان باشید!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else
+                                Toast.makeText(
+                                    this@BannerDetailActivity,
+                                    "آپدیت با شکست مواجه شد!!",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    })
             }
             .show()
     }
@@ -301,6 +358,16 @@ class BannerDetailActivity : MyHomeActivity() {
                 override fun onNothingSelected(arg0: AdapterView<*>?) {
                 }
             }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val upload = UriToUploadable(this)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            imageUri = data?.data
+            customLayout.edit_banner_image.setImageURI(imageUri)
+            postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
+        }
     }
 
 }

@@ -14,7 +14,7 @@ import retrofit2.http.*
 
 
 interface ApiService {
-    @GET("GetBanner.php")
+    @GET("getBanner.php")
     fun getAllBanner(
         @Query("sellOrRent") sellOrRent: Int,
         @Query("category") category: Int,
@@ -55,9 +55,25 @@ interface ApiService {
         @Part image: MultipartBody.Part?
     ): Single<State>
 
-    @GET("DeleteBanner.php")
+    @GET("deleteBanner.php")
     fun deleteBanner(
         @Query("id") id: Int
+    ): Single<State>
+
+    @Multipart
+    @POST("editBanner.php")
+    fun editBanner(
+        @Part("id") id: Int,
+        @Part("userID") userID: Int,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("location") location: RequestBody,
+        @Part("category") category: Int,
+        @Part("sellOrRent") sellOrRent: Int,
+        @Part("homeSize") homeSize: Int,
+        @Part("numberOfRooms") numberOfRooms: Int,
+        @Part image: MultipartBody.Part?
     ): Single<State>
 }
 

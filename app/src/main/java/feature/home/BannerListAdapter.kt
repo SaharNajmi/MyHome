@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
+import common.BASE_URL
 import data.Banner
 import services.ImageLoadingService
 
@@ -30,7 +31,7 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
         fun bindBanner(banner: Banner) {
-            imageLoadingService.load(myHomeImage, banner.bannerImage)
+            imageLoadingService.load(myHomeImage, "$BASE_URL${banner.bannerImage}")
             title.text = banner.title
             price.text = "${banner.price} تومان "
             location.text = banner.location

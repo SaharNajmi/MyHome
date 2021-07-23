@@ -4,6 +4,8 @@ import data.Banner
 import data.State
 import io.reactivex.Completable
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import services.ApiService
 
 class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
@@ -28,4 +30,31 @@ class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
     override fun deleteFromFavorites(): Completable {
         TODO("Not yet implemented")
     }
+
+    override fun editBanner(
+        id: Int,
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State> = apiService.editBanner(
+        id,
+        userID,
+        title,
+        description,
+        price,
+        location,
+        category,
+        sellOrRent,
+        homeSize,
+        numberOfRooms,
+        image
+    )
+
 }

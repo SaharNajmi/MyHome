@@ -6,10 +6,13 @@ import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
 import data.SELL_OR_RENT
+import data.State
 import data.repository.BannerRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
@@ -41,6 +44,32 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
 
 
     fun deleteBanner(id: Int) = bannerRepository.deleteBanner(id)
+
+    fun editBanner(
+        id: Int,
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State> = bannerRepository.editBanner(
+        id,
+        userID,
+        title,
+        description,
+        price,
+        location,
+        category,
+        sellOrRent,
+        homeSize,
+        numberOfRooms,
+        image
+    )
 
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
