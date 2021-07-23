@@ -33,4 +33,17 @@ interface BannerDataSource {
         numberOfRooms: Int,
         image: MultipartBody.Part?
     ): Single<State>
+
+    fun addBanner(
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State>
 }

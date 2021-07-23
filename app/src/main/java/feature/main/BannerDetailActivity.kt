@@ -293,28 +293,24 @@ class BannerDetailActivity : MyHomeActivity() {
             .show()
     }
 
-    //spinner sell or rent
     private fun spinnerSellOrRent() {
         val sp = customLayout.edit_sell_or_rent
-        //show cate base
         val adapterCate = ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item, arrayOf("فروش", "اجاره")
         )
         //view dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         sp.adapter = adapterCate
 
-        //item default spinner cate base
+        //item default spinner
         sp.setSelection(sellOrRent!! - 1)
 
-        //Show subcategories when change baseCategory
         sp.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
@@ -326,29 +322,24 @@ class BannerDetailActivity : MyHomeActivity() {
             }
     }
 
-    //spinner category
     private fun spinnerCategory() {
         val sp = customLayout.edit_category
-        //show cate base
         val adapterCate = ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item, resources.getStringArray(R.array.array_category)
         )
-
         //view dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         sp.adapter = adapterCate
 
-        //item default spinner cate base
+        //item default spinner
         sp.setSelection(category!! - 1)
 
-        //Show subcategories when change baseCategory
         sp.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {

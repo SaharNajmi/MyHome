@@ -75,6 +75,21 @@ interface ApiService {
         @Part("numberOfRooms") numberOfRooms: Int,
         @Part image: MultipartBody.Part?
     ): Single<State>
+
+    @Multipart
+    @POST("addBanner.php")
+    fun addBanner(
+        @Part("userID") userID: Int,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("location") location: RequestBody,
+        @Part("category") category: Int,
+        @Part("sellOrRent") sellOrRent: Int,
+        @Part("homeSize") homeSize: Int,
+        @Part("numberOfRooms") numberOfRooms: Int,
+        @Part image: MultipartBody.Part?
+    ): Single<State>
 }
 
 fun createApiServiceInstance(): ApiService {

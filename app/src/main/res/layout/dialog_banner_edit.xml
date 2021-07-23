@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:maxLength="100"
+        android:maxLines="1"
         android:padding="5dp"
         app:drawableStartCompat="@drawable/ic_location" />
 
@@ -93,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
+            android:maxLines="1"
             android:padding="5dp" />
 
         <EditText
@@ -102,6 +104,7 @@
             android:layout_weight="1"
             android:inputType="number"
             android:maxLength="2"
+            android:maxLines="1"
             android:padding="5dp" />
     </LinearLayout>
 
@@ -112,22 +115,29 @@
         android:layout_marginTop="10dp"
         android:hint="@string/titleBanner"
         android:maxLength="100"
+        android:maxLines="1"
         android:padding="5dp" />
 
-    <EditText
-        android:id="@+id/edit_description"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/description"
-        android:maxLength="500"
-        android:padding="5dp" />
+        android:layout_height="100dp">
+        <EditText
+            android:id="@+id/edit_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/description"
+            android:maxLength="500"
+            android:padding="5dp" />
+    </ScrollView>
 
     <EditText
         android:id="@+id/edit_price"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="25dp"
+        android:maxLines="1"
         android:hint="@string/price"
         android:inputType="number"
         android:maxLength="15"

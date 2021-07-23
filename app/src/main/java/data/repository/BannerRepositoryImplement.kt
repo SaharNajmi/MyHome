@@ -63,4 +63,30 @@ class BannerRepositoryImplement(
     ).doOnSuccess {
         Timber.i("edit banner: " + it.state.toString())
     }
+
+    override fun addBanner(
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State> = bannerRemoteDataSource.addBanner(
+        userID,
+        title,
+        description,
+        price,
+        location,
+        category,
+        sellOrRent,
+        homeSize,
+        numberOfRooms,
+        image
+    ).doOnSuccess {
+        Timber.i("add banner: " + it.state.toString())
+    }
 }

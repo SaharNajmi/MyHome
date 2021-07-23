@@ -71,6 +71,30 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
         image
     )
 
+    fun addBanner(
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State> = bannerRepository.addBanner(
+        userID,
+        title,
+        description,
+        price,
+        location,
+        category,
+        sellOrRent,
+        homeSize,
+        numberOfRooms,
+        image
+    )
+
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
         return subscribeOn(Schedulers.io())

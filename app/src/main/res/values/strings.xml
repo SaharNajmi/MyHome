@@ -34,6 +34,8 @@
     <string name="sellOrRent">فروش یا اجاره</string>
     <string name="homeSize">متراژ (متر)</string>
     <string name="roomHome">تعداد اتاق خواب</string>
+    <string name="addBanner">اضافه کردن آگهی</string>
+    <string name="clear">پاک کردن تمام فیلد ها</string>
 
     <string-array name="array_category">
         <item>@string/cate1</item>

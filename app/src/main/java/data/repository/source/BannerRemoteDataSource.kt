@@ -57,4 +57,28 @@ class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
         image
     )
 
+    override fun addBanner(
+        userID: Int,
+        title: RequestBody,
+        description: RequestBody,
+        price: RequestBody,
+        location: RequestBody,
+        category: Int,
+        sellOrRent: Int,
+        homeSize: Int,
+        numberOfRooms: Int,
+        image: MultipartBody.Part?
+    ): Single<State> = apiService.addBanner(
+        userID,
+        title,
+        description,
+        price,
+        location,
+        category,
+        sellOrRent,
+        homeSize,
+        numberOfRooms,
+        image
+    )
+
 }
