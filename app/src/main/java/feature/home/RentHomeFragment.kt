@@ -61,4 +61,14 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
         })
     }
 
+    override fun onFavoriteBtnClick(banner: Banner) {
+        mainViewModel.addBannerToFavorite(banner)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        SELL_OR_RENT = 2
+        mainViewModel.refresh()
+    }
 }

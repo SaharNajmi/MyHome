@@ -38,6 +38,10 @@ class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
         })
     }
 
+    override fun onFavoriteBtnClick(banner: Banner) {
+        TODO("Not yet implemented")
+    }
+
     fun getListUserBanner() {
         //show banner in recyclerView
         recycler_view_user_banner.layoutManager =

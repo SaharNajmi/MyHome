@@ -2,6 +2,7 @@ package feature.main
 
 import androidx.lifecycle.MutableLiveData
 import com.example.myhome.R
+import common.MyHomeCompletableObserver
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
@@ -13,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import timber.log.Timber
 
 class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
@@ -34,6 +36,10 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
                     bannerLiveData.value = t
                 }
             })
+    }
+
+    fun refresh() {
+        getBanner()
     }
 
     fun chaneCategory(cate: Int) {
@@ -94,6 +100,30 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
         numberOfRooms,
         image
     )
+
+    fun addBannerToFavorite(banner: Banner) {
+        if (banner.fav)
+            bannerRepository.addToFavorites(banner)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : MyHomeCompletableObserver(compositeDisposable) {
+                    override fun onComplete() {
+                        banner.fav = true
+                        Timber.i("add fav")
+
+                    }
+                })
+        else
+        bannerRepository.deleteFromFavorites(banner)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : MyHomeCompletableObserver(compositeDisposable) {
+                override fun onComplete() {
+                    banner.fav = false
+                    Timber.i("delete fav")
+                }
+            })
+    }
 
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
         //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات

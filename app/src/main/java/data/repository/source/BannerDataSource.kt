@@ -6,7 +6,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Part
 
 interface BannerDataSource {
 
@@ -16,9 +15,9 @@ interface BannerDataSource {
 
     fun getFavoriteBanners(): Single<List<Banner>>
 
-    fun addToFavorites(): Completable
+    fun addToFavorites(banner: Banner): Completable
 
-    fun deleteFromFavorites(): Completable
+    fun deleteFromFavorites(banner: Banner): Completable
 
     fun editBanner(
      id: Int,

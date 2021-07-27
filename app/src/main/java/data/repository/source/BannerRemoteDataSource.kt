@@ -23,11 +23,11 @@ class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun addToFavorites(): Completable {
+    override fun addToFavorites(banner: Banner): Completable {
         TODO("Not yet implemented")
     }
 
-    override fun deleteFromFavorites(): Completable {
+    override fun deleteFromFavorites(banner: Banner): Completable {
         TODO("Not yet implemented")
     }
 

@@ -56,9 +56,19 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        SELL_OR_RENT = 1
+        mainViewModel.refresh()
+    }
+
     override fun onBannerClick(banner: Banner) {
         startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
             putExtra(EXTRA_KEY_DATA, banner)
         })
+    }
+
+    override fun onFavoriteBtnClick(banner: Banner) {
+        mainViewModel.addBannerToFavorite(banner)
     }
 }

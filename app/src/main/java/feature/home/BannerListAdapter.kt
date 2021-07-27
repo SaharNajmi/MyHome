@@ -3,6 +3,7 @@ package feature.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
@@ -30,6 +31,7 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         val location: TextView = itemView.findViewById(R.id.txt_location)
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
+        val buttonFavorite: ImageView = itemView.findViewById(R.id.btn_fav)
         fun bindBanner(banner: Banner) {
             imageLoadingService.load(myHomeImage, "$BASE_URL${banner.bannerImage}")
             title.text = banner.title
@@ -37,6 +39,18 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             location.text = banner.location
             room.text = banner.numberOfRooms.toString()
             homeSize.text = banner.homeSize.toString()
+
+            if (banner.fav)
+                buttonFavorite.setImageResource(R.drawable.ic_bookmarked)
+            else
+                buttonFavorite.setImageResource(R.drawable.ic_not_bookmarked)
+
+            buttonFavorite.setOnClickListener {
+                banner.fav=!banner.fav
+                notifyItemChanged(adapterPosition)
+                //ویو بدونه ک رو چه آیتمی برای علاقه مندی کلیک شده تا اضافه یا حذفش روانجام بده
+                bannerOnClickListener!!.onFavoriteBtnClick(banner)
+            }
 
             // نباید از خود آداپتر کاربر را به اکتیویتی بفرستیم اطلاعات را به فرگمنت پاس بده فرگمنت تصمیم میگیره که دیتا را به کجا بفرسته
             itemView.setOnClickListener {
@@ -59,4 +73,5 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
 
 interface BannerOnClickListener {
     fun onBannerClick(banner: Banner)
+    fun onFavoriteBtnClick(banner: Banner)
 }

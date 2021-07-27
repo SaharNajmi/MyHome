@@ -17,6 +17,7 @@ import common.REQUEST_CODE
 import data.Banner
 import data.CATEGORY
 import data.State
+import feature.favorite.FavoriteViewModel
 import feature.profile.UserViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -44,6 +45,7 @@ class BannerDetailActivity : MyHomeActivity() {
 
     val viewModel: UserViewModel by viewModel()
     val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
+    val favoriteViewModel: FavoriteViewModel by inject()
     val bannerDetailViewModel: BannerDetailViewModel by viewModel { parametersOf(intent.extras) }
     val imageLoadingService: ImageLoadingService by inject()
     val compositeDisposable = CompositeDisposable()
@@ -61,12 +63,13 @@ class BannerDetailActivity : MyHomeActivity() {
     var image: String = ""
     private var postImage: MultipartBody.Part? = null
     private var imageUri: Uri? = null
+    var favorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_banner_detail)
 
-        //send value when clicked item recyclerView and Show detail values in next activity
+        //show detail banner
         detailBanner()
 
         //How to display image when scroll page
@@ -110,9 +113,28 @@ class BannerDetailActivity : MyHomeActivity() {
     }
 
     fun detailBanner() {
+        // bannerDetailViewModel.bannerLiveData.observe(this){}
         bannerDetailViewModel.bannerLiveData.observe(this,
             Observer<Banner> {
                 imageLoadingService.load(image_detail_banner, "$BASE_URL${it.bannerImage}")
+
+                //favorite
+                favorite = it.fav
+                checkFavorite(favorite)
+
+                val favbanner = it
+                favoriteBtnDetailBanner.setOnClickListener {
+                    if (favorite) {
+                        favoriteBtnDetailBanner.setImageResource(R.drawable.ic_not_bookmarked)
+                        favoriteViewModel.deleteFavorites(favbanner)
+                        favorite = false
+
+                    } else {
+                        favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
+                        favoriteViewModel.addFavorites(favbanner)
+                        favorite = true
+                    }
+                }
 
                 //save value in variable
                 userId = it.userID
@@ -138,7 +160,6 @@ class BannerDetailActivity : MyHomeActivity() {
                 txt_number_of_rooms_hide.text = it.numberOfRooms.toString()
                 txt_home_size_hide.text = it.homeSize.toString()
                 price_banner_hide.text = "قیمت: ${it.price} تومان "
-
                 val phoneUser = it.phone
                 name_profile.text = it.username
                 imageLoadingService.load(image_profile, "$BASE_URL${it.userImage}")
@@ -152,7 +173,7 @@ class BannerDetailActivity : MyHomeActivity() {
                  این آگهی مال اونه پس باید بتونه ویرایش و حذف را انجام دهد*/
                 if (viewModel.phoneNumber == phoneUser) {
                     layout_edit_or_delete.visibility = View.VISIBLE
-                    favoriteBtn.visibility = View.GONE
+                    //favoriteBtnDetailBanner.visibility = View.GONE
 
                     //edit banner user
                     edit_banner.setOnClickListener {
@@ -167,7 +188,7 @@ class BannerDetailActivity : MyHomeActivity() {
 
                 } else {
                     layout_contact_us.visibility = View.VISIBLE
-                    favoriteBtn.visibility = View.VISIBLE
+                    //  favoriteBtnDetailBanner.visibility = View.VISIBLE
                 }
             })
     }
@@ -351,6 +372,13 @@ class BannerDetailActivity : MyHomeActivity() {
             }
     }
 
+    fun checkFavorite(favorite: Boolean) {
+        if (favorite)
+            favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
+        else
+            favoriteBtnDetailBanner.setImageResource(R.drawable.ic_not_bookmarked)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val upload = UriToUploadable(this)
@@ -360,5 +388,4 @@ class BannerDetailActivity : MyHomeActivity() {
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
     }
-
 }

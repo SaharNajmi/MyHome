@@ -4,12 +4,15 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.room.Room
 import com.facebook.drawee.backends.pipeline.Fresco
+import data.dp.AppDataBase
 import data.repository.BannerRepository
 import data.repository.BannerRepositoryImplement
 import data.repository.UserRepository
 import data.repository.UserRepositoryImplement
 import data.repository.source.*
+import feature.favorite.FavoriteViewModel
 import feature.home.BannerListAdapter
 import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
@@ -48,12 +51,16 @@ class App : Application() {
             //اضافه کردن ماژول های مورد نیاز لاگین
             single<SharedPreferences> { this@App.getSharedPreferences("app", Context.MODE_PRIVATE) }
 
+            //add dao room
+            single { Room.databaseBuilder(this@App, AppDataBase::class.java, "db_app").build() }
+
             factory<BannerRepository> {
                 BannerRepositoryImplement(
                     BannerRemoteDataSource(get()),
-                    BannerLocalDataSource()
+                    get<AppDataBase>().bannerDao()
                 )
             }
+
             factory { BannerListAdapter(get()) }
 
             single<UserRepository> {
@@ -67,6 +74,7 @@ class App : Application() {
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
             viewModel { AuthViewModel(get()) }
             viewModel { UserViewModel(get(), get()) }
+            viewModel { FavoriteViewModel(get()) }
         }
         startKoin {
             androidContext(this@App)

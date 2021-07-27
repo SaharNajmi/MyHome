@@ -1,11 +1,15 @@
 package data
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "banners")
 //Parcelize برای اینکه بتونیم مقادیر را ارسال کنیم
 @Parcelize
 data class Banner(
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val userID: Int,
     val title: String,
@@ -21,8 +25,11 @@ data class Banner(
     val username: String,
     val userImage: String,
     val date: Int,
-    val status: Int
-) : Parcelable
+    val status: Int,
+    var fav:Boolean
+) : Parcelable {
+    var isFavorite = false
+}
 
 var CATEGORY = 1
 var SELL_OR_RENT = 1

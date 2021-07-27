@@ -15,9 +15,9 @@ interface BannerRepository {
 
     fun getFavoriteBanners(): Single<List<Banner>>
 
-    fun addToFavorites(): Completable
+    fun addToFavorites(banner: Banner): Completable
 
-    fun deleteFromFavorites(): Completable
+    fun deleteFromFavorites(banner: Banner): Completable
 
     fun editBanner(
         id: Int,

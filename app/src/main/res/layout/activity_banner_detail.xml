@@ -284,13 +284,13 @@ limitations under the License.حات آگهی"
         android:layout_height="?actionBarSize">
 
         <ImageView
-            android:id="@+id/favoriteBtn"
+            android:id="@+id/favoriteBtnDetailBanner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/layout_background_circle"
-            android:padding="10dp"
+            android:background="@drawable/layout_radius"
+            android:padding="5dp"
             app:srcCompat="@drawable/ic_bookmarked" />
 
         <ImageView
@@ -299,10 +299,9 @@ limitations under the License.حات آگهی"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginRight="15dp"
-            android:background="@drawable/layout_background_circle"
-            android:padding="10dp"
+            android:background="@drawable/layout_radius"
+            android:padding="5dp"
             app:srcCompat="@drawable/ic_back" />
-
     </FrameLayout>
     <include layout="@layout/layout_profile"
         android:visibility="gone"
