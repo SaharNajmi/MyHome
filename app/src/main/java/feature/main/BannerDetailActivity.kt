@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.myhome.R
 import common.BASE_URL
 import common.MyHomeActivity
@@ -113,7 +114,9 @@ class BannerDetailActivity : MyHomeActivity() {
     }
 
     fun detailBanner() {
-        // bannerDetailViewModel.bannerLiveData.observe(this){}
+        bannerDetailViewModel.bannerLiveData.observe(this){
+
+        }
         bannerDetailViewModel.bannerLiveData.observe(this,
             Observer<Banner> {
                 imageLoadingService.load(image_detail_banner, "$BASE_URL${it.bannerImage}")

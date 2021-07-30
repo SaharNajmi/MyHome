@@ -17,6 +17,7 @@ import feature.home.BannerListAdapter
 import feature.login.AuthViewModel
 import feature.main.BannerDetailViewModel
 import feature.main.BannerViewModel
+import feature.main.ShareViewModel
 import feature.profile.UserViewModel
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -70,7 +71,8 @@ class App : Application() {
                 )
             }
 
-            viewModel { (cate: Int) -> BannerViewModel(get(), cate) }
+            viewModel { (cate: Int, sellOrRent: Int) -> BannerViewModel(get(), cate, sellOrRent) }
+            viewModel {  ShareViewModel() }
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
             viewModel { AuthViewModel(get()) }
             viewModel { UserViewModel(get(), get()) }

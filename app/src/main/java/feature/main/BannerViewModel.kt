@@ -6,7 +6,6 @@ import common.MyHomeCompletableObserver
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
-import data.SELL_OR_RENT
 import data.State
 import data.repository.BannerRepository
 import io.reactivex.Single
@@ -16,7 +15,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 
-class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : MyHomeViewModel() {
+class BannerViewModel(
+    val bannerRepository: BannerRepository,
+    var category: Int,
+    val sellOrRent: Int
+) :
+    MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
     //برای موقعی که دستبندی عوض میشه
@@ -25,11 +29,11 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
 
     init {
         getBanner()
-        categoryLiveData.value = categories[CATE]
+        categoryLiveData.value = categories[category]
     }
 
     fun getBanner() {
-        bannerRepository.getBanners(SELL_OR_RENT, CATE, "all")
+        bannerRepository.getBanners(sellOrRent, category, "all")
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
@@ -43,8 +47,8 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
     }
 
     fun chaneCategory(cate: Int) {
-        this.CATE = cate
-        this.categoryLiveData.value = categories[cate]
+        this.category = cate
+        this.categoryLiveData.value = categories[cate - 1]
         getBanner()
     }
 
@@ -114,15 +118,15 @@ class BannerViewModel(val bannerRepository: BannerRepository, var CATE: Int) : M
                     }
                 })
         else
-        bannerRepository.deleteFromFavorites(banner)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : MyHomeCompletableObserver(compositeDisposable) {
-                override fun onComplete() {
-                    banner.fav = false
-                    Timber.i("delete fav")
-                }
-            })
+            bannerRepository.deleteFromFavorites(banner)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : MyHomeCompletableObserver(compositeDisposable) {
+                    override fun onComplete() {
+                        banner.fav = false
+                        Timber.i("delete fav")
+                    }
+                })
     }
 
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {

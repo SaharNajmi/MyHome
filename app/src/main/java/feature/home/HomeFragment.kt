@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
-import data.CATEGORY
 import feature.adapter.ViewPagerAdapter
-import feature.main.BannerViewModel
+import feature.main.ShareViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
-import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
+
+    private val viewModel by sharedViewModel<ShareViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,26 +41,26 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
-                bannerViewModel.chaneCategory(0)
+                //send Data between Fragments
+                viewModel.setData(1)
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
-                bannerViewModel.chaneCategory(1)
+                viewModel.setData(2)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
-                bannerViewModel.categoryLiveData.postValue(2)
-                bannerViewModel.chaneCategory(2)
+                viewModel.setData(3)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
-                bannerViewModel.chaneCategory(3)
+                viewModel.setData(4)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false

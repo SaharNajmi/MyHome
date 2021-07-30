@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,19 +14,29 @@ import common.EXTRA_KEY_DATA
 import common.MyHomeFragment
 import data.Banner
 import data.CATEGORY
-import data.SELL_OR_RENT
 import feature.main.BannerDetailActivity
 import feature.main.BannerViewModel
+import feature.main.ShareViewModel
 import kotlinx.android.synthetic.main.fragment_sell_home.*
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
-    //از ویو مدل کوین استفاده میکنیم
-    val mainViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
+    var SELL_OR_RENT = 1
     val bannerArrayList: BannerListAdapter by inject()
+
+    private val bannerViewModel by viewModel<BannerViewModel>() {
+        parametersOf(
+            CATEGORY,
+            SELL_OR_RENT
+        )
+    }
+
+    //sharing data between Fragments with sharedViewModel
+    private val shareViewModel by sharedViewModel<ShareViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +49,6 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        SELL_OR_RENT = 1
-
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
@@ -48,18 +57,31 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recycler_view_sell.adapter = bannerArrayList
 
-        mainViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
+        bannerViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
             override fun onChanged(t: List<Banner>?) {
                 bannerArrayList.banner = t as ArrayList<Banner>
                 Timber.i(t.toString())
             }
         })
-    }
 
-    override fun onResume() {
-        super.onResume()
-        SELL_OR_RENT = 1
-        mainViewModel.refresh()
+        //get Data between Fragments Using sharedViewModel
+        shareViewModel.getData().observe(requireActivity(),
+            Observer<Int> {
+
+                CATEGORY = it
+                Toast.makeText(requireContext(), "sell"+SELL_OR_RENT+"aaaaaa"+ CATEGORY, Toast.LENGTH_SHORT).show()
+
+                bannerViewModel.chaneCategory(CATEGORY)
+                //refresh recyclerView
+                bannerViewModel.bannerLiveData.observe(viewLifecycleOwner,
+                    object : Observer<List<Banner>> {
+                        override fun onChanged(t: List<Banner>?) {
+                            bannerArrayList.banner = t as ArrayList<Banner>
+                            Timber.i(t.toString())
+                        }
+                    })
+            })
+
     }
 
     override fun onBannerClick(banner: Banner) {
@@ -69,6 +91,11 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     }
 
     override fun onFavoriteBtnClick(banner: Banner) {
-        mainViewModel.addBannerToFavorite(banner)
+        bannerViewModel.addBannerToFavorite(banner)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bannerViewModel.refresh()
     }
 }
