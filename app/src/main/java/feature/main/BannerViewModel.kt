@@ -6,6 +6,7 @@ import common.MyHomeCompletableObserver
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
+import data.EmptyState
 import data.State
 import data.repository.BannerRepository
 import io.reactivex.Single
@@ -22,7 +23,7 @@ class BannerViewModel(
 ) :
     MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
-
+    val emptyStateLiveData = MutableLiveData<EmptyState>()
     //برای موقعی که دستبندی عوض میشه
     val categoryLiveData = MutableLiveData<Int>()
     val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)

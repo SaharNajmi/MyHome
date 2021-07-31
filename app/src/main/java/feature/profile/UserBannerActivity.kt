@@ -2,6 +2,7 @@ package feature.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,18 +13,27 @@ import data.Banner
 import feature.home.BannerListAdapter
 import feature.home.BannerOnClickListener
 import feature.main.BannerDetailActivity
+import feature.main.BannerViewModel
 import kotlinx.android.synthetic.main.activity_user_banner.*
+import kotlinx.android.synthetic.main.layout_empty_view.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
 
     val userViewModel: UserViewModel by viewModel()
     val bannerArrayList: BannerListAdapter by inject()
+    val bannerViewModel: BannerViewModel by viewModel { parametersOf(1, 1) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_banner)
+
+        //back button
+        backBtn.setOnClickListener {
+            finish()
+        }
 
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
@@ -39,7 +49,7 @@ class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
     }
 
     override fun onFavoriteBtnClick(banner: Banner) {
-        TODO("Not yet implemented")
+        bannerViewModel.addBannerToFavorite(banner)
     }
 
     fun getListUserBanner() {
@@ -50,7 +60,14 @@ class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
 
         userViewModel.bannerLiveData.observe(this, object : Observer<List<Banner>> {
             override fun onChanged(t: List<Banner>?) {
-                bannerArrayList.banner = t as ArrayList<Banner>
+                if (t!!.isNotEmpty()) {
+                    bannerArrayList.banner = t as ArrayList<Banner>
+                    recycler_view_user_banner.visibility = View.VISIBLE
+                    emptyLayout.visibility = View.GONE
+                } else {
+                    emptyLayout.visibility = View.VISIBLE
+                    emptyLayout.txtEmpty.text = getString(R.string.emptyListUserBanner)
+                }
             }
         })
     }

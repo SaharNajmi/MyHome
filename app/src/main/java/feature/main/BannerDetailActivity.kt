@@ -70,6 +70,11 @@ class BannerDetailActivity : MyHomeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_banner_detail)
 
+        //back button
+        backBtn.setOnClickListener {
+            finish()
+        }
+
         //show detail banner
         detailBanner()
 
@@ -114,7 +119,7 @@ class BannerDetailActivity : MyHomeActivity() {
     }
 
     fun detailBanner() {
-        bannerDetailViewModel.bannerLiveData.observe(this){
+        bannerDetailViewModel.bannerLiveData.observe(this) {
 
         }
         bannerDetailViewModel.bannerLiveData.observe(this,

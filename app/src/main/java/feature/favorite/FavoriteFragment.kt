@@ -15,6 +15,7 @@ import common.EXTRA_KEY_DATA
 import data.Banner
 import feature.main.BannerDetailActivity
 import kotlinx.android.synthetic.main.fragment_favorite.*
+import kotlinx.android.synthetic.main.layout_empty_view.view.*
 import org.koin.android.ext.android.get
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -37,10 +38,20 @@ class FavoriteFragment : Fragment(), FavoriteListAdapter.FavoriteBannerClickList
 
 
         favoriteViewModel.bannerLiveData.observe(viewLifecycleOwner) {
-            rec_fav.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            rec_fav.adapter = FavoriteListAdapter(it as ArrayList<Banner>, get(), this)
-            Timber.i(it.toString())
+
+            if (it!!.isNotEmpty()) {
+                rec_fav.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                rec_fav.adapter = FavoriteListAdapter(it as ArrayList<Banner>, get(), this)
+                Timber.i(it.toString())
+
+                rec_fav.visibility = View.VISIBLE
+                emptyLayout.visibility = View.GONE
+
+            } else {
+                emptyLayout.visibility = View.VISIBLE
+                emptyLayout.txtEmpty.text = getString(R.string.emptyFavorite)
+            }
         }
     }
 

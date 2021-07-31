@@ -32,7 +32,7 @@ data class Banner(
 }
 
 var CATEGORY = 1
-var SELL_OR_RENT = 2
+var SELL_OR_RENT = 1
 
 /*JSON
 سه تا مقدارsellOrRent و category و phoneNumber میگیره که دو حالت داره یکیش همه آیدی ها رو نشون میده یکیشش شماره تلفنی که خودمون بهش میدیم یعنی آگهی های همون کاربری که لاگین کرده

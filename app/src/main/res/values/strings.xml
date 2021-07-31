@@ -36,6 +36,9 @@
     <string name="roomHome">تعداد اتاق خواب</string>
     <string name="addBanner">اضافه کردن آگهی</string>
     <string name="clear">پاک کردن تمام فیلد ها</string>
+    <string name="notFountResult">هیچ نتیجه ای یافت نشد!</string>
+    <string name="emptyFavorite">هنوز هیچ آیتمی به لیست علاقه مندی اضافه نشده است!</string>
+    <string name="emptyListUserBanner">هنوز هیچ آگهی ثبت نکرده اید!</string>
 
     <string-array name="array_category">
         <item>@string/cate1</item>

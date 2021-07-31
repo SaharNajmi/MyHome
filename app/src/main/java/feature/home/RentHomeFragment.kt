@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,32 +52,23 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
 
         bannerViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
             override fun onChanged(t: List<Banner>?) {
-                bannerArrayList.banner = t as ArrayList<Banner>
-                Timber.i(t.toString())
+                if (t!!.isNotEmpty()) {
+                    bannerArrayList.banner = t as ArrayList<Banner>
+                    Timber.i(t.toString())
+                    recycler_view_rent.visibility = View.VISIBLE
+                    emptyLayout.visibility = View.GONE
+
+                } else {
+                    emptyLayout.visibility = View.VISIBLE
+                }
             }
         })
 
         //get Data between Fragments Using sharedViewModel
         shareViewModel.getData().observe(requireActivity(),
             Observer<Int> {
-
                 CATEGORY = it
-
-                Toast.makeText(
-                    requireContext(),
-                    "rent" + SELL_OR_RENT + "aaaaaa" + CATEGORY,
-                    Toast.LENGTH_SHORT
-                ).show()
-
                 bannerViewModel.chaneCategory(CATEGORY)
-                //refresh recyclerView
-                bannerViewModel.bannerLiveData.observe(viewLifecycleOwner,
-                    object : Observer<List<Banner>> {
-                        override fun onChanged(t: List<Banner>?) {
-                            bannerArrayList.banner = t as ArrayList<Banner>
-                            Timber.i(t.toString())
-                        }
-                    })
             })
     }
 
