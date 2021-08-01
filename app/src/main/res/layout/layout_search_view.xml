@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:orientation="horizontal"
     android:padding="15dp">
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/layout_radius"
-        android:drawableEnd="@drawable/ic_search"
-        android:hint="جستجو"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:textColor="?attr/textColorBlue"
         android:textColorHint="?android:textColorSecondary"
-        android:textSize="15sp"
-        tools:ignore="RtlCompat" />
+        android:textCursorDrawable="@null"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@null" />
 
     <ImageView
         android:id="@+id/image_filter"

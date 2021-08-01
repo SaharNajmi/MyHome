@@ -42,6 +42,12 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //(search view) -> get value text search in another fragment use shareViewModel
+        searchView()
+
+        //get category in another fragment -> get Data between Fragments Using sharedViewModel
+        chaneCategory()
+
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
@@ -58,17 +64,30 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
                     recycler_view_rent.visibility = View.VISIBLE
                     emptyLayout.visibility = View.GONE
 
+                    //ست کردن آرایه جدید بعد از هر بار جستجو
+                    bannerArrayList.setData(t)
+
                 } else {
                     emptyLayout.visibility = View.VISIBLE
                 }
             }
         })
 
-        //get Data between Fragments Using sharedViewModel
+    }
+
+    fun chaneCategory(){
         shareViewModel.getData().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it
                 bannerViewModel.chaneCategory(CATEGORY)
+            })
+    }
+
+    fun searchView() {
+        shareViewModel.getDataSearch().observe(requireActivity(),
+            Observer<String> {
+                bannerArrayList.filter.filter(it!!)
+
             })
     }
 
