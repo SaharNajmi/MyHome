@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import feature.adapter.ViewPagerAdapter
 import feature.main.ShareViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
 import kotlinx.android.synthetic.main.layout_search_view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
@@ -28,6 +31,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //filter list
+        filter_list.setOnClickListener {
+            showBottomSheet()
+        }
+
         /*-----------------------------tab layout-------------------------------------*/
         viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
         mainTab.setupWithViewPager(viewPagerShowBanner)
@@ -86,5 +95,22 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 return true
             }
         })
+    }
+
+    fun showBottomSheet() {
+        //create a new bottom sheet dialog
+        val dialog = BottomSheetDialog(requireContext())
+
+        //inflating layout
+        val view = layoutInflater.inflate(R.layout.layout_bottom_sheet, null)
+
+        //dismissing the dialog button
+        val btnClose = view.findViewById<Button>(R.id.btnDismissFilter)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.setContentView(view)
+        dialog.show()
     }
 }

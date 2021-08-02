@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
 
+        <include layout="@layout/layout_bottom_sheet" />
     </LinearLayout>
 
 </FrameLayout>
