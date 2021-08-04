@@ -9,7 +9,14 @@ import okhttp3.RequestBody
 
 interface BannerRepository {
 
-    fun getBanners(sellOrRent: Int, category: Int, phone: String): Single<List<Banner>>
+    fun getBanners(
+        sellOrRent: Int,
+        category: Int,
+        phone: String,
+        price: String,
+        homeSize: Int,
+        numberOfRooms: Int
+    ): Single<List<Banner>>
 
     fun deleteBanner(id:Int):Single<State>
 

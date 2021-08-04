@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.SeekBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
@@ -20,6 +23,19 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private val shareViewModel by sharedViewModel<ShareViewModel>()
+    var price = "all"
+    var homeSize = 0
+    var numberOfRooms = 0
+    var saveStatePrice = 0
+    var saveStateHomeSize = 0
+
+    lateinit var seekBarPrice: SeekBar
+    lateinit var seekBarHomeSize: SeekBar
+    lateinit var radioGroup: RadioGroup
+    lateinit var radioButton1: RadioButton
+    lateinit var radioButton2: RadioButton
+    lateinit var radioButton3: RadioButton
+    lateinit var radioButton4: RadioButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,25 +72,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
                 //send Data between Fragments
-                shareViewModel.setData(1)
+                shareViewModel.setDataCategory(1)
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
-                shareViewModel.setData(2)
+                shareViewModel.setDataCategory(2)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
-                shareViewModel.setData(3)
+                shareViewModel.setDataCategory(3)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
-                shareViewModel.setData(4)
+                shareViewModel.setDataCategory(4)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
@@ -103,14 +119,143 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         //inflating layout
         val view = layoutInflater.inflate(R.layout.layout_bottom_sheet, null)
+        val btnClose = view.findViewById<Button>(R.id.btnDismissFilter)
+        val btnApply = view.findViewById<Button>(R.id.btnApplyFilter)
+        seekBarHomeSize = view!!.findViewById<SeekBar>(R.id.seekBarHomeSize)
+        seekBarPrice = view.findViewById<SeekBar>(R.id.seekBarPrice)
+        radioGroup = view.findViewById(R.id.radio_group_room) as RadioGroup
+        radioButton1 = view.findViewById(R.id.btn_any) as RadioButton
+        radioButton2 = view.findViewById(R.id.btn_one) as RadioButton
+        radioButton3 = view.findViewById(R.id.btn_two) as RadioButton
+        radioButton4 = view.findViewById(R.id.btn_more) as RadioButton
+
+        //Show old values inside BottomSheet
+        saveOldValue()
+
+        // seekBar HomeSize and Price
+        seekBar()
+
+        // Apply changes the dialog button
+        btnApply.setOnClickListener {
+
+            //RadioButton item selected numberOfRooms
+            checkedRadioButton()
+
+            //send Data when click btn apply filter list to sell and rent fragment
+            shareViewModel.setDataFilter(price, numberOfRooms, homeSize)
+
+            dialog.dismiss()
+        }
 
         //dismissing the dialog button
-        val btnClose = view.findViewById<Button>(R.id.btnDismissFilter)
         btnClose.setOnClickListener {
+            //delete value filter list
+            saveStatePrice = 0
+            saveStateHomeSize = 0
+            price="all"
+            homeSize=0
+            numberOfRooms = 0
+
+            shareViewModel.setDataFilter(price, numberOfRooms, homeSize)
+
             dialog.dismiss()
         }
         dialog.setCancelable(false)
         dialog.setContentView(view)
         dialog.show()
+    }
+
+    private fun checkedRadioButton() {
+        //RadioButton item selected numberOfRooms
+        val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+
+        val radioButton: View = radioGroup.findViewById(selectedRadioButtonId)
+        val indexRadioButtonItemSelected: Int = radioGroup.indexOfChild(radioButton)
+        when (indexRadioButtonItemSelected) {
+            0 -> numberOfRooms = 0
+            1 -> numberOfRooms = 1
+            2 -> numberOfRooms = 2
+            3 -> numberOfRooms = 3
+        }
+    }
+
+    private fun seekBar() {
+        // seekBar HomeSize
+        seekBarHomeSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                when (seekBar?.progress) {
+                    0 -> {
+                        homeSize = 0
+                        saveStateHomeSize = 0
+                    }
+                    1 -> {
+                        homeSize = 100
+                        saveStateHomeSize = 1
+                    }
+                    2 -> {
+                        homeSize = 250
+                        saveStateHomeSize = 2
+                    }
+                    3 -> {
+                        homeSize = 251
+                        saveStateHomeSize = 3
+                    }
+                }
+            }
+        })
+
+        //seekBar Price
+        seekBarPrice.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                when (seekBar?.progress) {
+                    0 -> {
+                        price = "all"
+                        saveStatePrice = 0
+                    }
+                    1 -> {
+                        price = "500000000"
+                        saveStatePrice = 1
+                    }
+                    2 -> {
+                        price = "1000000000"
+                        saveStatePrice = 2
+                    }
+                    3 -> {
+                        price = "1000000001"
+                        saveStatePrice = 3
+                    }
+                }
+            }
+        })
+    }
+
+    fun saveOldValue() {
+        seekBarHomeSize.progress = saveStateHomeSize
+        seekBarPrice.progress = saveStatePrice
+        when (numberOfRooms) {
+            0 -> radioButton1.isChecked = true
+
+            1 -> radioButton2.isChecked = true
+
+            2 -> radioButton3.isChecked = true
+
+            3 -> radioButton4.isChecked = true
+        }
     }
 }

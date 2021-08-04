@@ -6,7 +6,6 @@ import common.MyHomeCompletableObserver
 import common.MyHomeSingleObserver
 import common.MyHomeViewModel
 import data.Banner
-import data.EmptyState
 import data.State
 import data.repository.BannerRepository
 import io.reactivex.Single
@@ -19,11 +18,13 @@ import timber.log.Timber
 class BannerViewModel(
     val bannerRepository: BannerRepository,
     var category: Int,
-    val sellOrRent: Int
+    var sellOrRent: Int,
+    var price: String,
+    var homeSize: Int,
+    var numberOfRooms: Int
 ) :
     MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
-    val emptyStateLiveData = MutableLiveData<EmptyState>()
     //برای موقعی که دستبندی عوض میشه
     val categoryLiveData = MutableLiveData<Int>()
     val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)
@@ -34,7 +35,7 @@ class BannerViewModel(
     }
 
     fun getBanner() {
-        bannerRepository.getBanners(sellOrRent, category, "all")
+        bannerRepository.getBanners(sellOrRent, category, "all", price, homeSize, numberOfRooms)
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
@@ -53,6 +54,12 @@ class BannerViewModel(
         getBanner()
     }
 
+    fun filter(price: String, numberOfRooms: Int, homeSize: Int) {
+        this.price = price
+        this.numberOfRooms = numberOfRooms
+        this.homeSize = homeSize
+        getBanner()
+    }
 
     fun deleteBanner(id: Int) = bannerRepository.deleteBanner(id)
 

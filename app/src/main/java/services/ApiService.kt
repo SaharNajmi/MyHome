@@ -18,7 +18,10 @@ interface ApiService {
     fun getAllBanner(
         @Query("sellOrRent") sellOrRent: Int,
         @Query("category") category: Int,
-        @Query("phoneNumber") phone: String
+        @Query("phoneNumber") phone: String,
+        @Query("price") price: String,
+        @Query("homeSize") homeSize: Int,
+        @Query("numberOfRooms") numberOfRooms: Int
     ): Single<List<Banner>>
 
     @FormUrlEncoded

@@ -25,7 +25,7 @@ import timber.log.Timber
 
 class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
     var SELL_OR_RENT = 2
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY, SELL_OR_RENT) }
+    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY, SELL_OR_RENT,"all",0,0) }
     private val shareViewModel by sharedViewModel<ShareViewModel>()
 
 
@@ -47,6 +47,9 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
 
         //get category in another fragment -> get Data between Fragments Using sharedViewModel
         chaneCategory()
+
+        //filter banner list
+        filterList()
 
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
@@ -76,7 +79,7 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
     }
 
     fun chaneCategory(){
-        shareViewModel.getData().observe(requireActivity(),
+        shareViewModel.getDataCategory().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it
                 bannerViewModel.chaneCategory(CATEGORY)
@@ -89,6 +92,14 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
                 bannerArrayList.filter.filter(it!!)
 
             })
+    }
+
+    fun filterList() {
+        shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
+
+            bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
+            //Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onBannerClick(banner: Banner) {

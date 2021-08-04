@@ -11,7 +11,14 @@ import okhttp3.RequestBody
 @Dao
 //وقتی از روم استفاده میکنیم باید interface باشه تا بتونه ایمپلمنت کنه
 interface BannerLocalDataSource : BannerDataSource {
-    override fun getBanners(sellOrRent: Int, category: Int, phone: String): Single<List<Banner>> {
+    override fun getBanners(
+        sellOrRent: Int,
+        category: Int,
+        phone: String,
+        price: String,
+        homeSize: Int,
+        numberOfRooms: Int
+    ): Single<List<Banner>> {
         TODO("Not yet implemented")
     }
 

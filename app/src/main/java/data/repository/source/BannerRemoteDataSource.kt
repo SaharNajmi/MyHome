@@ -12,10 +12,13 @@ class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
     override fun getBanners(
         sellOrRent: Int,
         category: Int,
-        phone: String
-    ): Single<List<Banner>> {
-        return apiService.getAllBanner(sellOrRent, category, phone)
-    }
+        phone: String,
+        price: String,
+        homeSize: Int,
+        numberOfRooms: Int
+    ): Single<List<Banner>> =
+        apiService.getAllBanner(sellOrRent, category, phone, price, homeSize, numberOfRooms)
+
 
     override fun deleteBanner(id: Int): Single<State> = apiService.deleteBanner(id)
 

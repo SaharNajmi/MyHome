@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import common.EXTRA_KEY_DATA
 import common.MyHomeFragment
-import data.Banner
-import data.CATEGORY
+import data.*
 import feature.main.BannerDetailActivity
 import feature.main.BannerViewModel
 import feature.main.ShareViewModel
@@ -30,7 +30,10 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     private val bannerViewModel by viewModel<BannerViewModel>() {
         parametersOf(
             CATEGORY,
-            SELL_OR_RENT
+            SELL_OR_RENT,
+            PRICE,
+            HOME_SIZE,
+            NUMBER_OF_ROOM
         )
     }
 
@@ -54,6 +57,9 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
         //get category in another fragment -> get Data between Fragments Using sharedViewModel
         chaneCategory()
 
+        //filter banner list
+        filterList()
+
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
@@ -67,7 +73,7 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
                 if (t!!.isNotEmpty()) {
                     bannerArrayList.banner = t as ArrayList<Banner>
                     Timber.i(t.toString())
-                    recycler_view_sell.visibility=View.VISIBLE
+                    recycler_view_sell.visibility = View.VISIBLE
                     emptyLayout.visibility = View.GONE
 
                     //ست کردن آرایه جدید بعد از هر بار جستجو
@@ -83,7 +89,7 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
     }
 
     fun chaneCategory() {
-        shareViewModel.getData().observe(requireActivity(),
+        shareViewModel.getDataCategory().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it
                 bannerViewModel.chaneCategory(CATEGORY)
@@ -97,6 +103,13 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             })
     }
 
+    fun filterList() {
+        shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
+
+            bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
+    }
     override fun onBannerClick(banner: Banner) {
         startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
             putExtra(EXTRA_KEY_DATA, banner)

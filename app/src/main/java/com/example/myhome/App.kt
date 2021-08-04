@@ -71,8 +71,10 @@ class App : Application() {
                 )
             }
 
-            viewModel { (cate: Int, sellOrRent: Int) -> BannerViewModel(get(), cate, sellOrRent) }
-            viewModel {  ShareViewModel() }
+            viewModel { (cate: Int, sellOrRent: Int, price: String, homeSize: Int, numberOfRooms: Int) ->
+                BannerViewModel(get(), cate, sellOrRent, price, homeSize, numberOfRooms)
+            }
+            viewModel { ShareViewModel() }
             viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
             viewModel { AuthViewModel(get()) }
             viewModel { UserViewModel(get(), get()) }

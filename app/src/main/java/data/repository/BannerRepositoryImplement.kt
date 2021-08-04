@@ -20,9 +20,19 @@ class BannerRepositoryImplement(
     override fun getBanners(
         sellOrRent: Int,
         category: Int,
-        phone: String
+        phone: String,
+        price: String,
+        homeSize: Int,
+        numberOfRooms: Int
     ): Single<List<Banner>> = bannerLocalDataSource.getFavoriteBanners().flatMap { favoriteBanner ->
-        bannerRemoteDataSource.getBanners(sellOrRent, category, phone).doOnSuccess {
+        bannerRemoteDataSource.getBanners(
+            sellOrRent,
+            category,
+            phone,
+            price,
+            homeSize,
+            numberOfRooms
+        ).doOnSuccess {
             //ایدی تمامی علاقه مندی ها را میگیریم
             //map موقعی ک بخایم فقط تعداد خاصی از موجودیت ها را بگیریم: مثلا فقط ای دی ها بگیریم
             val favIds = favoriteBanner.map {
