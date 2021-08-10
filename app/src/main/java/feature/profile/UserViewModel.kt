@@ -42,7 +42,7 @@ class UserViewModel(val userRepository: UserRepository, val bannerRepository: Ba
     ): Single<State> = userRepository.editUser(id, phoneNumber, username, password, image)
 
     fun getBanner() {
-        bannerRepository.getBanners(0, 0, phoneNumber,"all",0,0)
+        bannerRepository.getBanners(0, 0, phoneNumber, "all", 0, 0)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
@@ -52,7 +52,7 @@ class UserViewModel(val userRepository: UserRepository, val bannerRepository: Ba
             })
     }
 
-    fun refresh(){
+    fun refresh() {
         getBanner()
     }
 

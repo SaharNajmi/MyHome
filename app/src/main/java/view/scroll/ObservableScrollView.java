@@ -307,7 +307,7 @@ public class ObservableScrollView extends NestedScrollView implements Scrollable
         }
 
         public static final Creator<SavedState> CREATOR
-            = new Creator<SavedState>() {
+                = new Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);

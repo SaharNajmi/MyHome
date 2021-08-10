@@ -21,16 +21,28 @@
             app:roundAsCircle="true"
             app:srcCompat="@drawable/ic_add_photo" />
 
-        <EditText
-            android:id="@+id/add_location"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/location"
-            android:maxLength="100"
-            android:maxLines="1"
-            android:padding="5dp"
-            app:drawableStartCompat="@drawable/ic_location" />
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/btn_add_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_location" />
+
+            <EditText
+                android:layout_toLeftOf="@id/btn_add_location"
+                android:id="@+id/add_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/location"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:padding="5dp" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"

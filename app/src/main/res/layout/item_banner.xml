@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="8dp"
-        android:background="@drawable/custom_image_view" />
+        app:roundBottomRight="false"
+        app:backgroundImage="@drawable/myimage"
+        app:roundBottomLeft="false" />
 
     <ImageView
         android:id="@+id/btn_fav"

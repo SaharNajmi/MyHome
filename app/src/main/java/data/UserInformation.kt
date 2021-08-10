@@ -1,4 +1,5 @@
 package data
+
 /*JSON
 شماره موبایل را دریافت می کند و اطلاعات کاربر را برمی گرداند
 
@@ -15,6 +16,6 @@ data class UserInformation(
     val image: String,
     val password: String,
     val username: String,
-    val phone:String
+    val phone: String
 )
 

@@ -74,7 +74,7 @@ class ProfileFragment : MyHomeFragment() {
             authBtn.text = getString(R.string.signOut)
             authBtn.setOnClickListener {
                 viewModel.signOut()
-              checkAuthState()
+                checkAuthState()
             }
 
             //edit user

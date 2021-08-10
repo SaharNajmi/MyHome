@@ -43,13 +43,13 @@ public class UriToUploadable {
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
-    public MultipartBody.Part getUploaderFile(Uri data , String sendKey , String fileName) {
+    public MultipartBody.Part getUploaderFile(Uri data, String sendKey, String fileName) {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(data);
             byte[] bytes = getBytes(inputStream);
             String type = getFileExtension(data);
-            RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"),bytes);
-            MultipartBody.Part file = MultipartBody.Part.createFormData(sendKey , fileName + "." + type ,requestFile);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("*/*"), bytes);
+            MultipartBody.Part file = MultipartBody.Part.createFormData(sendKey, fileName + "." + type, requestFile);
             return file;
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,8 +58,8 @@ public class UriToUploadable {
     }
 
     public String convertMediaUriToPath(Uri uri) {
-        String [] proj={MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, proj,  null, null, null);
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         String path = cursor.getString(column_index);

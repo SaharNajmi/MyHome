@@ -25,7 +25,15 @@ import timber.log.Timber
 
 class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
     var SELL_OR_RENT = 2
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY, SELL_OR_RENT,"all",0,0) }
+    val bannerViewModel: BannerViewModel by viewModel {
+        parametersOf(
+            CATEGORY,
+            SELL_OR_RENT,
+            "all",
+            0,
+            0
+        )
+    }
     private val shareViewModel by sharedViewModel<ShareViewModel>()
 
 
@@ -78,7 +86,7 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
 
     }
 
-    fun chaneCategory(){
+    fun chaneCategory() {
         shareViewModel.getDataCategory().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it

@@ -18,7 +18,7 @@ interface BannerRepository {
         numberOfRooms: Int
     ): Single<List<Banner>>
 
-    fun deleteBanner(id:Int):Single<State>
+    fun deleteBanner(id: Int): Single<State>
 
     fun getFavoriteBanners(): Single<List<Banner>>
 

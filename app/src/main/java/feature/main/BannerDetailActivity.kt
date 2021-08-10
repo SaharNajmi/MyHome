@@ -17,6 +17,7 @@ import common.MyHomeSingleObserver
 import common.REQUEST_CODE
 import data.Banner
 import data.CATEGORY
+import data.SELL_OR_RENT
 import data.State
 import feature.favorite.FavoriteViewModel
 import feature.profile.UserViewModel
@@ -45,7 +46,15 @@ import java.util.*
 class BannerDetailActivity : MyHomeActivity() {
 
     val viewModel: UserViewModel by viewModel()
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
+    val bannerViewModel: BannerViewModel by viewModel {
+        parametersOf(
+            CATEGORY,
+            SELL_OR_RENT,
+            "all",
+            0,
+            0
+        )
+    }
     val favoriteViewModel: FavoriteViewModel by inject()
     val bannerDetailViewModel: BannerDetailViewModel by viewModel { parametersOf(intent.extras) }
     val imageLoadingService: ImageLoadingService by inject()

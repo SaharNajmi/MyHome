@@ -8,11 +8,11 @@
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"
-        android:title="پروفایل"/>
+        android:title="پروفایل" />
     <item
         android:id="@+id/favorite"
         android:icon="@drawable/ic_bookmarked"
-        android:title="علاقه مندی"/>
+        android:title="علاقه مندی" />
     <item
         android:id="@+id/add"
         android:title="" />

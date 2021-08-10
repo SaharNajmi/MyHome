@@ -31,5 +31,6 @@ class ShareViewModel : ViewModel() {
         var array: ArrayList<Any> = arrayListOf(price, numberOfRooms, homeSize)
         mutableLiveDataFilter.value = array
     }
+
     fun getDataFilter() = mutableLiveDataFilter
 }

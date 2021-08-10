@@ -303,11 +303,14 @@ limitations under the License.حات آگهی"
             android:padding="5dp"
             app:srcCompat="@drawable/ic_back" />
     </FrameLayout>
-    <include layout="@layout/layout_profile"
-        android:visibility="gone"
-        android:id="@+id/layout_contact_us"/>
 
-    <include layout="@layout/layout_edit_banner"
+    <include
+        android:id="@+id/layout_contact_us"
+        layout="@layout/layout_profile"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/layout_edit_or_delete"
-        android:visibility="gone"/>
+        layout="@layout/layout_edit_banner"
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

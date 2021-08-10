@@ -56,7 +56,7 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
                 buttonFavorite.setImageResource(R.drawable.ic_not_bookmarked)
 
             buttonFavorite.setOnClickListener {
-                banner.fav=!banner.fav
+                banner.fav = !banner.fav
                 notifyItemChanged(adapterPosition)
                 //ویو بدونه ک رو چه آیتمی برای علاقه مندی کلیک شده تا اضافه یا حذفش روانجام بده
                 bannerOnClickListener!!.onFavoriteBtnClick(banner)

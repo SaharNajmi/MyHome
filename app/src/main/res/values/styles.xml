@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="myBottomNavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="itemIconTint">@color/state_bottom_navigation_text_color</item>
         <item name="itemTextColor">@color/myRed</item>
@@ -9,6 +10,7 @@
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
     </style>
+
     <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/round_bottom_sheet</item>
     </style>

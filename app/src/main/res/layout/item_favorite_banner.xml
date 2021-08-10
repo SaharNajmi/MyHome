@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_margin="8dp"
     android:layout_height="wrap_content"
-    android:background="@color/gray">
+    android:background="@drawable/layout_radius">
 
     <view.MyHomeImageView
         android:id="@+id/img_fav"
@@ -14,6 +14,7 @@
         android:layout_height="100dp"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp" />
+
     <ImageView
         android:id="@+id/deleteFav"
         android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
         android:layout_centerVertical="true"
         android:padding="10dp"
         android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_delete"/>
+        app:srcCompat="@drawable/ic_delete" />
 
     <TextView
         android:id="@+id/title_fav"

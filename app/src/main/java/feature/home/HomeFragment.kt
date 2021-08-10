@@ -152,8 +152,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
             //delete value filter list
             saveStatePrice = 0
             saveStateHomeSize = 0
-            price="all"
-            homeSize=0
+            price = "all"
+            homeSize = 0
             numberOfRooms = 0
 
             shareViewModel.setDataFilter(price, numberOfRooms, homeSize)

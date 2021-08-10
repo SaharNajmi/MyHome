@@ -54,16 +54,17 @@ class UserRepositoryImplement(
         username: RequestBody,
         password: RequestBody,
         image: MultipartBody.Part?
-    ): Single<State> =userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
-        //وقتی کاربر پروفایلش را ویرایش کند هم ویرایش انجام میشه هم لاگین
-        //doFinally: برای اینکه چند تا رکوست با هم انجام بشه
-        userRemoteDataSource.login(
-            requestBodyToString(phoneNumber),
-            requestBodyToString(password)
-        ).doOnSuccess {
-            onSuccessfulLogin(requestBodyToString(phoneNumber), it)
+    ): Single<State> =
+        userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
+            //وقتی کاربر پروفایلش را ویرایش کند هم ویرایش انجام میشه هم لاگین
+            //doFinally: برای اینکه چند تا رکوست با هم انجام بشه
+            userRemoteDataSource.login(
+                requestBodyToString(phoneNumber),
+                requestBodyToString(password)
+            ).doOnSuccess {
+                onSuccessfulLogin(requestBodyToString(phoneNumber), it)
+            }
         }
-    }
 
     fun onSuccessfulLogin(phone: String, login: State) {
         LoginUpdate.update(login.state)

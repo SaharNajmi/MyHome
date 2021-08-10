@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -107,9 +106,10 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
         shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
 
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
-            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            // Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         })
     }
+
     override fun onBannerClick(banner: Banner) {
         startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
             putExtra(EXTRA_KEY_DATA, banner)

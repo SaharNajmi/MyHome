@@ -25,6 +25,7 @@ class BannerViewModel(
 ) :
     MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
+
     //برای موقعی که دستبندی عوض میشه
     val categoryLiveData = MutableLiveData<Int>()
     val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)

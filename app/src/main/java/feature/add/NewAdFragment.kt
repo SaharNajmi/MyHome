@@ -15,9 +15,7 @@ import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import common.MyHomeSingleObserver
 import common.REQUEST_CODE
-import data.CATEGORY
-import data.State
-import data.UserInformation
+import data.*
 import feature.login.LoginOrSignUpActivity
 import feature.main.BannerViewModel
 import feature.profile.UserViewModel
@@ -34,7 +32,15 @@ import java.util.*
 
 
 class NewAdFragment : Fragment() {
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(CATEGORY) }
+    val bannerViewModel: BannerViewModel by viewModel {
+        parametersOf(
+            CATEGORY,
+            SELL_OR_RENT,
+            "all",
+            0,
+            0
+        )
+    }
     val userViewModel: UserViewModel by viewModel()
     val compositeDisposable = CompositeDisposable()
 
@@ -63,7 +69,15 @@ class NewAdFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //default image
         add_banner_image.setImageResource(R.drawable.ic_add_photo)
-
+        //add location
+        btn_add_location.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    MyMapActivity::class.java
+                )
+            )
+        }
     }
 
     fun getUserId() {
@@ -227,11 +241,11 @@ class NewAdFragment : Fragment() {
             authBtn.visibility = View.GONE
             txtAlert.visibility = View.GONE
 
-               //spinner select sell or rent
-               spinnerSellOrRent()
+            //spinner select sell or rent
+            spinnerSellOrRent()
 
-               //spinner select category
-               spinnerCategory()
+            //spinner select category
+            spinnerCategory()
 
             //user id
             getUserId()
@@ -259,14 +273,12 @@ class NewAdFragment : Fragment() {
 
             //go login
             authBtn.setOnClickListener {
-                authBtn.setOnClickListener {
-                    startActivity(
-                        Intent(
-                            requireContext(),
-                            LoginOrSignUpActivity::class.java
-                        )
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        LoginOrSignUpActivity::class.java
                     )
-                }
+                )
             }
         }
 
@@ -276,6 +288,8 @@ class NewAdFragment : Fragment() {
         super.onResume()
         checkAuthStateForAddBanner()
         userViewModel.refresh()
+        //موقعی که لوکیشن را از کاربر گرفتیم و به این فرگمنت برگشتیم مقدار را داخل کادر متنی موقعیت مکانی نشان دهد
+        add_location.setText(LOCATION)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
