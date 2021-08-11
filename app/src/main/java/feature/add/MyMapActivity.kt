@@ -38,7 +38,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
         if (serviceOk()) {
             //اگه مپمون موجوده و به مشکلی نخوردیم توسط لایه فرگمنت مپ رو نمایش بده
-           // Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show()
             setContentView(R.layout.layout_map)
             initMap()
         } else {
@@ -79,30 +79,48 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun searchLocation() {
+        if (!isMapReady)
+            return
         val locationSearch: EditText = findViewById(R.id.et_search)
         val location = locationSearch.text.toString().trim()
 
         if (location == null || location == "") {
             Toast.makeText(this, "pls enter location", Toast.LENGTH_SHORT).show()
         } else {
-            val gCoder = Geocoder(this)
-            try {
-                val addressList = gCoder.getFromLocationName(location, 1)
-                if (addressList.size == 0)
-                    Toast.makeText(this, "آدرس پیدا نشد", Toast.LENGTH_SHORT).show()
-                else {
-                    val address = addressList!![0]
-                    val latLng = LatLng(address.latitude, address.longitude)
-                    // mMap!!.addMarker(MarkerOptions().position(latLng).title(location))
-                    mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+            Thread {
+                try {
+                    val gCoder = Geocoder(this, Locale.getDefault())
+
+                    val addressList = gCoder.getFromLocationName(location, 1)
+                    if (addressList.size == 0)
+                        Toast.makeText(this, "آدرس پیدا نشد", Toast.LENGTH_SHORT).show()
+                    else {
+                        val address = addressList!![0]
+                        val latLng = LatLng(address.latitude, address.longitude)
+                        // mMap!!.addMarker(MarkerOptions().position(latLng).title(location))
+                        runOnUiThread {
+                            mMap!!.animateCamera(
+                                CameraUpdateFactory.newLatLng(
+                                    latLng
+                                )
+                            )
+                        }
+
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            }.start()
+
+
         }
     }
 
+    var isMapReady = false;
+
     override fun onMapReady(googleMap: GoogleMap) {
+        isMapReady = true;
         mMap = googleMap
         if (mMap != null) {
             Toast.makeText(this, "INIT", Toast.LENGTH_SHORT).show()

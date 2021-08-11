@@ -196,8 +196,11 @@ class ProfileFragment : MyHomeFragment() {
                                     "پروفایل با موفقیت آپدیت شد",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                //نمایش مقادیر آپدیت شده در پروفایل کاربر
                                 prf_name.text = username
                                 prf_phone.text = phone
+                                prf_image.setImageURI(imageUri)
+
                                 dialog.dismiss()
                             } else
                                 Toast.makeText(
