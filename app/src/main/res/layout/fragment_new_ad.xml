@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <view.MyHomeImageView
+        <com.example.myhome.view.MyHomeImageView
             android:id="@+id/add_banner_image"
             android:layout_width="120dp"
             android:layout_height="120dp"

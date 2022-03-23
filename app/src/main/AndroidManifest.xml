@@ -26,11 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHome"
         android:usesCleartextTraffic="true">
-        <activity android:name="feature.add.MyMapActivity"></activity>
-        <activity android:name="feature.profile.UserBannerActivity" />
-        <activity android:name="feature.login.LoginOrSignUpActivity" />
-        <activity android:name="feature.main.BannerDetailActivity" />
-        <activity android:name="feature.main.MainActivity">
+        <activity android:name="com.example.myhome.feature.add.MyMapActivity"></activity>
+        <activity android:name="com.example.myhome.feature.profile.UserBannerActivity" />
+        <activity android:name="com.example.myhome.feature.login.LoginOrSignUpActivity" />
+        <activity android:name="com.example.myhome.feature.main.BannerDetailActivity" />
+        <activity android:name="com.example.myhome.feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
