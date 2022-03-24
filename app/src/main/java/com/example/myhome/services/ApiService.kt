@@ -1,6 +1,6 @@
 package com.example.myhome.services
 
-import com.example.myhome.common.BASE_URL
+import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.data.Banner
 import com.example.myhome.data.State
 import com.example.myhome.data.UserInformation
@@ -31,8 +31,6 @@ interface ApiService {
         @Field("password") password: String
     ): Single<State>
 
-    //برای آپلود یا ویرایش عکس باید از MultipartBody.Part استفاده کنیم
-    //RequestBody: برای اینکه مقدار سمت سرور داخل "" ذخیره نشوند
     @Multipart
     @POST("signUp.php")
     fun signUp(

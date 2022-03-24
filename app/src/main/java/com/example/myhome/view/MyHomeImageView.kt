@@ -5,8 +5,6 @@ import android.util.AttributeSet
 import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.facebook.drawee.view.SimpleDraweeView
 
-
-//از این کلاس استفده میکنیم تا هر موقع که خواستیم جای کتابخانه Fresco از یک کتابخانه دیگر برای لود تصاویر استفاده کنیم فقط لازم است SimpleDraweeView را تغیر بدیم
 class MyHomeImageView : SimpleDraweeView {
     constructor(context: Context?, hierarchy: GenericDraweeHierarchy?) : super(context, hierarchy)
     constructor(context: Context?) : super(context)

@@ -2,13 +2,13 @@ package com.example.myhome.data.repository.source
 
 import com.example.myhome.data.Banner
 import com.example.myhome.data.State
+import com.example.myhome.services.ApiService
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import com.example.myhome.services.ApiService
 
-class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
+class BannerRemoteDataSource(private val apiService: ApiService) : BannerDataSource {
     override fun getBanners(
         sellOrRent: Int,
         category: Int,
@@ -83,5 +83,4 @@ class BannerRemoteDataSource(val apiService: ApiService) : BannerDataSource {
         numberOfRooms,
         image
     )
-
 }

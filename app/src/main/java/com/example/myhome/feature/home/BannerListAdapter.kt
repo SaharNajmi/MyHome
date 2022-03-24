@@ -9,10 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.BASE_URL
+import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.data.Banner
 import com.example.myhome.services.ImageLoadingService
-
 
 class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
     RecyclerView.Adapter<BannerListAdapter.ViewHolder>(), Filterable {
@@ -20,7 +19,6 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
     var bannerOnClickListener: BannerOnClickListener? = null
 
     var banner = ArrayList<Banner>()
-        //به خاطر اینکه مقدار عوض میشه وقتی صفحه لود شد
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -35,13 +33,14 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val myHomeImage: com.example.myhome.view.MyHomeImageView = itemView.findViewById(R.id.image_banner)
+        private val myHomeImage: com.example.myhome.view.MyHomeImageView =
+            itemView.findViewById(R.id.image_banner)
         val price: TextView = itemView.findViewById(R.id.txt_price)
         val title: TextView = itemView.findViewById(R.id.txt_title)
         val location: TextView = itemView.findViewById(R.id.txt_location)
         val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
         val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
-        val buttonFavorite: ImageView = itemView.findViewById(R.id.btn_fav)
+        private val buttonFavorite: ImageView = itemView.findViewById(R.id.btn_fav)
         fun bindBanner(banner: Banner) {
             imageLoadingService.load(myHomeImage, "$BASE_URL${banner.bannerImage}")
             title.text = banner.title
@@ -55,14 +54,13 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             else
                 buttonFavorite.setImageResource(R.drawable.ic_not_bookmarked)
 
+            //click favorite Button
             buttonFavorite.setOnClickListener {
                 banner.fav = !banner.fav
                 notifyItemChanged(adapterPosition)
-                //ویو بدونه ک رو چه آیتمی برای علاقه مندی کلیک شده تا اضافه یا حذفش روانجام بده
                 bannerOnClickListener!!.onFavoriteBtnClick(banner)
             }
 
-            // نباید از خود آداپتر کاربر را به اکتیویتی بفرستیم اطلاعات را به فرگمنت پاس بده فرگمنت تصمیم میگیره که دیتا را به کجا بفرسته
             itemView.setOnClickListener {
                 bannerOnClickListener!!.onBannerClick(banner)
             }
@@ -90,7 +88,7 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
                     val searChar = charSequence.toString().toLowerCase()
                     val itemModel = ArrayList<Banner>()
                     for (item in filterList) {
-                        if (item.title!!.contains(searChar)) {
+                        if (item.title.contains(searChar)) {
                             itemModel.add(item)
                         }
                     }
@@ -106,9 +104,9 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             }
         }
     }
-}
 
-interface BannerOnClickListener {
-    fun onBannerClick(banner: Banner)
-    fun onFavoriteBtnClick(banner: Banner)
+    interface BannerOnClickListener {
+        fun onBannerClick(banner: Banner)
+        fun onFavoriteBtnClick(banner: Banner)
+    }
 }

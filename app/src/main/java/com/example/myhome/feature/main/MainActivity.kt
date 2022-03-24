@@ -18,23 +18,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
-        } // Else, need to wait for onRestoreInstanceState
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        // Now that BottomNavigationBar has restored its instance state
-        // and its selectedItemId, we can proceed with setting up the
-        // BottomNavigationBar with Navigation
         setupBottomNavigationBar()
     }
 
-    /**
-     * Called on first creation and when restoring state.
-     */
     private fun setupBottomNavigationBar() {
-
-        //بک گراند fab خالی میشه ->  fab روی باتن نویگیشن به حالت نیم دایره درمیاد
+        //background fab is null
         bottomNavigationView.background = null
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -42,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val navGraphIds =
             listOf(R.navigation.home, R.navigation.profile, R.navigation.favorite, R.navigation.add)
 
-        // Setup the bottom navigation com.example.myhome.view with a list of navigation graphs
+        // Setup bottom navigation view
         val controller = bottomNavigationView.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,

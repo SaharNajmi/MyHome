@@ -11,9 +11,9 @@ import android.widget.SeekBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.myhome.feature.adapter.ViewPagerAdapter
 import com.example.myhome.feature.main.ShareViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_category.*
 import kotlinx.android.synthetic.main.layout_search_view.*
@@ -41,7 +41,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        //Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -53,19 +53,19 @@ class HomeFragment : Fragment(), View.OnClickListener {
             showBottomSheet()
         }
 
-        /*-----------------------------tab layout-------------------------------------*/
+        //tab layout
         viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
         mainTab.setupWithViewPager(viewPagerShowBanner)
 
-        /*---------------------------selection category using radio button-------------------*/
+        //selection category using radio button
         radio_button_cate_1.setOnClickListener(this)
         radio_button_cate_2.setOnClickListener(this)
         radio_button_cate_3.setOnClickListener(this)
         radio_button_cate_4.setOnClickListener(this)
         radio_button_cate_1.isChecked = true
 
-        //search com.example.myhome.view use share com.example.myhome.view model
-        sendValueSearch()
+        //Send text search to another fragments
+        sendTextSearch()
     }
 
     override fun onClick(view: View) {
@@ -98,7 +98,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun sendValueSearch() {
+    private fun sendTextSearch() {
         search_view.queryHint = "جستجو"
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -106,14 +106,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                //Send text search to another fragment
                 shareViewModel.setDataSearch(newText!!)
                 return true
             }
         })
     }
 
-    fun showBottomSheet() {
+    private fun showBottomSheet() {
         //create a new bottom sheet dialog
         val dialog = BottomSheetDialog(requireContext())
 
@@ -132,10 +131,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         //Show old values inside BottomSheet
         saveOldValue()
 
-        // seekBar HomeSize and Price
+        //seekBar HomeSize and Price
         seekBar()
 
-        // Apply changes the dialog button
+        //Apply changes the dialog button
         btnApply.setOnClickListener {
 
             //RadioButton item selected numberOfRooms
@@ -170,8 +169,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val selectedRadioButtonId = radioGroup.checkedRadioButtonId
 
         val radioButton: View = radioGroup.findViewById(selectedRadioButtonId)
-        val indexRadioButtonItemSelected: Int = radioGroup.indexOfChild(radioButton)
-        when (indexRadioButtonItemSelected) {
+        when (radioGroup.indexOfChild(radioButton)) {
             0 -> numberOfRooms = 0
             1 -> numberOfRooms = 1
             2 -> numberOfRooms = 2
@@ -180,7 +178,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun seekBar() {
-        // seekBar HomeSize
+        //seekBar HomeSize
         seekBarHomeSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
 
@@ -245,7 +243,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    fun saveOldValue() {
+    private fun saveOldValue() {
         seekBarHomeSize.progress = saveStateHomeSize
         seekBarPrice.progress = saveStatePrice
         when (numberOfRooms) {

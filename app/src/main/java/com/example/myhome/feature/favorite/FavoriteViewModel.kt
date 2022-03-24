@@ -10,14 +10,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class FavoriteViewModel(val bannerRepository: BannerRepository) : MyHomeViewModel() {
+class FavoriteViewModel(private val bannerRepository: BannerRepository) : MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
     init {
         getFavorite()
     }
 
-    fun getFavorite() {
+    private fun getFavorite() {
         bannerRepository.getFavoriteBanners()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

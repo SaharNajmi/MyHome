@@ -2,12 +2,12 @@ package com.example.myhome.data.repository.source
 
 import com.example.myhome.data.State
 import com.example.myhome.data.UserInformation
+import com.example.myhome.services.ApiService
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import com.example.myhome.services.ApiService
 
-class UserRemoteDataSource(val apiService: ApiService) : UserDataSource {
+class UserRemoteDataSource(private val apiService: ApiService) : UserDataSource {
     override fun login(phone: String, password: String): Single<State> =
         apiService.login(phone, password)
 

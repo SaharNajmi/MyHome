@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.data.State
+import com.example.myhome.services.UriToUploadable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_sign_up.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.koin.android.viewmodel.ext.android.viewModel
-import com.example.myhome.services.UriToUploadable
 import java.util.*
 
 class SignUpFragment : Fragment() {

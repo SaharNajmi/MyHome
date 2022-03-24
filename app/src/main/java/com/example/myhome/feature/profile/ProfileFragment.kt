@@ -14,12 +14,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import com.example.myhome.R
-import com.example.myhome.common.BASE_URL
+import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.data.State
 import com.example.myhome.data.UserInformation
 import com.example.myhome.feature.login.LoginOrSignUpActivity
+import com.example.myhome.services.ImageLoadingService
+import com.example.myhome.services.UriToUploadable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -29,14 +31,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import com.example.myhome.services.ImageLoadingService
-import com.example.myhome.services.UriToUploadable
 import java.util.*
 
 class ProfileFragment : MyHomeFragment() {
 
-    val viewModel: UserViewModel by viewModel()
-
+    private val viewModel: UserViewModel by viewModel()
     val imageLoadingService: ImageLoadingService by inject()
     val compositeDisposable = CompositeDisposable()
     lateinit var customLayout: View
@@ -57,14 +56,10 @@ class ProfileFragment : MyHomeFragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun checkAuthState() {
         if (viewModel.isSignIn) {
 
-            //visible com.example.myhome.view
+            //visible items view
             edtBtn.visibility = View.VISIBLE
             myBannerBtn.visibility = View.VISIBLE
             prf_phone.visibility = View.VISIBLE
@@ -97,7 +92,7 @@ class ProfileFragment : MyHomeFragment() {
                         image = t.image
                         password = t.password
 
-                        //show value in com.example.myhome.view
+                        //show values
                         prf_phone.text = t.phone
                         prf_name.text = t.username
                         if (image != "")
@@ -108,7 +103,7 @@ class ProfileFragment : MyHomeFragment() {
                 })
 
         } else {
-            //un visible com.example.myhome.view
+            //unVisible items view
             prf_image.setImageResource(R.drawable.ic_profile)
             prf_phone.visibility = View.GONE
             edtBtn.visibility = View.GONE
@@ -142,7 +137,7 @@ class ProfileFragment : MyHomeFragment() {
             .setNegativeButton("انصراف", null)
             .show()
 
-        // prevent a dialog from closing when a button is clicked
+        //prevent a dialog from closing when a button is clicked
         val positiveButton: Button = dialog.getButton(BUTTON_POSITIVE)
 
         //show old value in dialog box
@@ -196,7 +191,8 @@ class ProfileFragment : MyHomeFragment() {
                                     "پروفایل با موفقیت آپدیت شد",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                //نمایش مقادیر آپدیت شده در پروفایل کاربر
+
+                                //show update value
                                 prf_name.text = username
                                 prf_phone.text = phone
                                 prf_image.setImageURI(imageUri)
@@ -229,7 +225,6 @@ class ProfileFragment : MyHomeFragment() {
 
     override fun onResume() {
         super.onResume()
-        //در onResume موقع برگشت به اکتیویتی دوباره این تابع فراخوان میشه اما اگه در OnCreate باشه فقط اول برنامه ک صفحه لود بشه فراخوانی میشه
         checkAuthState()
     }
 }

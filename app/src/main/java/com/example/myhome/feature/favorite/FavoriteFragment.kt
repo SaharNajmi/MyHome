@@ -11,17 +11,16 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.data.Banner
 import com.example.myhome.feature.main.BannerDetailActivity
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.layout_empty_view.view.*
 import org.koin.android.ext.android.get
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class FavoriteFragment : Fragment(), FavoriteListAdapter.FavoriteBannerClickListener {
-    val favoriteViewModel: FavoriteViewModel by viewModel()
+    private val favoriteViewModel: FavoriteViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +42,6 @@ class FavoriteFragment : Fragment(), FavoriteListAdapter.FavoriteBannerClickList
                 rec_fav.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 rec_fav.adapter = FavoriteListAdapter(it as ArrayList<Banner>, get(), this)
-                Timber.i(it.toString())
 
                 rec_fav.visibility = View.VISIBLE
                 emptyLayout.visibility = View.GONE
@@ -63,7 +61,6 @@ class FavoriteFragment : Fragment(), FavoriteListAdapter.FavoriteBannerClickList
 
     override fun deleteItemClick(banner: Banner) {
         favoriteViewModel.deleteFavorites(banner)
-        //banner.isFavorite=false
         Toast.makeText(requireContext(), "آیتم از لیست علاقمندی حذف شد", Toast.LENGTH_SHORT).show()
     }
 

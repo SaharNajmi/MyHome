@@ -1,8 +1,8 @@
 package com.example.myhome.data.repository.source
 
 import android.content.SharedPreferences
-import com.example.myhome.common.LOGIN
-import com.example.myhome.common.PHONE
+import com.example.myhome.common.Constants.LOGIN
+import com.example.myhome.common.Constants.PHONE
 import com.example.myhome.data.State
 import com.example.myhome.data.UserInformation
 import com.example.myhome.data.repository.LoginUpdate
@@ -10,7 +10,8 @@ import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class UserLocalDataSource(val sharedPreferences: SharedPreferences) : UserDataSource {
+class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : UserDataSource {
+
     override fun login(phone: String, password: String): Single<State> {
         TODO("Not yet implemented")
     }

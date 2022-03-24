@@ -9,7 +9,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 @Dao
-//وقتی از روم استفاده میکنیم باید interface باشه تا بتونه ایمپلمنت کنه
 interface BannerLocalDataSource : BannerDataSource {
     override fun getBanners(
         sellOrRent: Int,
@@ -29,7 +28,6 @@ interface BannerLocalDataSource : BannerDataSource {
     @Query("SELECT * FROM banners ")
     override fun getFavoriteBanners(): Single<List<Banner>>
 
-    //قبل از اضافه کردن چک میکنه ک اگه آیتمی با این ایدی از قبل موجود بود اونو جاگذاری قبلی کنه
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override fun addToFavorites(banner: Banner): Completable
 

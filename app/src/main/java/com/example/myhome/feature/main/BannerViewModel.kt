@@ -16,7 +16,7 @@ import okhttp3.RequestBody
 import timber.log.Timber
 
 class BannerViewModel(
-    val bannerRepository: BannerRepository,
+    private val bannerRepository: BannerRepository,
     var category: Int,
     var sellOrRent: Int,
     var price: String,
@@ -26,16 +26,15 @@ class BannerViewModel(
     MyHomeViewModel() {
     val bannerLiveData = MutableLiveData<List<Banner>>()
 
-    //برای موقعی که دستبندی عوض میشه
-    val categoryLiveData = MutableLiveData<Int>()
-    val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)
+    private val categoryLiveData = MutableLiveData<Int>()
+    private val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)
 
     init {
         getBanner()
         categoryLiveData.value = categories[category]
     }
 
-    fun getBanner() {
+    private fun getBanner() {
         bannerRepository.getBanners(sellOrRent, category, "all", price, homeSize, numberOfRooms)
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
@@ -123,7 +122,6 @@ class BannerViewModel(
                     override fun onComplete() {
                         banner.fav = true
                         Timber.i("add fav")
-
                     }
                 })
         else
@@ -139,7 +137,6 @@ class BannerViewModel(
     }
 
     fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
-        //برای جلویری از تکرار این دو خط کد در هر بار گرفتن اطلاعات
         return subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

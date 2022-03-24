@@ -7,11 +7,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.MyHomeActivity
 import com.example.myhome.data.Banner
 import com.example.myhome.feature.home.BannerListAdapter
-import com.example.myhome.feature.home.BannerOnClickListener
 import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import kotlinx.android.synthetic.main.activity_user_banner.*
@@ -20,11 +19,11 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
+class UserBannerActivity : MyHomeActivity(), BannerListAdapter.BannerOnClickListener {
 
-    val userViewModel: UserViewModel by viewModel()
+    private val userViewModel: UserViewModel by viewModel()
+    private val bannerViewModel: BannerViewModel by viewModel { parametersOf(1, 1) }
     val bannerArrayList: BannerListAdapter by inject()
-    val bannerViewModel: BannerViewModel by viewModel { parametersOf(1, 1) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +51,7 @@ class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
         bannerViewModel.addBannerToFavorite(banner)
     }
 
-    fun getListUserBanner() {
+    private fun getListUserBanner() {
         //show banner in recyclerView
         recycler_view_user_banner.layoutManager =
             LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -72,7 +71,7 @@ class UserBannerActivity : MyHomeActivity(), BannerOnClickListener {
         })
     }
 
-    //when delete item -> refresh recycler com.example.myhome.view(with Get banner list again)
+    //when delete item -> refresh recycler view
     override fun onStart() {
         super.onStart()
         userViewModel.refresh()

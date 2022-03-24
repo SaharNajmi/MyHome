@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.CATEGORY
+import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.Banner
-import com.example.myhome.data.CATEGORY
 import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
@@ -23,9 +23,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
-class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
-    var SELL_OR_RENT = 2
-    val bannerViewModel: BannerViewModel by viewModel {
+class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+    private var SELL_OR_RENT = 2
+    private val bannerViewModel: BannerViewModel by viewModel {
         parametersOf(
             CATEGORY,
             SELL_OR_RENT,
@@ -50,10 +50,10 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //(search com.example.myhome.view) -> get value text search in another fragment use shareViewModel
+        //get value text search in another fragment
         searchView()
 
-        //get category in another fragment -> get Data between Fragments Using sharedViewModel
+        //get category in another fragment -> get Data between Fragments
         chaneCategory()
 
         //filter banner list
@@ -75,7 +75,7 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
                     recycler_view_rent.visibility = View.VISIBLE
                     emptyLayout.visibility = View.GONE
 
-                    //ست کردن آرایه جدید بعد از هر بار جستجو
+                    //update list
                     bannerArrayList.setData(t)
 
                 } else {
@@ -83,10 +83,9 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
                 }
             }
         })
-
     }
 
-    fun chaneCategory() {
+    private fun chaneCategory() {
         shareViewModel.getDataCategory().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it
@@ -94,19 +93,16 @@ class RentHomeFragment : MyHomeFragment(), BannerOnClickListener {
             })
     }
 
-    fun searchView() {
+    private fun searchView() {
         shareViewModel.getDataSearch().observe(requireActivity(),
             Observer<String> {
                 bannerArrayList.filter.filter(it!!)
-
             })
     }
 
-    fun filterList() {
+    private fun filterList() {
         shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
-
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
-            //Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         })
     }
 

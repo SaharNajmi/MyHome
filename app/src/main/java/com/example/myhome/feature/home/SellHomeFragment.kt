@@ -9,9 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.CATEGORY
+import com.example.myhome.common.Constants.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.HOME_SIZE
+import com.example.myhome.common.Constants.NUMBER_OF_ROOM
+import com.example.myhome.common.Constants.PRICE
 import com.example.myhome.common.MyHomeFragment
-import com.example.myhome.data.*
+import com.example.myhome.data.Banner
 import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
@@ -20,10 +24,9 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import timber.log.Timber
 
-class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
-    var SELL_OR_RENT = 1
+class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+    private var SELL_OR_RENT = 1
     val bannerArrayList: BannerListAdapter by inject()
 
     private val bannerViewModel by viewModel<BannerViewModel>() {
@@ -36,24 +39,24 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
         )
     }
 
-    //sharing com.example.myhome.data between Fragments with sharedViewModel
+    //sharing data between Fragments
     private val shareViewModel by sharedViewModel<ShareViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        //Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sell_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //(search com.example.myhome.view) -> get value text search in another fragment use shareViewModel
+        //get value text search in another fragment
         searchView()
 
-        //get category in another fragment -> get Data between Fragments Using sharedViewModel
+        //get category in another fragment -> get Data between Fragments
         chaneCategory()
 
         //filter banner list
@@ -71,11 +74,10 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             override fun onChanged(t: List<Banner>?) {
                 if (t!!.isNotEmpty()) {
                     bannerArrayList.banner = t as ArrayList<Banner>
-                    Timber.i(t.toString())
                     recycler_view_sell.visibility = View.VISIBLE
                     emptyLayout.visibility = View.GONE
 
-                    //ست کردن آرایه جدید بعد از هر بار جستجو
+                    //update list
                     bannerArrayList.setData(t)
 
 
@@ -87,7 +89,7 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
 
     }
 
-    fun chaneCategory() {
+    private fun chaneCategory() {
         shareViewModel.getDataCategory().observe(requireActivity(),
             Observer<Int> {
                 CATEGORY = it
@@ -95,18 +97,16 @@ class SellHomeFragment : MyHomeFragment(), BannerOnClickListener {
             })
     }
 
-    fun searchView() {
+    private fun searchView() {
         shareViewModel.getDataSearch().observe(requireActivity(),
             Observer<String> {
                 bannerArrayList.filter.filter(it!!)
             })
     }
 
-    fun filterList() {
+    private fun filterList() {
         shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
-
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
-            // Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         })
     }
 

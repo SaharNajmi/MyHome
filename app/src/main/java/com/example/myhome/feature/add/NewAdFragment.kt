@@ -13,12 +13,17 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import com.example.myhome.common.Constants.CATEGORY
+import com.example.myhome.common.Constants.LOCATION
+import com.example.myhome.common.Constants.REQUEST_CODE
+import com.example.myhome.common.Constants.SELL_OR_RENT
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.REQUEST_CODE
-import com.example.myhome.data.*
+import com.example.myhome.data.State
+import com.example.myhome.data.UserInformation
 import com.example.myhome.feature.login.LoginOrSignUpActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.profile.UserViewModel
+import com.example.myhome.services.UriToUploadable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -27,12 +32,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import com.example.myhome.services.UriToUploadable
 import java.util.*
 
-
 class NewAdFragment : Fragment() {
-    val bannerViewModel: BannerViewModel by viewModel {
+    private val bannerViewModel: BannerViewModel by viewModel {
         parametersOf(
             CATEGORY,
             SELL_OR_RENT,
@@ -41,7 +44,7 @@ class NewAdFragment : Fragment() {
             0
         )
     }
-    val userViewModel: UserViewModel by viewModel()
+    private val userViewModel: UserViewModel by viewModel()
     val compositeDisposable = CompositeDisposable()
 
     var userId: Int? = null
@@ -80,7 +83,7 @@ class NewAdFragment : Fragment() {
         }
     }
 
-    fun getUserId() {
+    private fun getUserId() {
         userViewModel.getUser(userViewModel.phoneNumber)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -91,7 +94,7 @@ class NewAdFragment : Fragment() {
             })
     }
 
-    fun addBanner() {
+    private fun addBanner() {
         //save new value in variable
         title = add_title.text.toString()
         description = add_description.text.toString()
@@ -157,7 +160,7 @@ class NewAdFragment : Fragment() {
             })
     }
 
-    fun clearAllField() {
+    private fun clearAllField() {
         //clear value
         add_title.setText("")
         add_description.setText("")
@@ -200,7 +203,7 @@ class NewAdFragment : Fragment() {
     }
 
     private fun spinnerCategory() {
-        var sp = add_category
+        val sp = add_category
         val adapterCate = ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,
@@ -234,9 +237,8 @@ class NewAdFragment : Fragment() {
     }
 
     private fun checkAuthStateForAddBanner() {
-        //اگر کاربر وارد حساب کاربری نشه بود، قبل از ثبت آگهی باید وارد حساب خود شود
+        //check sign in before add Banner
         if (userViewModel.isSignIn) {
-            //show com.example.myhome.view
             showLayoutAdd.visibility = View.VISIBLE
             authBtn.visibility = View.GONE
             txtAlert.visibility = View.GONE
@@ -288,7 +290,7 @@ class NewAdFragment : Fragment() {
         super.onResume()
         checkAuthStateForAddBanner()
         userViewModel.refresh()
-        //موقعی که لوکیشن را از کاربر گرفتیم و به این فرگمنت برگشتیم مقدار را داخل کادر متنی موقعیت مکانی نشان دهد
+        //show location in editText
         add_location.setText(LOCATION)
     }
 

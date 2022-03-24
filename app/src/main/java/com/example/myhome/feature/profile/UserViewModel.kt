@@ -14,8 +14,10 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class UserViewModel(val userRepository: UserRepository, val bannerRepository: BannerRepository) :
-    MyHomeViewModel() {
+class UserViewModel(
+    private val userRepository: UserRepository,
+    private val bannerRepository: BannerRepository
+) : MyHomeViewModel() {
 
     init {
         getBanner()
@@ -41,7 +43,7 @@ class UserViewModel(val userRepository: UserRepository, val bannerRepository: Ba
         image: MultipartBody.Part?
     ): Single<State> = userRepository.editUser(id, phoneNumber, username, password, image)
 
-    fun getBanner() {
+    private fun getBanner() {
         bannerRepository.getBanners(0, 0, phoneNumber, "all", 0, 0)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

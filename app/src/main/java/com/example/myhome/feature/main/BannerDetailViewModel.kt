@@ -2,7 +2,7 @@ package com.example.myhome.feature.main
 
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.example.myhome.common.EXTRA_KEY_DATA
+import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.MyHomeViewModel
 import com.example.myhome.data.Banner
 

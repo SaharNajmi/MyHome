@@ -11,16 +11,20 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.example.myhome.R
-import com.example.myhome.common.BASE_URL
+import com.example.myhome.common.Constants.BASE_URL
+import com.example.myhome.common.Constants.CATEGORY
+import com.example.myhome.common.Constants.REQUEST_CODE
+import com.example.myhome.common.Constants.SELL_OR_RENT
 import com.example.myhome.common.MyHomeActivity
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.REQUEST_CODE
 import com.example.myhome.data.Banner
-import com.example.myhome.data.CATEGORY
-import com.example.myhome.data.SELL_OR_RENT
 import com.example.myhome.data.State
 import com.example.myhome.feature.favorite.FavoriteViewModel
 import com.example.myhome.feature.profile.UserViewModel
+import com.example.myhome.services.ImageLoadingService
+import com.example.myhome.services.UriToUploadable
+import com.example.myhome.view.scroll.ObservableScrollViewCallbacks
+import com.example.myhome.view.scroll.ScrollState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -37,16 +41,12 @@ import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import com.example.myhome.services.ImageLoadingService
-import com.example.myhome.services.UriToUploadable
-import com.example.myhome.view.scroll.ObservableScrollViewCallbacks
-import com.example.myhome.view.scroll.ScrollState
 import java.util.*
 
 class BannerDetailActivity : MyHomeActivity() {
 
-    val viewModel: UserViewModel by viewModel()
-    val bannerViewModel: BannerViewModel by viewModel {
+    private val viewModel: UserViewModel by viewModel()
+    private val bannerViewModel: BannerViewModel by viewModel {
         parametersOf(
             CATEGORY,
             SELL_OR_RENT,
@@ -55,9 +55,9 @@ class BannerDetailActivity : MyHomeActivity() {
             0
         )
     }
-    val favoriteViewModel: FavoriteViewModel by inject()
-    val bannerDetailViewModel: BannerDetailViewModel by viewModel { parametersOf(intent.extras) }
-    val imageLoadingService: ImageLoadingService by inject()
+    private val favoriteViewModel: FavoriteViewModel by inject()
+    private val bannerDetailViewModel: BannerDetailViewModel by viewModel { parametersOf(intent.extras) }
+    private val imageLoadingService: ImageLoadingService by inject()
     val compositeDisposable = CompositeDisposable()
     var bannerId: Int? = null
     var userId: Int? = null
@@ -88,11 +88,9 @@ class BannerDetailActivity : MyHomeActivity() {
         detailBanner()
 
         //How to display image when scroll page
-        //یعنی تمام کارهای یو انجام و محاسبه شده
         image_detail_banner.post {
             val imageHeight = image_detail_banner.height
 
-            //ای دی را داخل یه متغیر میزاریم که هر بار نره findviewbyid را کال کنه
             val mainInfoShow = mainInfoShow
             val mainInfoHide = mainInfoHide
 
@@ -112,7 +110,7 @@ class BannerDetailActivity : MyHomeActivity() {
                         mainInfoHide.alpha = 0f
                     }
 
-                    //سرعت بالا رفتن عکس نصف سرعت اسکرول خودمون باشه
+                    //سرعت بالا رفتن عکس نصف سرعت اسکرول پیش فرض
                     bannerImageView.translationY = scrollY.toFloat() / 2
 
                 }
@@ -127,7 +125,7 @@ class BannerDetailActivity : MyHomeActivity() {
         }
     }
 
-    fun detailBanner() {
+    private fun detailBanner() {
         bannerDetailViewModel.bannerLiveData.observe(this) {
 
         }
@@ -139,17 +137,17 @@ class BannerDetailActivity : MyHomeActivity() {
                 favorite = it.fav
                 checkFavorite(favorite)
 
-                val favbanner = it
+                val favoriteBanner = it
                 favoriteBtnDetailBanner.setOnClickListener {
-                    if (favorite) {
+                    favorite = if (favorite) {
                         favoriteBtnDetailBanner.setImageResource(R.drawable.ic_not_bookmarked)
-                        favoriteViewModel.deleteFavorites(favbanner)
-                        favorite = false
+                        favoriteViewModel.deleteFavorites(favoriteBanner)
+                        false
 
                     } else {
                         favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
-                        favoriteViewModel.addFavorites(favbanner)
-                        favorite = true
+                        favoriteViewModel.addFavorites(favoriteBanner)
+                        true
                     }
                 }
 
@@ -181,22 +179,21 @@ class BannerDetailActivity : MyHomeActivity() {
                 name_profile.text = it.username
                 imageLoadingService.load(image_profile, "$BASE_URL${it.userImage}")
 
-                //call with user
+                //call
                 user_phone.setOnClickListener {
                     Toast.makeText(this, phoneUser, Toast.LENGTH_SHORT).show()
                 }
 
-                /* اگه شماره موبایل این آگهی با شماره موبایل کاربری که لاگین کرده یکی  باشه یعنی
-                 این آگهی مال اونه پس باید بتونه ویرایش و حذف را انجام دهد*/
                 if (viewModel.phoneNumber == phoneUser) {
                     layout_edit_or_delete.visibility = View.VISIBLE
                     //favoriteBtnDetailBanner.visibility = View.GONE
 
-                    //edit banner user
+                    //edit banner
                     edit_banner.setOnClickListener {
                         editBanner()
                     }
-                    //delete banner user
+
+                    //delete banner
                     bannerId = it.id
 
                     delete_banner.setOnClickListener {
@@ -337,7 +334,7 @@ class BannerDetailActivity : MyHomeActivity() {
             this,
             android.R.layout.simple_spinner_item, arrayOf("فروش", "اجاره")
         )
-        //com.example.myhome.view dropdown
+        //set dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sp.adapter = adapterCate
 
@@ -366,7 +363,7 @@ class BannerDetailActivity : MyHomeActivity() {
             this,
             android.R.layout.simple_spinner_item, resources.getStringArray(R.array.array_category)
         )
-        //com.example.myhome.view dropdown
+        //set dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sp.adapter = adapterCate
 
@@ -389,7 +386,7 @@ class BannerDetailActivity : MyHomeActivity() {
             }
     }
 
-    fun checkFavorite(favorite: Boolean) {
+    private fun checkFavorite(favorite: Boolean) {
         if (favorite)
             favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
         else

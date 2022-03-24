@@ -10,8 +10,8 @@ import okhttp3.RequestBody
 import okio.Buffer
 
 class UserRepositoryImplement(
-    val userLocalDataSource: UserLocalDataSource,
-    val userRemoteDataSource: UserDataSource
+    private val userLocalDataSource: UserLocalDataSource,
+    private val userRemoteDataSource: UserDataSource
 ) : UserRepository {
     override fun login(phone: String, password: String): Single<State> =
         userRemoteDataSource.login(phone, password).doOnSuccess {
@@ -25,8 +25,7 @@ class UserRepositoryImplement(
         imageProfile: MultipartBody.Part?
     ): Single<State> =
         userRemoteDataSource.signUp(phoneNumber, username, password, imageProfile).flatMap {
-            //وقتی کاربر ثبتام میکنه هم ثبتنام انجام میشه هم لاگین
-            //.flatMap: برای اینکه چند تا رکوست با هم انجام بشه
+            //when user registers -> login and register successful
             userRemoteDataSource.login(
                 requestBodyToString(phoneNumber),
                 requestBodyToString(password)
@@ -56,8 +55,7 @@ class UserRepositoryImplement(
         image: MultipartBody.Part?
     ): Single<State> =
         userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
-            //وقتی کاربر پروفایلش را ویرایش کند هم ویرایش انجام میشه هم لاگین
-            //doFinally: برای اینکه چند تا رکوست با هم انجام بشه
+            //when user edits profile -> edit profile and login successful
             userRemoteDataSource.login(
                 requestBodyToString(phoneNumber),
                 requestBodyToString(password)
@@ -66,14 +64,14 @@ class UserRepositoryImplement(
             }
         }
 
-    fun onSuccessfulLogin(phone: String, login: State) {
+    private fun onSuccessfulLogin(phone: String, login: State) {
         LoginUpdate.update(login.state)
         userLocalDataSource.saveLogin(login.state)
         userLocalDataSource.savePhoneNumber(phone)
     }
 
     //convert requestBody To String
-    fun requestBodyToString(requestBody: RequestBody): String {
+    private fun requestBodyToString(requestBody: RequestBody): String {
         val buffer = Buffer()
         requestBody.writeTo(buffer)
         return buffer.readUtf8()

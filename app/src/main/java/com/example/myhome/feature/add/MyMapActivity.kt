@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myhome.R
+import com.example.myhome.common.Constants.LOCATION
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -15,7 +16,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.myhome.data.LOCATION
 import kotlinx.android.synthetic.main.layout_map.*
 import java.io.IOException
 import java.util.*
@@ -25,7 +25,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
 
     private var mMap: GoogleMap? = null
-    internal var marker: Marker? = null
+    private var marker: Marker? = null
 
     //latLng tehran
     val lat = 35.690599
@@ -37,8 +37,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         setContentView(R.layout.activity_my_map)
 
         if (serviceOk()) {
-            //اگه مپمون موجوده و به مشکلی نخوردیم توسط لایه فرگمنت مپ رو نمایش بده
-            // Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show()
+            //show map in layout
             setContentView(R.layout.layout_map)
             initMap()
         } else {
@@ -52,18 +51,22 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     }
 
-    fun serviceOk(): Boolean {
+    private fun serviceOk(): Boolean {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
         val check = googleApiAvailability.isGooglePlayServicesAvailable(this)
-        if (check == ConnectionResult.SUCCESS) return true
-        else if (googleApiAvailability.isUserResolvableError(check))
-            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
-        else
-            Toast.makeText(this, "no service", Toast.LENGTH_SHORT).show()
+        when {
+            check == ConnectionResult.SUCCESS -> return true
+            googleApiAvailability.isUserResolvableError(check) -> Toast.makeText(
+                this,
+                "error",
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> Toast.makeText(this, "no service", Toast.LENGTH_SHORT).show()
+        }
         return false
     }
 
-    fun initMap() {
+    private fun initMap() {
         if (mMap == null) {
             val mapFragment =
                 supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
@@ -71,14 +74,14 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    fun goToLocation(lat: Double, lng: Double, zoom: Float) {
+    private fun goToLocation(lat: Double, lng: Double, zoom: Float) {
         // Add a marker and move the camera
         val latLang = LatLng(lat, lng)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLang, zoom))
 
     }
 
-    fun searchLocation() {
+    private fun searchLocation() {
         if (!isMapReady)
             return
         val locationSearch: EditText = findViewById(R.id.et_search)
@@ -124,7 +127,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap = googleMap
         if (mMap != null) {
             Toast.makeText(this, "INIT", Toast.LENGTH_SHORT).show()
-            //رفتن به یک موقعیت خاص
+            //Go to Tehran location
             goToLocation(lat, lng, ZOOM)
 
             btn_search_location.setOnClickListener {
@@ -135,15 +138,14 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap!!.setOnMapLongClickListener(this)
     }
 
-    //با نگه داشتن روی نقشه لوکیشن آنجا قرار بگیرد و آدرس آنجا را به ما بدهد
     override fun onMapLongClick(latLng: LatLng) {
         if (marker == null) {
-            //اگه کاربر هیچ لوکیشنی انتخاب نکرده باشه
+            //No locations selected
             marker = mMap!!.addMarker(
                 MarkerOptions().position(latLng).title("user destination")
             )
         } else {
-            //مارکری که انتخاب شده روی لوکیشن جدید قرار بگیره
+            //new location
             marker!!.position = latLng
         }
 

@@ -1,7 +1,7 @@
 package com.example.myhome.services
 
-import com.facebook.drawee.view.SimpleDraweeView
 import com.example.myhome.view.MyHomeImageView
+import com.facebook.drawee.view.SimpleDraweeView
 
 class FrescoImageLoadingService : ImageLoadingService {
     override fun load(imageView: MyHomeImageView, imageUrl: String) {
