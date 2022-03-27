@@ -16,7 +16,7 @@
             android:layout_weight="2"
             android:background="@color/myBlue">
 
-            <view.MyHomeImageView
+            <com.example.myhome.view.MyHomeImageView
                 android:id="@+id/prf_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

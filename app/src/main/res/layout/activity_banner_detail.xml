@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="feature.main.BannerDetailActivity">
+    tools:context="com.example.myhome.feature.main.BannerDetailActivity">
 
-    <view.scroll.ObservableScrollView
+    <com.example.myhome.view.scroll.ObservableScrollView
         android:id="@+id/observableScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content">
 
 
-                <view.MyHomeImageView
+                <com.example.myhome.view.MyHomeImageView
                     android:id="@+id/image_detail_banner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,7 +183,7 @@ See the License for the specific language go
 limitations under the License.حات آگهی"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
         </LinearLayout>
-    </view.scroll.ObservableScrollView>
+    </com.example.myhome.view.scroll.ObservableScrollView>
 
 
     <RelativeLayout

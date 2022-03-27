@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/layout_radius">
 
-    <view.MyHomeImageView
+    <com.example.myhome.view.MyHomeImageView
         android:id="@+id/img_fav"
         app:roundedCornerRadius="10dp"
         android:layout_width="100dp"

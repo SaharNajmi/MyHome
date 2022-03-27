@@ -12,7 +12,7 @@
     android:background="@drawable/layout_radius"
     android:orientation="horizontal">
 
-    <view.MyHomeImageView
+    <com.example.myhome.view.MyHomeImageView
         android:id="@+id/image_profile"
         android:layout_width="60dp"
         android:layout_height="60dp"

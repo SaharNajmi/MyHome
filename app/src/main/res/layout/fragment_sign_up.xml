@@ -34,7 +34,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/white" />
 
-        <view.MyHomeImageView
+        <com.example.myhome.view.MyHomeImageView
             android:id="@+id/img_add"
             android:layout_width="90dp"
             android:layout_height="90dp"
