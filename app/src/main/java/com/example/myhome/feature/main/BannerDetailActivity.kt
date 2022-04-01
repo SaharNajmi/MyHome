@@ -3,12 +3,10 @@ package com.example.myhome.feature.main
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
@@ -17,17 +15,15 @@ import com.example.myhome.common.Constants.REQUEST_CODE
 import com.example.myhome.common.Constants.SELL_OR_RENT
 import com.example.myhome.common.MyHomeActivity
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.State
 import com.example.myhome.feature.favorite.FavoriteViewModel
 import com.example.myhome.feature.profile.UserViewModel
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
 import com.example.myhome.view.scroll.ObservableScrollViewCallbacks
 import com.example.myhome.view.scroll.ScrollState
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_banner_detail.*
 import kotlinx.android.synthetic.main.activity_banner_detail.view.*
 import kotlinx.android.synthetic.main.dialog_banner_edit.*
@@ -58,22 +54,20 @@ class BannerDetailActivity : MyHomeActivity() {
     private val favoriteViewModel: FavoriteViewModel by inject()
     private val bannerDetailViewModel: BannerDetailViewModel by viewModel { parametersOf(intent.extras) }
     private val imageLoadingService: ImageLoadingService by inject()
-    val compositeDisposable = CompositeDisposable()
-    var bannerId: Int? = null
-    var userId: Int? = null
-    lateinit var customLayout: View
-    var location = ""
-    var title = ""
-    var description = ""
-    var price = ""
-    var category: Int? = null
-    var sellOrRent: Int? = null
-    var homeSize: Int? = null
-    var numberOfRoom: Int? = null
-    var image: String = ""
+    private val compositeDisposable = CompositeDisposable()
+    private var bannerId: Int? = null
+    private var userId: Int? = null
+    private lateinit var customLayout: View
+    private var location = ""
+    private var title = ""
+    private var description = ""
+    private var price = ""
+    private var category: Int? = null
+    private var sellOrRent: Int? = null
+    private var homeSize: Int? = null
+    private var numberOfRoom: Int? = null
+    private var image: String = ""
     private var postImage: MultipartBody.Part? = null
-    private var imageUri: Uri? = null
-    var favorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,88 +120,81 @@ class BannerDetailActivity : MyHomeActivity() {
     }
 
     private fun detailBanner() {
-        bannerDetailViewModel.bannerLiveData.observe(this) {
+        bannerDetailViewModel.banner.observe(this) { banner ->
+            imageLoadingService.load(image_detail_banner, "$BASE_URL${banner.bannerImage}")
 
-        }
-        bannerDetailViewModel.bannerLiveData.observe(this,
-            Observer<Banner> {
-                imageLoadingService.load(image_detail_banner, "$BASE_URL${it.bannerImage}")
-
-                //favorite
-                favorite = it.fav
-                checkFavorite(favorite)
-
-                val favoriteBanner = it
-                favoriteBtnDetailBanner.setOnClickListener {
-                    favorite = if (favorite) {
-                        favoriteBtnDetailBanner.setImageResource(R.drawable.ic_not_bookmarked)
-                        favoriteViewModel.deleteFavorites(favoriteBanner)
-                        false
-
-                    } else {
-                        favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
-                        favoriteViewModel.addFavorites(favoriteBanner)
-                        true
-                    }
-                }
-
-                //save value in variable
-                userId = it.userID
-                bannerId = it.id
-                location = it.location
-                title = it.title
-                description = it.description
-                price = it.price
-                category = it.category
-                sellOrRent = it.sellOrRent
-                homeSize = it.homeSize
-                numberOfRoom = it.numberOfRooms
-                image = it.bannerImage
-
-                //show value in com.example.myhome.view
-                title_banner_show.text = it.title
-                txt_location_show.text = it.location
-                txt_number_of_rooms_show.text = it.numberOfRooms.toString()
-                txt_home_size_show.text = it.homeSize.toString()
-                price_banner_show.text = "قیمت: ${it.price} تومان "
-                title_banner_hide.text = it.title
-                txt_location_hide.text = it.location
-                txt_number_of_rooms_hide.text = it.numberOfRooms.toString()
-                txt_home_size_hide.text = it.homeSize.toString()
-                price_banner_hide.text = "قیمت: ${it.price} تومان "
-                val phoneUser = it.phone
-                name_profile.text = it.username
-                imageLoadingService.load(image_profile, "$BASE_URL${it.userImage}")
-
-                //call
-                user_phone.setOnClickListener {
-                    Toast.makeText(this, phoneUser, Toast.LENGTH_SHORT).show()
-                }
-
-                if (viewModel.phoneNumber == phoneUser) {
-                    layout_edit_or_delete.visibility = View.VISIBLE
-                    //favoriteBtnDetailBanner.visibility = View.GONE
-
-                    //edit banner
-                    edit_banner.setOnClickListener {
-                        editBanner()
-                    }
-
-                    //delete banner
-                    bannerId = it.id
-
-                    delete_banner.setOnClickListener {
-                        deleteBanner()
-                    }
-
+            //check favorite
+            checkFavorite(banner.fav)
+            favoriteBtnDetailBanner.setOnClickListener {
+                banner.fav = if (banner.fav) {
+                    favoriteBtnDetailBanner.setImageResource(R.drawable.ic_not_bookmarked)
+                    favoriteViewModel.deleteFavorites(banner)
+                    false
                 } else {
-                    layout_contact_us.visibility = View.VISIBLE
-                    //  favoriteBtnDetailBanner.visibility = View.VISIBLE
+                    favoriteBtnDetailBanner.setImageResource(R.drawable.ic_bookmarked)
+                    favoriteViewModel.addFavorites(banner)
+                    true
                 }
-            })
+            }
+
+            //save value in variable
+            userId = banner.userID
+            bannerId = banner.id
+            location = banner.location
+            title = banner.title
+            description = banner.description
+            price = banner.price
+            category = banner.category
+            sellOrRent = banner.sellOrRent
+            homeSize = banner.homeSize
+            numberOfRoom = banner.numberOfRooms
+            image = banner.bannerImage
+
+            //show value
+            title_banner_show.text = banner.title
+            desc_banner_show.text = banner.description
+            txt_location_show.text = banner.location
+            txt_number_of_rooms_show.text = banner.numberOfRooms.toString()
+            txt_home_size_show.text = banner.homeSize.toString()
+            price_banner_show.text = "قیمت: ${banner.price} تومان "
+            title_banner_hide.text = banner.title
+            txt_location_hide.text = banner.location
+            txt_number_of_rooms_hide.text = banner.numberOfRooms.toString()
+            txt_home_size_hide.text = banner.homeSize.toString()
+            price_banner_hide.text = "قیمت: ${banner.price} تومان "
+            val phoneUser = banner.phone
+            name_profile.text = banner.username
+            imageLoadingService.load(image_profile, "$BASE_URL${banner.userImage}")
+
+            //call
+            user_phone.setOnClickListener {
+                Toast.makeText(this, phoneUser, Toast.LENGTH_SHORT).show()
+            }
+
+            if (viewModel.phoneNumber == phoneUser) {
+                layout_edit_or_delete.visibility = View.VISIBLE
+                //favoriteBtnDetailBanner.visibility = View.GONE
+
+                //edit banner
+                edit_banner.setOnClickListener {
+                    editBanner()
+                }
+
+                //delete banner
+                bannerId = banner.id
+
+                delete_banner.setOnClickListener {
+                    deleteBanner()
+                }
+
+            } else {
+                layout_contact_us.visibility = View.VISIBLE
+                //  favoriteBtnDetailBanner.visibility = View.VISIBLE
+            }
+        }
     }
 
-    fun deleteBanner() {
+    private fun deleteBanner() {
         //create alert dialog
         AlertDialog.Builder(this)
             .setTitle("حذف آگهی")
@@ -216,8 +203,7 @@ class BannerDetailActivity : MyHomeActivity() {
             .setNegativeButton("خیر", null)
             .setPositiveButton("بله") { dialogInterface, which ->
                 bannerViewModel.deleteBanner(bannerId!!)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .asyncNetworkRequest()
                     .subscribe(object :
                         MyHomeSingleObserver<State>(compositeDisposable) {
                         override fun onSuccess(t: State) {
@@ -240,13 +226,14 @@ class BannerDetailActivity : MyHomeActivity() {
             .show()
     }
 
-    fun editBanner() {
+    private fun editBanner() {
         customLayout = layoutInflater.inflate(R.layout.dialog_banner_edit, null)
 
         //show old value in dialog box
         customLayout.edit_title.setText(title)
         customLayout.edit_location.setText(location)
-        customLayout.edit_price.setText(price)
+        //delete ',' from price
+        customLayout.edit_price.setText(price.filter(Char::isDigit))
         customLayout.edit_description.setText(description)
         customLayout.edit_home_size.setText(homeSize.toString())
         customLayout.edit_number_of_room.setText(numberOfRoom.toString())
@@ -302,8 +289,7 @@ class BannerDetailActivity : MyHomeActivity() {
                     homeSize!!,
                     numberOfRoom!!,
                     postImage
-                ).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                ).asyncNetworkRequest()
                     .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                         override fun onSuccess(t: State) {
                             if (t.state) {
@@ -397,9 +383,14 @@ class BannerDetailActivity : MyHomeActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val upload = UriToUploadable(this)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            imageUri = data?.data
+            val imageUri = data?.data
             customLayout.edit_banner_image.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
     }
 }

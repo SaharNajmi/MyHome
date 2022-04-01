@@ -7,10 +7,13 @@ import android.os.Bundle
 import androidx.room.Room
 import com.example.myhome.data.dp.AppDataBase
 import com.example.myhome.data.repository.BannerRepository
-import com.example.myhome.data.repository.BannerRepositoryImplement
+import com.example.myhome.data.repository.BannerRepositoryImpl
 import com.example.myhome.data.repository.UserRepository
-import com.example.myhome.data.repository.UserRepositoryImplement
+import com.example.myhome.data.repository.UserRepositoryImpl
 import com.example.myhome.data.repository.source.*
+import com.example.myhome.data.repository.source.local.UserLocalDataSource
+import com.example.myhome.data.repository.source.remote.BannerRemoteDataSource
+import com.example.myhome.data.repository.source.remote.UserRemoteDataSource
 import com.example.myhome.feature.favorite.FavoriteViewModel
 import com.example.myhome.feature.home.BannerListAdapter
 import com.example.myhome.feature.login.AuthViewModel
@@ -47,7 +50,7 @@ class App : Application() {
             single { Room.databaseBuilder(this@App, AppDataBase::class.java, "db_app").build() }
 
             factory<BannerRepository> {
-                BannerRepositoryImplement(
+                BannerRepositoryImpl(
                     BannerRemoteDataSource(get()),
                     get<AppDataBase>().bannerDao()
                 )
@@ -56,7 +59,7 @@ class App : Application() {
             factory { BannerListAdapter(get()) }
 
             single<UserRepository> {
-                UserRepositoryImplement(
+                UserRepositoryImpl(
                     UserLocalDataSource(get()),
                     UserRemoteDataSource(get())
                 )

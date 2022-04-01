@@ -1,7 +1,7 @@
 package com.example.myhome.data.repository.source
 
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,7 +26,7 @@ interface UserDataSource {
 
     fun getPhoneNumber(): String
 
-    fun getUser(phone: String): Single<UserInformation>
+    fun getUser(phone: String): Single<User>
 
     fun editUser(
         id: RequestBody,

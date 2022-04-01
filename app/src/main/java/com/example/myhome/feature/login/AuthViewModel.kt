@@ -1,7 +1,7 @@
 package com.example.myhome.feature.login
 
 import com.example.myhome.common.MyHomeViewModel
-import com.example.myhome.data.State
+import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.UserRepository
 import io.reactivex.Single
 import okhttp3.MultipartBody

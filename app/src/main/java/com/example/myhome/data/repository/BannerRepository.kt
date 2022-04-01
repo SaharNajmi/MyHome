@@ -1,7 +1,7 @@
 package com.example.myhome.data.repository
 
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody

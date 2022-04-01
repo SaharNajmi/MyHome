@@ -1,18 +1,17 @@
 package com.example.myhome.data.repository
 
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.source.BannerDataSource
-import com.example.myhome.data.repository.source.BannerLocalDataSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 
-class BannerRepositoryImplement(
+class BannerRepositoryImpl(
     private val bannerRemoteDataSource: BannerDataSource,
-    private val bannerLocalDataSource: BannerLocalDataSource
+    private val bannerLocalDataSource: BannerDataSource
 ) : BannerRepository {
 
     override fun getBanners(

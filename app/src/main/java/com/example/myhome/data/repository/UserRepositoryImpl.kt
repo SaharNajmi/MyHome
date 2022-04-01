@@ -1,16 +1,15 @@
 package com.example.myhome.data.repository
 
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import com.example.myhome.data.repository.source.UserDataSource
-import com.example.myhome.data.repository.source.UserLocalDataSource
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okio.Buffer
 
-class UserRepositoryImplement(
-    private val userLocalDataSource: UserLocalDataSource,
+class UserRepositoryImpl(
+    private val userLocalDataSource: UserDataSource,
     private val userRemoteDataSource: UserDataSource
 ) : UserRepository {
     override fun login(phone: String, password: String): Single<State> =
@@ -44,7 +43,7 @@ class UserRepositoryImplement(
 
     override fun getPhoneNumber(): String = userLocalDataSource.getPhoneNumber()
 
-    override fun getUser(phone: String): Single<UserInformation> =
+    override fun getUser(phone: String): Single<User> =
         userRemoteDataSource.getUser(phone)
 
     override fun editUser(
@@ -75,6 +74,5 @@ class UserRepositoryImplement(
         val buffer = Buffer()
         requestBody.writeTo(buffer)
         return buffer.readUtf8()
-
     }
 }

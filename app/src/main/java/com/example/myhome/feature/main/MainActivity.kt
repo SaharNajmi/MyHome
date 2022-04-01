@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.myhome.R
+import com.example.myhome.common.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.sevenlearn.nikestore.common.setupWithNavController
 import kotlinx.android.synthetic.main.bottom_nav_with_fab.*
 
 class MainActivity : AppCompatActivity() {

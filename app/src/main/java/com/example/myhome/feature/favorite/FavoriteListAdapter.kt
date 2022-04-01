@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
-import com.example.myhome.data.Banner
+import com.example.myhome.data.model.Banner
 import com.example.myhome.services.ImageLoadingService
 import kotlinx.android.synthetic.main.item_favorite_banner.view.*
 

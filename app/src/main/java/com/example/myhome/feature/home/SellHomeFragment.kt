@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
@@ -15,7 +15,7 @@ import com.example.myhome.common.Constants.HOME_SIZE
 import com.example.myhome.common.Constants.NUMBER_OF_ROOM
 import com.example.myhome.common.Constants.PRICE
 import com.example.myhome.common.MyHomeFragment
-import com.example.myhome.data.Banner
+import com.example.myhome.data.model.Banner
 import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
@@ -27,7 +27,7 @@ import org.koin.core.parameter.parametersOf
 
 class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
     private var SELL_OR_RENT = 1
-    val bannerArrayList: BannerListAdapter by inject()
+    private val bannerArrayList: BannerListAdapter by inject()
 
     private val bannerViewModel by viewModel<BannerViewModel>() {
         parametersOf(
@@ -53,61 +53,47 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //get value text search in another fragment
-        searchView()
+        //show/hide progressBar
+        bannerViewModel.progress.observe((viewLifecycleOwner)) {
+            setProgress(it)
+        }
+
+        //get text search in another fragment
+        shareViewModel.search.observe(requireActivity()) {
+            bannerArrayList.filter.filter(it)
+        }
 
         //get category in another fragment -> get Data between Fragments
-        chaneCategory()
+        shareViewModel.category.observe(requireActivity()) {
+            bannerViewModel.chaneCategory(it)
+        }
 
         //filter banner list
-        filterList()
+        shareViewModel.filter.observe(requireActivity()) {
+            bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
+        }
 
         //setOnClickListener item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
-        //show banner in recyclerView
-        recycler_view_sell.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        recycler_view_sell.adapter = bannerArrayList
+        //show all banners
+        getBanners()
+    }
 
-        bannerViewModel.bannerLiveData.observe(viewLifecycleOwner, object : Observer<List<Banner>> {
-            override fun onChanged(t: List<Banner>?) {
-                if (t!!.isNotEmpty()) {
-                    bannerArrayList.banner = t as ArrayList<Banner>
-                    recycler_view_sell.visibility = View.VISIBLE
-                    emptyLayout.visibility = View.GONE
+    private fun getBanners() {
+        bannerViewModel.banners.observe(viewLifecycleOwner) { banners ->
+            if (banners.isEmpty()) {
+                //show empty layout
+                showEmptyState(true)
+            } else {
+                bannerArrayList.banner = banners as ArrayList<Banner>
+                recycler_view_sell.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                recycler_view_sell.adapter = bannerArrayList
 
-                    //update list
-                    bannerArrayList.setData(t)
-
-
-                } else {
-                    emptyLayout.visibility = View.VISIBLE
-                }
+                showEmptyState(false)
             }
-        })
-
-    }
-
-    private fun chaneCategory() {
-        shareViewModel.getDataCategory().observe(requireActivity(),
-            Observer<Int> {
-                CATEGORY = it
-                bannerViewModel.chaneCategory(CATEGORY)
-            })
-    }
-
-    private fun searchView() {
-        shareViewModel.getDataSearch().observe(requireActivity(),
-            Observer<String> {
-                bannerArrayList.filter.filter(it!!)
-            })
-    }
-
-    private fun filterList() {
-        shareViewModel.getDataFilter().observe(requireActivity(), Observer<ArrayList<Any>> {
-            bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
-        })
+        }
     }
 
     override fun onBannerClick(banner: Banner) {
@@ -122,6 +108,6 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
 
     override fun onResume() {
         super.onResume()
-        bannerViewModel.refresh()
+        bannerViewModel.getBanner()
     }
 }

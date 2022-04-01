@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.myhome.feature.home.SellHomeFragment">
 
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty_view"
-        android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_sell"
         android:layout_width="match_parent"

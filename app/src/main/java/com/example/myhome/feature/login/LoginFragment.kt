@@ -8,17 +8,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.data.State
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.State
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
-    val compositeDisposable = CompositeDisposable()
-    val viewModel: AuthViewModel by viewModel()
+    private val compositeDisposable = CompositeDisposable()
+    private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +38,7 @@ class LoginFragment : Fragment() {
 
         loginBtn.setOnClickListener {
             viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .asyncNetworkRequest()
                 .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                     override fun onSuccess(t: State) {
                         if (t.state)
@@ -52,7 +50,6 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                     }
-
                 })
         }
     }

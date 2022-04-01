@@ -1,12 +1,13 @@
 package com.example.myhome.feature.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myhome.R
 import com.example.myhome.common.MyHomeCompletableObserver
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.MyHomeViewModel
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,35 +23,33 @@ class BannerViewModel(
     var price: String,
     var homeSize: Int,
     var numberOfRooms: Int
-) :
-    MyHomeViewModel() {
-    val bannerLiveData = MutableLiveData<List<Banner>>()
 
-    private val categoryLiveData = MutableLiveData<Int>()
-    private val categories = arrayOf(R.string.cate1, R.string.cate2, R.string.cate3, R.string.cate4)
+) : MyHomeViewModel() {
+
+    private val _progress = MutableLiveData<Boolean>()
+    val progress: LiveData<Boolean> = _progress
+
+    private val _banners = MutableLiveData<List<Banner>>()
+    val banners: LiveData<List<Banner>> = _banners
 
     init {
+        _progress.value = true
         getBanner()
-        categoryLiveData.value = categories[category]
     }
 
-    private fun getBanner() {
+    fun getBanner() {
         bannerRepository.getBanners(sellOrRent, category, "all", price, homeSize, numberOfRooms)
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
-                    bannerLiveData.value = t
+                    _progress.postValue(false)
+                    _banners.postValue(t)
                 }
             })
     }
 
-    fun refresh() {
-        getBanner()
-    }
-
     fun chaneCategory(cate: Int) {
         this.category = cate
-        this.categoryLiveData.value = categories[cate - 1]
         getBanner()
     }
 
@@ -134,10 +133,5 @@ class BannerViewModel(
                         Timber.i("delete fav")
                     }
                 })
-    }
-
-    fun <T> Single<T>.asyncNetworkRequest(): Single<T> {
-        return subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
     }
 }

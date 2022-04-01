@@ -1,11 +1,12 @@
-package com.example.myhome.data.repository.source
+package com.example.myhome.data.repository.source.local
 
 import android.content.SharedPreferences
 import com.example.myhome.common.Constants.LOGIN
 import com.example.myhome.common.Constants.PHONE
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import com.example.myhome.data.repository.LoginUpdate
+import com.example.myhome.data.repository.source.UserDataSource
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -47,7 +48,7 @@ class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : Us
 
     override fun getPhoneNumber(): String = sharedPreferences.getString(PHONE, "") ?: ""
 
-    override fun getUser(phone: String): Single<UserInformation> {
+    override fun getUser(phone: String): Single<User> {
         TODO("Not yet implemented")
     }
 

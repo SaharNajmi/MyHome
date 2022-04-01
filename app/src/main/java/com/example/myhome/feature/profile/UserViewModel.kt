@@ -1,16 +1,16 @@
 package com.example.myhome.feature.profile
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.MyHomeViewModel
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
 import com.example.myhome.data.repository.LoginUpdate
 import com.example.myhome.data.repository.UserRepository
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -23,7 +23,8 @@ class UserViewModel(
         getBanner()
     }
 
-    val bannerLiveData = MutableLiveData<List<Banner>>()
+    private val _banners = MutableLiveData<List<Banner>>()
+    val banners: LiveData<List<Banner>> = _banners
 
     val isSignIn: Boolean
         get() = LoginUpdate.login != false
@@ -43,19 +44,13 @@ class UserViewModel(
         image: MultipartBody.Part?
     ): Single<State> = userRepository.editUser(id, phoneNumber, username, password, image)
 
-    private fun getBanner() {
+    fun getBanner() {
         bannerRepository.getBanners(0, 0, phoneNumber, "all", 0, 0)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
-                    bannerLiveData.value = t
+                    _banners.postValue(t)
                 }
             })
     }
-
-    fun refresh() {
-        getBanner()
-    }
-
 }

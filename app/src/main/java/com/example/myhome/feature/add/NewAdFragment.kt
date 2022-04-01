@@ -2,7 +2,6 @@ package com.example.myhome.feature.add
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -18,15 +17,14 @@ import com.example.myhome.common.Constants.LOCATION
 import com.example.myhome.common.Constants.REQUEST_CODE
 import com.example.myhome.common.Constants.SELL_OR_RENT
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import com.example.myhome.feature.login.LoginOrSignUpActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.profile.UserViewModel
 import com.example.myhome.services.UriToUploadable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_new_ad.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,20 +43,11 @@ class NewAdFragment : Fragment() {
         )
     }
     private val userViewModel: UserViewModel by viewModel()
-    val compositeDisposable = CompositeDisposable()
-
-    var userId: Int? = null
-    var category = 0
-    var sellOrRent = 0
-    var homeSize: Int? = null
-    var numberOfRoom: Int? = null
-    var location = ""
-    var title = ""
-    var description = ""
-    var price = ""
-    var image: String = ""
+    private val compositeDisposable = CompositeDisposable()
+    private var userId: Int? = null
+    private var category = 0
+    private var sellOrRent = 0
     private var postImage: MultipartBody.Part? = null
-    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,10 +74,9 @@ class NewAdFragment : Fragment() {
 
     private fun getUserId() {
         userViewModel.getUser(userViewModel.phoneNumber)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : MyHomeSingleObserver<UserInformation>(compositeDisposable) {
-                override fun onSuccess(t: UserInformation) {
+            .asyncNetworkRequest()
+            .subscribe(object : MyHomeSingleObserver<User>(compositeDisposable) {
+                override fun onSuccess(t: User) {
                     userId = t.id
                 }
             })
@@ -96,12 +84,12 @@ class NewAdFragment : Fragment() {
 
     private fun addBanner() {
         //save new value in variable
-        title = add_title.text.toString()
-        description = add_description.text.toString()
-        price = add_price.text.toString()
-        location = add_location.text.toString()
-        homeSize = add_home_size.text.toString().toInt()
-        numberOfRoom = add_number_of_room.text.toString().toInt()
+        val title = add_title.text.toString()
+        val description = add_description.text.toString()
+        val price = add_price.text.toString()
+        val location = add_location.text.toString()
+        val homeSize = add_home_size.text.toString().toInt()
+        val numberOfRoom = add_number_of_room.text.toString().toInt()
 
 
         bannerViewModel.addBanner(
@@ -124,11 +112,10 @@ class NewAdFragment : Fragment() {
             ),
             category,
             sellOrRent,
-            homeSize!!,
-            numberOfRoom!!,
+            homeSize,
+            numberOfRoom,
             postImage
-        ).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        ).asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                 override fun onSuccess(t: State) {
                     if (t.state) {
@@ -179,7 +166,7 @@ class NewAdFragment : Fragment() {
             requireContext(),
             android.R.layout.simple_spinner_item, arrayOf("فروش", "اجاره")
         )
-        //com.example.myhome.view dropdown
+        //dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sp.adapter = adapterCate
 
@@ -209,7 +196,7 @@ class NewAdFragment : Fragment() {
             android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.array_category)
         )
-        //com.example.myhome.view dropdown
+        //spinner dropdown
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sp.adapter = adapterCate
 
@@ -289,7 +276,7 @@ class NewAdFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkAuthStateForAddBanner()
-        userViewModel.refresh()
+        userViewModel.getBanner()
         //show location in editText
         add_location.setText(LOCATION)
     }
@@ -298,7 +285,7 @@ class NewAdFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val upload = UriToUploadable(requireActivity())
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            imageUri = data?.data
+            val imageUri = data?.data
             add_banner_image.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
