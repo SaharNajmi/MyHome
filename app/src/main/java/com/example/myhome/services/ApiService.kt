@@ -1,9 +1,9 @@
 package com.example.myhome.services
 
 import com.example.myhome.common.Constants.BASE_URL
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -15,7 +15,7 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET("getBanner.php")
-    fun getAllBanner(
+    fun getBanners(
         @Query("sellOrRent") sellOrRent: Int,
         @Query("category") category: Int,
         @Query("phoneNumber") phone: String,
@@ -44,7 +44,7 @@ interface ApiService {
     @GET("getUserUsingPhone.php")
     fun getUser(
         @Query("phoneNumber") phoneNumber: String
-    ): Single<UserInformation>
+    ): Single<User>
 
     @Multipart
     @POST("editUser.php")

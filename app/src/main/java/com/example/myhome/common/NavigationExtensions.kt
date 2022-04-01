@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sevenlearn.nikestore.common
+package com.example.myhome.common
 
 import android.content.Intent
 import android.util.SparseArray
@@ -41,7 +41,7 @@ fun BottomNavigationView.setupWithNavController(
 
     // Map of tags
     val graphIdToTagMap = SparseArray<String>()
-    // Result. Mutable live com.example.myhome.data with the selected controlled
+    //selected NavController
     val selectedNavController = MutableLiveData<NavController>()
 
     var firstFragmentGraphId = 0

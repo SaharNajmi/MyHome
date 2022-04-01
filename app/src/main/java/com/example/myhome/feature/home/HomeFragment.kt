@@ -19,23 +19,21 @@ import kotlinx.android.synthetic.main.layout_category.*
 import kotlinx.android.synthetic.main.layout_search_view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-
 class HomeFragment : Fragment(), View.OnClickListener {
-
     private val shareViewModel by sharedViewModel<ShareViewModel>()
-    var price = "all"
-    var homeSize = 0
-    var numberOfRooms = 0
-    var saveStatePrice = 0
-    var saveStateHomeSize = 0
+    private var price = "all"
+    private var homeSize = 0
+    private var numberOfRooms = 0
+    private var saveStatePrice = 0
+    private var saveStateHomeSize = 0
 
-    lateinit var seekBarPrice: SeekBar
-    lateinit var seekBarHomeSize: SeekBar
-    lateinit var radioGroup: RadioGroup
-    lateinit var radioButton1: RadioButton
-    lateinit var radioButton2: RadioButton
-    lateinit var radioButton3: RadioButton
-    lateinit var radioButton4: RadioButton
+    private lateinit var seekBarPrice: SeekBar
+    private lateinit var seekBarHomeSize: SeekBar
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var radioButton1: RadioButton
+    private lateinit var radioButton2: RadioButton
+    private lateinit var radioButton3: RadioButton
+    private lateinit var radioButton4: RadioButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,25 +70,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
                 //send Data between Fragments
-                shareViewModel.setDataCategory(1)
+                shareViewModel.changeCategory(1)
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
-                shareViewModel.setDataCategory(2)
+                shareViewModel.changeCategory(2)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_3.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
-                shareViewModel.setDataCategory(3)
+                shareViewModel.changeCategory(3)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
-                shareViewModel.setDataCategory(4)
+                shareViewModel.changeCategory(4)
                 radio_button_cate_1.isChecked = false
                 radio_button_cate_2.isChecked = false
                 radio_button_cate_3.isChecked = false
@@ -106,7 +104,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                shareViewModel.setDataSearch(newText!!)
+                shareViewModel.changeTextSearch(newText!!)
                 return true
             }
         })

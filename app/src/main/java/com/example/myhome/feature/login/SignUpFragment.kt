@@ -2,7 +2,6 @@ package com.example.myhome.feature.login
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.data.State
+import com.example.myhome.data.model.State
 import com.example.myhome.services.UriToUploadable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,13 +22,12 @@ import okhttp3.RequestBody
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
+
 class SignUpFragment : Fragment() {
 
-    val viewModel: AuthViewModel by viewModel()
-    val compositeDisposable = CompositeDisposable()
-    var image: String = ""
+    private val viewModel: AuthViewModel by viewModel()
+    private val compositeDisposable = CompositeDisposable()
     private val pickImage = 100
-    private var imageUri: Uri? = null
     private var postImage: MultipartBody.Part? = null
 
     override fun onCreateView(
@@ -42,7 +40,6 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         //go to fragment login
         loginLinkBtn.setOnClickListener {
@@ -58,7 +55,7 @@ class SignUpFragment : Fragment() {
         }
 
         //default image add user
-        img_add.setImageResource(R.drawable.ic_add_a_photo)
+        // img_add.setImageResource(R.drawable.ic_add_photo)
 
         // sign up
         signUpBtn.setOnClickListener {
@@ -102,9 +99,14 @@ class SignUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val upload = UriToUploadable(requireActivity())
         if (resultCode == RESULT_OK && requestCode == pickImage) {
-            imageUri = data?.data
+            val imageUri = data?.data
             img_add.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
     }
 }

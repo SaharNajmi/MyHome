@@ -112,6 +112,7 @@
                     android:layout_below="@id/img_location_show"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="8dp"
@@ -123,65 +124,12 @@
                 android:id="@+id/desc_banner_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
-                android:text="توضیCopyright 2015 The RxAndroid authors
-you may not use this file except in compliance with the License.
-You may ocific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on anASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-d by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on anASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.حات آed under the License is distributed on anASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-d by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on anASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.حات آed under the License is distributed on anASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the LicenOR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language go
-    httpspecific language governing permissions and
-limitations under the License.حات آگهی"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="توضیحات" />
         </LinearLayout>
     </com.example.myhome.view.scroll.ObservableScrollView>
 

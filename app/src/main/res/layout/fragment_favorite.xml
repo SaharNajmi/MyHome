@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.myhome.feature.favorite.FavoriteFragment">
 
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty_view"
-        android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_fav"
         android:layout_width="match_parent"

@@ -23,14 +23,7 @@ import java.util.*
 
 class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
-
     private var mMap: GoogleMap? = null
-    private var marker: Marker? = null
-
-    //latLng tehran
-    val lat = 35.690599
-    val lng = 51.391692
-    val ZOOM: Float = 11F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,7 +121,9 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         if (mMap != null) {
             Toast.makeText(this, "INIT", Toast.LENGTH_SHORT).show()
             //Go to Tehran location
-            goToLocation(lat, lng, ZOOM)
+            val lat = 35.690599
+            val lng = 51.391692
+            goToLocation(lat, lng, 11F)
 
             btn_search_location.setOnClickListener {
                 searchLocation()
@@ -139,6 +134,8 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onMapLongClick(latLng: LatLng) {
+        var marker: Marker? = null
+
         if (marker == null) {
             //No locations selected
             marker = mMap!!.addMarker(
@@ -146,7 +143,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
             )
         } else {
             //new location
-            marker!!.position = latLng
+            marker.position = latLng
         }
 
         mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng), 300, null)

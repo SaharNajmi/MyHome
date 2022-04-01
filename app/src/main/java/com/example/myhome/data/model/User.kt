@@ -1,6 +1,6 @@
-package com.example.myhome.data
+package com.example.myhome.data.model
 
-data class UserInformation(
+data class User(
     val id: Int,
     val image: String,
     val password: String,

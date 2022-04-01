@@ -1,4 +1,4 @@
-package com.example.myhome.data
+package com.example.myhome.data.model
 
 import android.os.Parcelable
 import androidx.room.Entity

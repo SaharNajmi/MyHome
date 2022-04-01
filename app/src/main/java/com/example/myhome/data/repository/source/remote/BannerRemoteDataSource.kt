@@ -1,7 +1,8 @@
-package com.example.myhome.data.repository.source
+package com.example.myhome.data.repository.source.remote
 
-import com.example.myhome.data.Banner
-import com.example.myhome.data.State
+import com.example.myhome.data.model.Banner
+import com.example.myhome.data.model.State
+import com.example.myhome.data.repository.source.BannerDataSource
 import com.example.myhome.services.ApiService
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -17,7 +18,7 @@ class BannerRemoteDataSource(private val apiService: ApiService) : BannerDataSou
         homeSize: Int,
         numberOfRooms: Int
     ): Single<List<Banner>> =
-        apiService.getAllBanner(sellOrRent, category, phone, price, homeSize, numberOfRooms)
+        apiService.getBanners(sellOrRent, category, phone, price, homeSize, numberOfRooms)
 
 
     override fun deleteBanner(id: Int): Single<State> = apiService.deleteBanner(id)

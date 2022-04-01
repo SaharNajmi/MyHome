@@ -17,14 +17,13 @@ import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import com.example.myhome.feature.login.LoginOrSignUpActivity
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_user_edit.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MultipartBody
@@ -36,14 +35,12 @@ import java.util.*
 class ProfileFragment : MyHomeFragment() {
 
     private val viewModel: UserViewModel by viewModel()
-    val imageLoadingService: ImageLoadingService by inject()
-    val compositeDisposable = CompositeDisposable()
-    lateinit var customLayout: View
-    var userId: Int? = null
-    lateinit var phone: String
-    lateinit var username: String
-    var image: String = ""
-    var password: String = ""
+    private val imageLoadingService: ImageLoadingService by inject()
+    private val compositeDisposable = CompositeDisposable()
+    private lateinit var customLayout: View
+    private var userId: Int? = null
+    private var image: String = ""
+    private var password: String = ""
     private val pickImage = 100
     private var imageUri: Uri? = null
     private var postImage: MultipartBody.Part? = null
@@ -84,10 +81,9 @@ class ProfileFragment : MyHomeFragment() {
 
             //get user
             viewModel.getUser(viewModel.phoneNumber)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MyHomeSingleObserver<UserInformation>(compositeDisposable) {
-                    override fun onSuccess(t: UserInformation) {
+                .asyncNetworkRequest()
+                .subscribe(object : MyHomeSingleObserver<User>(compositeDisposable) {
+                    override fun onSuccess(t: User) {
                         userId = t.id
                         image = t.image
                         password = t.password
@@ -156,8 +152,8 @@ class ProfileFragment : MyHomeFragment() {
 
         //when click ok AlertDialog
         positiveButton.setOnClickListener {
-            phone = customLayout.phone.text.toString()
-            username = customLayout.username.text.toString()
+            val phone = customLayout.phone.text.toString()
+            val username = customLayout.username.text.toString()
 
             if (password == customLayout.old_password.text.toString()
                 && phone != ""
@@ -181,8 +177,7 @@ class ProfileFragment : MyHomeFragment() {
                         customLayout.new_password.text.toString()
                     ),
                     postImage
-                ).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                ).asyncNetworkRequest()
                     .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                         override fun onSuccess(t: State) {
                             if (t.state) {
@@ -226,5 +221,10 @@ class ProfileFragment : MyHomeFragment() {
     override fun onResume() {
         super.onResume()
         checkAuthState()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
     }
 }

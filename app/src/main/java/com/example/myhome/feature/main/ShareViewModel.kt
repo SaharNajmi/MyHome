@@ -1,30 +1,29 @@
 package com.example.myhome.feature.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class ShareViewModel : ViewModel() {
+    private val _category: MutableLiveData<Int> = MutableLiveData()
+    val category: LiveData<Int> = _category
 
-    private val mutableLiveDataCategory: MutableLiveData<Int> = MutableLiveData()
-    private val mutableLiveDataSearch: MutableLiveData<String> = MutableLiveData()
-    private val mutableLiveDataFilter: MutableLiveData<ArrayList<Any>> = MutableLiveData()
+    private val _search: MutableLiveData<String> = MutableLiveData()
+    val search: LiveData<String> = _search
 
-    fun setDataCategory(input: Int) {
-        mutableLiveDataCategory.value = input
+    private val _filter: MutableLiveData<ArrayList<Any>> = MutableLiveData()
+    val filter: LiveData<ArrayList<Any>> = _filter
+
+    fun changeCategory(categorySelected: Int) {
+        _category.value = categorySelected
     }
 
-    fun getDataCategory(): MutableLiveData<Int> = mutableLiveDataCategory
-
-    fun setDataSearch(input: String) {
-        mutableLiveDataSearch.value = input
+    fun changeTextSearch(input: String) {
+        _search.value = input
     }
-
-    fun getDataSearch(): MutableLiveData<String> = mutableLiveDataSearch
 
     fun setDataFilter(price: String, numberOfRooms: Int, homeSize: Int) {
         val array: ArrayList<Any> = arrayListOf(price, numberOfRooms, homeSize)
-        mutableLiveDataFilter.value = array
+        _filter.value = array
     }
-
-    fun getDataFilter() = mutableLiveDataFilter
 }

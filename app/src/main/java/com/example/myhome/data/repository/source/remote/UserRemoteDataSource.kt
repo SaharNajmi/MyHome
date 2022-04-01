@@ -1,7 +1,8 @@
-package com.example.myhome.data.repository.source
+package com.example.myhome.data.repository.source.remote
 
-import com.example.myhome.data.State
-import com.example.myhome.data.UserInformation
+import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
+import com.example.myhome.data.repository.source.UserDataSource
 import com.example.myhome.services.ApiService
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -38,7 +39,7 @@ class UserRemoteDataSource(private val apiService: ApiService) : UserDataSource 
         TODO("Not yet implemented")
     }
 
-    override fun getUser(phone: String): Single<UserInformation> = apiService.getUser(phone)
+    override fun getUser(phone: String): Single<User> = apiService.getUser(phone)
 
     override fun editUser(
         id: RequestBody,

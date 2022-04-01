@@ -8,13 +8,12 @@
     android:padding="5dp">
 
     <com.example.myhome.view.MyHomeImageView
-        app:roundedCornerRadius="12dp"
         android:id="@+id/image_banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="8dp"
         app:roundBottomRight="false"
-        app:backgroundImage="@drawable/myimage"
+        app:backgroundImage="@drawable/ic_photo"
         app:roundBottomLeft="false" />
 
     <ImageView
