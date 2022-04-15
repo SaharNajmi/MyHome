@@ -2,20 +2,20 @@ package com.example.myhome.feature.main
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.observe
 import com.example.myhome.R
+import com.example.myhome.common.*
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.Constants.CATEGORY
 import com.example.myhome.common.Constants.REQUEST_CODE
 import com.example.myhome.common.Constants.SELL_OR_RENT
-import com.example.myhome.common.MyHomeActivity
-import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.asyncNetworkRequest
 import com.example.myhome.data.model.State
 import com.example.myhome.feature.favorite.FavoriteViewModel
 import com.example.myhome.feature.profile.UserViewModel
@@ -57,7 +57,6 @@ class BannerDetailActivity : MyHomeActivity() {
     private val compositeDisposable = CompositeDisposable()
     private var bannerId: Int? = null
     private var userId: Int? = null
-    private lateinit var customLayout: View
     private var location = ""
     private var title = ""
     private var description = ""
@@ -116,6 +115,24 @@ class BannerDetailActivity : MyHomeActivity() {
                 }
 
             })
+        }
+
+        bannerViewModel.deleteBannerResult.observe(this) { result ->
+            when (result) {
+                is Result.Error -> {
+                    setProgress(false)
+                    showMessage("آگهی مورد نظر حذف شد ")
+                    finish()
+                }
+                is Result.Loading -> {
+                    setProgress(true)
+                }
+                is Result.Success -> {
+                    setProgress(false)
+                    showMessage("آگهی مورد نظر حذف شد ")
+                    finish()
+                }
+            }
         }
     }
 
@@ -195,39 +212,17 @@ class BannerDetailActivity : MyHomeActivity() {
     }
 
     private fun deleteBanner() {
-        //create alert dialog
         AlertDialog.Builder(this)
             .setTitle("حذف آگهی")
             .setMessage("آیا میخواهید این آگهی را حذف کنید؟")
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setNegativeButton("خیر", null)
-            .setPositiveButton("بله") { dialogInterface, which ->
-                bannerViewModel.deleteBanner(bannerId!!)
-                    .asyncNetworkRequest()
-                    .subscribe(object :
-                        MyHomeSingleObserver<State>(compositeDisposable) {
-                        override fun onSuccess(t: State) {
-                            if (t.state) {
-                                this@BannerDetailActivity.finish()
-                                Toast.makeText(
-                                    this@BannerDetailActivity,
-                                    "آگهی مورد نظر حذف شد ",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else
-                                Toast.makeText(
-                                    this@BannerDetailActivity,
-                                    "حذف با شکست مواجه شد!!!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                        }
-                    })
-            }
+            .setPositiveButton("بله") { _, _ -> bannerViewModel.deleteBanner(bannerId!!) }
             .show()
     }
 
     private fun editBanner() {
-        customLayout = layoutInflater.inflate(R.layout.dialog_banner_edit, null)
+        val customLayout = layoutInflater.inflate(R.layout.dialog_banner_edit, null)
 
         //show old value in dialog box
         customLayout.edit_title.setText(title)
@@ -249,13 +244,22 @@ class BannerDetailActivity : MyHomeActivity() {
         }
 
         //spinner select sell or rent
-        spinnerSellOrRent()
+        addSpinnerSellOrRent(parentView = customLayout)
         //spinner select category
-        spinnerCategory()
+        addSpinnerCategory(parentView = customLayout)
+
+        bannerViewModel.selectedImageUri.observe(this) { uri ->
+            customLayout?.let {
+                it.edit_banner_image.setImageURI(uri)
+            }
+        }
 
         //create alert dialog
         AlertDialog.Builder(this)
             .setView(customLayout)
+            .setOnDismissListener {
+                bannerViewModel.setImageUri(null)
+            }
             .setNegativeButton("خیر", null)
             .setPositiveButton("بله") { dialogInterface, which ->
 
@@ -270,18 +274,18 @@ class BannerDetailActivity : MyHomeActivity() {
                     bannerId!!,
                     userId!!,
                     RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
+                        MultipartBody.FORM,
                         title
                     ),
                     RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
+                        MultipartBody.FORM,
                         description
                     ),
                     RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
+                        MultipartBody.FORM,
                         price
                     ), RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
+                        MultipartBody.FORM,
                         location
                     ),
                     category!!,
@@ -314,8 +318,8 @@ class BannerDetailActivity : MyHomeActivity() {
             .show()
     }
 
-    private fun spinnerSellOrRent() {
-        val sp = customLayout.edit_sell_or_rent
+    private fun addSpinnerSellOrRent(parentView: View) {
+        val sp = parentView.edit_sell_or_rent
         val adapterCate = ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item, arrayOf("فروش", "اجاره")
@@ -343,8 +347,8 @@ class BannerDetailActivity : MyHomeActivity() {
             }
     }
 
-    private fun spinnerCategory() {
-        val sp = customLayout.edit_category
+    private fun addSpinnerCategory(parentView: View) {
+        val sp = parentView.edit_category
         val adapterCate = ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item, resources.getStringArray(R.array.array_category)
@@ -384,7 +388,7 @@ class BannerDetailActivity : MyHomeActivity() {
         val upload = UriToUploadable(this)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             val imageUri = data?.data
-            customLayout.edit_banner_image.setImageURI(imageUri)
+            imageUri?.let { bannerViewModel.setImageUri(it) }
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
     }

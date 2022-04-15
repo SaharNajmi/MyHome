@@ -1,16 +1,19 @@
 package com.example.myhome.feature.main
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myhome.common.MyHomeCompletableObserver
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.MyHomeViewModel
+import com.example.myhome.common.Result
 import com.example.myhome.common.asyncNetworkRequest
 import com.example.myhome.data.model.Banner
 import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,14 +29,16 @@ class BannerViewModel(
 
 ) : MyHomeViewModel() {
 
-    private val _progress = MutableLiveData<Boolean>()
-    val progress: LiveData<Boolean> = _progress
+    private val _deleteBannerResult = MutableLiveData<Result<State>>()
+    val deleteBannerResult: LiveData<Result<State>> = _deleteBannerResult
+
+    private val _selectedImageUri = MutableLiveData<Uri>()
+    val selectedImageUri: LiveData<Uri> = _selectedImageUri
 
     private val _banners = MutableLiveData<List<Banner>>()
     val banners: LiveData<List<Banner>> = _banners
 
     init {
-        _progress.value = true
         getBanner()
     }
 
@@ -42,7 +47,6 @@ class BannerViewModel(
             .asyncNetworkRequest()
             .subscribe(object : MyHomeSingleObserver<List<Banner>>(compositeDisposable) {
                 override fun onSuccess(t: List<Banner>) {
-                    _progress.postValue(false)
                     _banners.postValue(t)
                 }
             })
@@ -61,6 +65,23 @@ class BannerViewModel(
     }
 
     fun deleteBanner(id: Int) = bannerRepository.deleteBanner(id)
+        .asyncNetworkRequest()
+        .subscribe(object :
+            MyHomeSingleObserver<State>(compositeDisposable) {
+            override fun onSuccess(t: State) {
+                _deleteBannerResult.value = Result.Success(t)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                super.onSubscribe(d)
+                _deleteBannerResult.value = Result.Loading
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                _deleteBannerResult.value = Result.Error(e)
+            }
+        })
 
     fun editBanner(
         id: Int,
@@ -133,5 +154,9 @@ class BannerViewModel(
                         Timber.i("delete fav")
                     }
                 })
+    }
+
+    fun setImageUri(uri: Uri?) {
+        _selectedImageUri.value = uri
     }
 }
