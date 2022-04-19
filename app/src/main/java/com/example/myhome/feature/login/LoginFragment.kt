@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.State
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -41,14 +42,11 @@ class LoginFragment : Fragment() {
                 .asyncNetworkRequest()
                 .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                     override fun onSuccess(t: State) {
-                        if (t.state)
-                            requireActivity().finish()
-                        else
-                            Toast.makeText(
-                                requireContext(),
-                                "!شماره موبایل یا رمز عبور اشتباه است",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        if (t.state) {
+                            activity?.showMessage("ورود با موفقیت انجام شد")
+                            findNavController().navigate( LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
+                        } else
+                            activity?.showMessage("!شماره موبایل یا رمز عبور اشتباه است")
                     }
                 })
         }

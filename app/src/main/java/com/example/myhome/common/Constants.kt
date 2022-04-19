@@ -1,7 +1,7 @@
 package com.example.myhome.common
 
 object Constants {
-    const val BASE_URL = "http://192.168.43.145/myhome/"
+    const val BASE_URL = "http://192.168.43.144/myhome/"
     const val EXTRA_KEY_DATA = "data"
     const val LOGIN = "LOGIN"
     const val PHONE = "PHONE"

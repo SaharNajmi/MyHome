@@ -12,15 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.State
 import com.example.myhome.data.model.User
-import com.example.myhome.feature.login.LoginOrSignUpActivity
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
 import io.reactivex.disposables.CompositeDisposable
@@ -74,9 +74,9 @@ class ProfileFragment : MyHomeFragment() {
                 showDialogEditUser()
             }
 
-            //get user banner
+            //go UserBanner
             myBannerBtn.setOnClickListener {
-                startActivity(Intent(requireContext(), UserBannerActivity::class.java))
+                findNavController().navigate(ProfileFragmentDirections.actionProfileToUserBannerFragment())
             }
 
             //get user
@@ -111,12 +111,7 @@ class ProfileFragment : MyHomeFragment() {
             authBtn.text = getString(R.string.signIn)
             authBtn.setOnClickListener {
                 viewModel.signOut()
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        LoginOrSignUpActivity::class.java
-                    )
-                )
+                findNavController().navigate(ProfileFragmentDirections.actionProfileToLoginOrSignUp())
             }
 
         }
@@ -181,11 +176,7 @@ class ProfileFragment : MyHomeFragment() {
                     .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                         override fun onSuccess(t: State) {
                             if (t.state) {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "پروفایل با موفقیت آپدیت شد",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                activity?.showMessage("پروفایل با موفقیت آپدیت شد")
 
                                 //show update value
                                 prf_name.text = username
@@ -194,17 +185,11 @@ class ProfileFragment : MyHomeFragment() {
 
                                 dialog.dismiss()
                             } else
-                                Toast.makeText(
-                                    requireContext(),
-                                    "آپدیت با شکست مواجه شد!!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                activity?.showMessage("آپدیت با شکست مواجه شد!!")
                         }
                     })
-
             } else
-                Toast.makeText(requireContext(), "اطاعات ورودی اشتباه است!!!", Toast.LENGTH_SHORT)
-                    .show()
+                activity?.showMessage("اطاعات ورودی اشتباه است!!!")
         }
     }
 

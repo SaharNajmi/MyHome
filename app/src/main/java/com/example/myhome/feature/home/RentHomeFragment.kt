@@ -1,20 +1,17 @@
 package com.example.myhome.feature.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import com.example.myhome.common.Constants.CATEGORY
-import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
-import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
 import kotlinx.android.synthetic.main.fragment_rent_home.*
@@ -48,11 +45,6 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //show/hide progressBar
-        bannerViewModel.progress.observe((viewLifecycleOwner)) {
-            setProgress(it)
-        }
-
         //get value search in another fragment
         shareViewModel.search.observe(requireActivity()) {
             bannerArrayList.filter.filter(it)
@@ -62,13 +54,6 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         shareViewModel.category.observe(requireActivity()) {
             bannerViewModel.chaneCategory(it)
         }
-
-        if (shareViewModel.category.value != null)
-            Toast.makeText(
-                requireContext(),
-                shareViewModel.category.value!!.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
 
         //filter banner list
         shareViewModel.filter.observe(requireActivity()) {
@@ -100,9 +85,8 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     }
 
     override fun onBannerClick(banner: Banner) {
-        startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
-            putExtra(EXTRA_KEY_DATA, banner)
-        })
+        val direction = HomeFragmentDirections.actionHomeToBannerDetailFragment(banner)
+        findNavController().navigate(direction)
     }
 
     override fun onFavoriteBtnClick(banner: Banner) {

@@ -7,11 +7,13 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.MyHomeSingleObserver
+import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.State
+import com.example.myhome.feature.main.MainActivity
 import com.example.myhome.services.UriToUploadable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -78,18 +80,10 @@ class SignUpFragment : Fragment() {
                 .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
                     override fun onSuccess(t: State) {
                         if (t.state) {
-                            Toast.makeText(
-                                requireContext(),
-                                "ثبت نام با موفقیت انجام شد",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            requireActivity().finish()
+                            activity?.showMessage("ثبت نام با موفقیت انجام شد")
+                            findNavController().navigate(LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
                         } else
-                            Toast.makeText(
-                                requireContext(),
-                                "ثبت نام با شکست مواجه شد!!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            activity?.showMessage("ثبت نام با شکست مواجه شد!!")
                     }
                 })
         }
@@ -108,5 +102,13 @@ class SignUpFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //hideBottom Navigation
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)!!.hideBottomNavigation()
+        }
     }
 }

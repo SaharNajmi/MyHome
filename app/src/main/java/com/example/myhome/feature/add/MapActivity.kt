@@ -3,10 +3,10 @@ package com.example.myhome.feature.add
 import android.location.Geocoder
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myhome.R
 import com.example.myhome.common.Constants.LOCATION
+import com.example.myhome.common.showMessage
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,25 +21,21 @@ import java.io.IOException
 import java.util.*
 
 
-class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
+class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
     private var mMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_my_map)
+        setContentView(R.layout.activity_map)
 
         if (serviceOk()) {
             //show map in layout
             setContentView(R.layout.layout_map)
             initMap()
         } else {
-            Toast.makeText(
-                this,
-                "سرویس مپ در دسترس نیست اتصال خود را بررسی کنید!",
-                Toast.LENGTH_SHORT
-            ).show()
-            finish()
+            showMessage("سرویس مپ در دسترس نیست اتصال خود را بررسی کنید!")
+            // finish()
         }
 
     }
@@ -49,12 +45,8 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         val check = googleApiAvailability.isGooglePlayServicesAvailable(this)
         when {
             check == ConnectionResult.SUCCESS -> return true
-            googleApiAvailability.isUserResolvableError(check) -> Toast.makeText(
-                this,
-                "error",
-                Toast.LENGTH_SHORT
-            ).show()
-            else -> Toast.makeText(this, "no service", Toast.LENGTH_SHORT).show()
+            googleApiAvailability.isUserResolvableError(check) -> showMessage("error")
+            else -> showMessage("no service")
         }
         return false
     }
@@ -81,7 +73,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         val location = locationSearch.text.toString().trim()
 
         if (location == null || location == "") {
-            Toast.makeText(this, "pls enter location", Toast.LENGTH_SHORT).show()
+            showMessage("pls enter location")
         } else {
 
             Thread {
@@ -90,7 +82,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     val addressList = gCoder.getFromLocationName(location, 1)
                     if (addressList.size == 0)
-                        Toast.makeText(this, "آدرس پیدا نشد", Toast.LENGTH_SHORT).show()
+                        showMessage("آدرس پیدا نشد")
                     else {
                         val address = addressList!![0]
                         val latLng = LatLng(address.latitude, address.longitude)
@@ -119,7 +111,7 @@ class MyMapActivity : AppCompatActivity(), OnMapReadyCallback,
         isMapReady = true;
         mMap = googleMap
         if (mMap != null) {
-            Toast.makeText(this, "INIT", Toast.LENGTH_SHORT).show()
+            // showMessage("INIT")
             //Go to Tehran location
             val lat = 35.690599
             val lng = 51.391692

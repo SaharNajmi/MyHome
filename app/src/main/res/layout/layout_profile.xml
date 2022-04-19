@@ -13,7 +13,7 @@
     android:orientation="horizontal">
 
     <com.example.myhome.view.MyHomeImageView
-        android:id="@+id/image_profile"
+        android:id="@+id/user_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerVertical="true"
@@ -21,12 +21,12 @@
         app:roundAsCircle="true" />
 
     <TextView
-        android:id="@+id/name_profile"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_toRightOf="@id/image_profile"
+        android:layout_toRightOf="@id/user_image"
         android:padding="5dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         tools:text="Name" />

@@ -1,19 +1,17 @@
 package com.example.myhome.feature.favorite
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
-import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.MyHomeFragment
+import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.Banner
-import com.example.myhome.feature.main.BannerDetailActivity
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.layout_empty_view.*
 import org.koin.android.ext.android.get
@@ -54,14 +52,12 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
     }
 
     override fun onClick(banner: Banner) {
-        startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
-            putExtra(EXTRA_KEY_DATA, banner)
-        })
+        findNavController().navigate(FavoriteFragmentDirections.actionFavoriteToBannerDetailFragment(banner))
     }
 
     override fun deleteItemClick(banner: Banner) {
         favoriteViewModel.deleteFavorites(banner)
-        Toast.makeText(requireContext(), "آیتم از لیست علاقمندی حذف شد", Toast.LENGTH_SHORT).show()
+        activity?.showMessage("آیتم از لیست علاقمندی حذف شد")
     }
 
     override fun onResume() {

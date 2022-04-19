@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.Constants.CATEGORY
 import com.example.myhome.common.Constants.LOCATION
@@ -18,9 +18,9 @@ import com.example.myhome.common.Constants.REQUEST_CODE
 import com.example.myhome.common.Constants.SELL_OR_RENT
 import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.State
 import com.example.myhome.data.model.User
-import com.example.myhome.feature.login.LoginOrSignUpActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.profile.UserViewModel
 import com.example.myhome.services.UriToUploadable
@@ -66,7 +66,7 @@ class NewAdFragment : Fragment() {
             startActivity(
                 Intent(
                     requireContext(),
-                    MyMapActivity::class.java
+                    MapActivity::class.java
                 )
             )
         }
@@ -90,7 +90,6 @@ class NewAdFragment : Fragment() {
         val location = add_location.text.toString()
         val homeSize = add_home_size.text.toString().toInt()
         val numberOfRoom = add_number_of_room.text.toString().toInt()
-
 
         bannerViewModel.addBanner(
             userId!!,
@@ -130,19 +129,9 @@ class NewAdFragment : Fragment() {
                         add_sell_or_rent.setSelection(0)
                         add_banner_image.setImageResource(R.drawable.ic_add_photo)
 
-                        Toast.makeText(
-                            requireContext(),
-                            "آگهی مورد نظر ثبت شد و در انتظار بررسی است!!!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "ثبت آگهی با مشکل مواجه شد",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                        activity?.showMessage("آگهی مورد نظر ثبت شد و در انتظار بررسی است!!!")
+                    } else
+                        activity?.showMessage("ثبت آگهی با مشکل مواجه شد")
                 }
             })
     }
@@ -262,15 +251,9 @@ class NewAdFragment : Fragment() {
 
             //go login
             authBtn.setOnClickListener {
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        LoginOrSignUpActivity::class.java
-                    )
-                )
+                findNavController().navigate(NewAdFragmentDirections.actionAddToLoginOrSignUp())
             }
         }
-
     }
 
     override fun onResume() {

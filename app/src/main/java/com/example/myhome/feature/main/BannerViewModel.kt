@@ -3,11 +3,7 @@ package com.example.myhome.feature.main
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myhome.common.MyHomeCompletableObserver
-import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.MyHomeViewModel
-import com.example.myhome.common.Result
-import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.*
 import com.example.myhome.data.model.Banner
 import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
@@ -29,8 +25,15 @@ class BannerViewModel(
 
 ) : MyHomeViewModel() {
 
+    /* private val _progress = MutableLiveData<Boolean>()
+     val progress: LiveData<Boolean> = _progress*/
+
     private val _deleteBannerResult = MutableLiveData<Result<State>>()
     val deleteBannerResult: LiveData<Result<State>> = _deleteBannerResult
+
+    private val _editBannerResult = MutableLiveData<Result<State>>()
+    val editBannerResult: LiveData<Result<State>> = _editBannerResult
+
 
     private val _selectedImageUri = MutableLiveData<Uri>()
     val selectedImageUri: LiveData<Uri> = _selectedImageUri
@@ -73,13 +76,13 @@ class BannerViewModel(
             }
 
             override fun onSubscribe(d: Disposable) {
-                super.onSubscribe(d)
                 _deleteBannerResult.value = Result.Loading
+                super.onSubscribe(d)
             }
 
             override fun onError(e: Throwable) {
-                super.onError(e)
                 _deleteBannerResult.value = Result.Error(e)
+                super.onError(e)
             }
         })
 
@@ -95,7 +98,7 @@ class BannerViewModel(
         homeSize: Int,
         numberOfRooms: Int,
         image: MultipartBody.Part?
-    ): Single<State> = bannerRepository.editBanner(
+    ) = bannerRepository.editBanner(
         id,
         userID,
         title,
@@ -107,7 +110,23 @@ class BannerViewModel(
         homeSize,
         numberOfRooms,
         image
-    )
+    ).asyncNetworkRequest()
+        .subscribe(object :
+            MyHomeSingleObserver<State>(compositeDisposable) {
+            override fun onSuccess(t: State) {
+                _editBannerResult.value = Result.Success(t)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                _editBannerResult.value = Result.Loading
+                super.onSubscribe(d)
+            }
+
+            override fun onError(e: Throwable) {
+                _editBannerResult.value = Result.Error(e)
+                super.onError(e)
+            }
+        })
 
     fun addBanner(
         userID: Int,

@@ -1,22 +1,20 @@
 package com.example.myhome.feature.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import com.example.myhome.common.Constants.CATEGORY
-import com.example.myhome.common.Constants.EXTRA_KEY_DATA
 import com.example.myhome.common.Constants.HOME_SIZE
 import com.example.myhome.common.Constants.NUMBER_OF_ROOM
 import com.example.myhome.common.Constants.PRICE
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
-import com.example.myhome.feature.main.BannerDetailActivity
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
 import kotlinx.android.synthetic.main.fragment_sell_home.*
@@ -52,11 +50,6 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //show/hide progressBar
-        bannerViewModel.progress.observe((viewLifecycleOwner)) {
-            setProgress(it)
-        }
 
         //get text search in another fragment
         shareViewModel.search.observe(requireActivity()) {
@@ -97,9 +90,8 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     }
 
     override fun onBannerClick(banner: Banner) {
-        startActivity(Intent(requireContext(), BannerDetailActivity::class.java).apply {
-            putExtra(EXTRA_KEY_DATA, banner)
-        })
+        val direction = HomeFragmentDirections.actionHomeToBannerDetailFragment(banner)
+        findNavController().navigate(direction)
     }
 
     override fun onFavoriteBtnClick(banner: Banner) {

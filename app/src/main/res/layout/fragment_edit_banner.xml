@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/showLayoutAdd"
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutDirection="rtl"
@@ -13,36 +13,23 @@
         android:padding="8dp">
 
         <com.example.myhome.view.MyHomeImageView
-            android:id="@+id/add_banner_image"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:id="@+id/edit_banner_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            app:roundAsCircle="true"
-            app:srcCompat="@drawable/ic_add_photo" />
+            app:placeholderImage="@drawable/ic_add_photo"
+            app:roundAsCircle="true" />
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/edit_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <ImageView
-                android:id="@+id/btn_add_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                app:srcCompat="@drawable/ic_location" />
-
-            <EditText
-                android:id="@+id/add_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/btn_add_location"
-                android:hint="@string/location"
-                android:maxLength="100"
-                android:maxLines="1"
-                android:padding="5dp" />
-        </RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:padding="5dp"
+            app:drawableStartCompat="@drawable/ic_location" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,7 +40,7 @@
             android:textColor="@color/myBlue" />
 
         <Spinner
-            android:id="@+id/add_category"
+            android:id="@+id/edit_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -100,14 +87,14 @@
             android:weightSum="3">
 
             <Spinner
-                android:id="@+id/add_sell_or_rent"
+                android:id="@+id/edit_sell_or_rent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp" />
 
             <EditText
-                android:id="@+id/add_home_size"
+                android:id="@+id/edit_home_size"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -116,17 +103,18 @@
                 android:padding="5dp" />
 
             <EditText
-                android:id="@+id/add_number_of_room"
+                android:id="@+id/edit_number_of_room"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
                 android:maxLength="2"
+                android:maxLines="1"
                 android:padding="5dp" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/add_title"
+            android:id="@+id/edit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -135,12 +123,13 @@
             android:maxLines="1"
             android:padding="5dp" />
 
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="160dp">
 
             <EditText
-                android:id="@+id/add_description"
+                android:id="@+id/edit_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -150,7 +139,7 @@
         </ScrollView>
 
         <EditText
-            android:id="@+id/add_price"
+            android:id="@+id/edit_price"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="25dp"
@@ -160,69 +149,16 @@
             android:maxLines="1"
             android:padding="5dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:gravity="center|bottom"
-            android:orientation="horizontal"
-            android:weightSum="2">
 
-            <Button
-                android:id="@+id/btn_add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/layout_radius_filter"
-                android:text="@string/addBanner"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/layout_radius_filter"
-                android:text="@string/clear"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/txtAlert"
-        style="@style/TextAppearance.AppCompat.Small"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_edit_banner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:text="قبل از ثبت آگهی باید وارد حساب خود شوید!"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/authBtn"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtAlert"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:layoutDirection="rtl"
-        android:text="@string/signIn"
-        android:textColor="@color/myBlue"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_sign_in" />
-
-</RelativeLayout>
-
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:background="@drawable/layout_radius_filter"
+        android:text="@string/editBanner"
+        android:textColor="@color/white" />
+</FrameLayout>
