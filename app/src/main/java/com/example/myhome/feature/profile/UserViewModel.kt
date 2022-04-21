@@ -7,6 +7,7 @@ import com.example.myhome.common.MyHomeViewModel
 import com.example.myhome.common.asyncNetworkRequest
 import com.example.myhome.data.model.Banner
 import com.example.myhome.data.model.State
+import com.example.myhome.data.model.User
 import com.example.myhome.data.repository.BannerRepository
 import com.example.myhome.data.repository.LoginUpdate
 import com.example.myhome.data.repository.UserRepository
@@ -21,7 +22,11 @@ class UserViewModel(
 
     init {
         getBanner()
+        getUser()
     }
+
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> = _user
 
     private val _banners = MutableLiveData<List<Banner>>()
     val banners: LiveData<List<Banner>> = _banners
@@ -34,7 +39,13 @@ class UserViewModel(
 
     fun signOut() = userRepository.signOut()
 
-    fun getUser(phone: String) = userRepository.getUser(phone)
+    private fun getUser() = userRepository.getUser(userRepository.getPhoneNumber())
+        .asyncNetworkRequest()
+        .subscribe(object : MyHomeSingleObserver<User>(compositeDisposable) {
+            override fun onSuccess(t: User) {
+                _user.value = t
+            }
+        })
 
     fun editUser(
         id: RequestBody,

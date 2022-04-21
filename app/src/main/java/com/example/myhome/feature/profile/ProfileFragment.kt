@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
@@ -20,7 +21,6 @@ import com.example.myhome.common.MyHomeSingleObserver
 import com.example.myhome.common.asyncNetworkRequest
 import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.State
-import com.example.myhome.data.model.User
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
 import io.reactivex.disposables.CompositeDisposable
@@ -80,23 +80,19 @@ class ProfileFragment : MyHomeFragment() {
             }
 
             //get user
-            viewModel.getUser(viewModel.phoneNumber)
-                .asyncNetworkRequest()
-                .subscribe(object : MyHomeSingleObserver<User>(compositeDisposable) {
-                    override fun onSuccess(t: User) {
-                        userId = t.id
-                        image = t.image
-                        password = t.password
+            viewModel.user.observe(requireActivity()) { user ->
+                userId = user.id
+                image = user.image
+                password = user.password
 
-                        //show values
-                        prf_phone.text = t.phone
-                        prf_name.text = t.username
-                        if (image != "")
-                            imageLoadingService.load(prf_image, "${BASE_URL}${image}")
-                        else
-                            prf_image.setImageResource(R.drawable.ic_profile)
-                    }
-                })
+                //show values
+                prf_phone.text = user.phone
+                prf_name.text = user.username
+                if (image != "")
+                    imageLoadingService.load(prf_image, "${BASE_URL}${image}")
+                else
+                    prf_image.setImageResource(R.drawable.ic_profile)
+            }
 
         } else {
             //unVisible items view

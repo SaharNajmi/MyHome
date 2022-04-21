@@ -7,7 +7,6 @@ import com.example.myhome.common.*
 import com.example.myhome.data.model.Banner
 import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -25,15 +24,14 @@ class BannerViewModel(
 
 ) : MyHomeViewModel() {
 
-    /* private val _progress = MutableLiveData<Boolean>()
-     val progress: LiveData<Boolean> = _progress*/
-
     private val _deleteBannerResult = MutableLiveData<Result<State>>()
     val deleteBannerResult: LiveData<Result<State>> = _deleteBannerResult
 
     private val _editBannerResult = MutableLiveData<Result<State>>()
     val editBannerResult: LiveData<Result<State>> = _editBannerResult
 
+    private val _addBannerResult = MutableLiveData<Result<State>>()
+    val addBannerResult: LiveData<Result<State>> = _addBannerResult
 
     private val _selectedImageUri = MutableLiveData<Uri>()
     val selectedImageUri: LiveData<Uri> = _selectedImageUri
@@ -139,7 +137,7 @@ class BannerViewModel(
         homeSize: Int,
         numberOfRooms: Int,
         image: MultipartBody.Part?
-    ): Single<State> = bannerRepository.addBanner(
+    ) = bannerRepository.addBanner(
         userID,
         title,
         description,
@@ -150,7 +148,24 @@ class BannerViewModel(
         homeSize,
         numberOfRooms,
         image
-    )
+    ).asyncNetworkRequest()
+        .subscribe(object :
+            MyHomeSingleObserver<State>(compositeDisposable) {
+            override fun onSuccess(t: State) {
+                if (t.state)
+                    _addBannerResult.value = Result.Success(t)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                _addBannerResult.value = Result.Loading
+                super.onSubscribe(d)
+            }
+
+            override fun onError(e: Throwable) {
+                _addBannerResult.value = Result.Error(e)
+                super.onError(e)
+            }
+        })
 
     fun addBannerToFavorite(banner: Banner) {
         if (banner.fav)

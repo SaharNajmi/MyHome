@@ -39,9 +39,9 @@
     </fragment>
     <fragment
         android:id="@+id/add"
-        android:name="com.example.myhome.feature.add.NewAdFragment"
+        android:name="com.example.myhome.feature.add.AddBannerFragment"
         android:label="NewAdFragment"
-        tools:layout="@layout/fragment_new_ad">
+        tools:layout="@layout/fragment_add_banner">
         <action
             android:id="@+id/action_add_to_loginOrSignUp"
             app:destination="@id/loginOrSignUp" />
