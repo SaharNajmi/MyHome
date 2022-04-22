@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
-import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.MyHomeFragment
+import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
-import com.example.myhome.data.model.State
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LoginFragment : Fragment() {
+class LoginFragment : MyHomeFragment() {
 
-    private val compositeDisposable = CompositeDisposable()
     private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
@@ -37,23 +34,38 @@ class LoginFragment : Fragment() {
             }.commit()
         }
 
+        //login
         loginBtn.setOnClickListener {
-            viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
-                .asyncNetworkRequest()
-                .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
-                    override fun onSuccess(t: State) {
-                        if (t.state) {
-                            activity?.showMessage("ورود با موفقیت انجام شد")
-                            findNavController().navigate( LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
-                        } else
-                            activity?.showMessage("!شماره موبایل یا رمز عبور اشتباه است")
-                    }
-                })
+            if (phoneEt.text.toString().trim().isNotEmpty() &&
+                passwordEt.text.toString().trim().isNotEmpty()
+            )
+                viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
+            else
+                context?.showMessage("لطفا تمامی فیلدها را پر کنید")
         }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
+        viewModel.loginResult.observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Success -> {
+                    setProgress(false)
+
+                    if (result.data.state) {
+                        activity?.showMessage("ورود با موفقیت انجام شد")
+                        findNavController().navigate(LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
+                    } else
+                        activity?.showMessage("شماره موبایل یا رمز عبور اشتباه است")
+
+                }
+                is Result.Loading -> {
+                    setProgress(true)
+                }
+
+                is Result.Error -> {
+                    setProgress(false)
+                    context?.showMessage("مشکل در اتصال به اینترنت")
+                }
+            }
+        }
+
     }
 }

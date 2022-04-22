@@ -7,17 +7,15 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
-import com.example.myhome.common.MyHomeSingleObserver
+import com.example.myhome.common.MyHomeFragment
+import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
-import com.example.myhome.data.model.State
 import com.example.myhome.feature.main.MainActivity
 import com.example.myhome.services.UriToUploadable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,7 +23,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 
-class SignUpFragment : Fragment() {
+class SignUpFragment : MyHomeFragment() {
 
     private val viewModel: AuthViewModel by viewModel()
     private val compositeDisposable = CompositeDisposable()
@@ -56,36 +54,51 @@ class SignUpFragment : Fragment() {
             startActivityForResult(gallery, pickImage)
         }
 
-        //default image add user
-        // img_add.setImageResource(R.drawable.ic_add_photo)
-
         // sign up
         signUpBtn.setOnClickListener {
-            viewModel.signUp(
-                RequestBody.create(
-                    okhttp3.MultipartBody.FORM,
-                    phoneEt.text.toString()
-                ),
-                RequestBody.create(
-                    okhttp3.MultipartBody.FORM,
-                    usernameEt.text.toString()
-                ),
-                RequestBody.create(
-                    okhttp3.MultipartBody.FORM,
-                    passwordEt.text.toString()
-                ),
-                postImage
-            ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
-                    override fun onSuccess(t: State) {
-                        if (t.state) {
-                            activity?.showMessage("ثبت نام با موفقیت انجام شد")
-                            findNavController().navigate(LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
-                        } else
-                            activity?.showMessage("ثبت نام با شکست مواجه شد!!")
-                    }
-                })
+            if (phoneEt.text.toString().trim().isNotEmpty() &&
+                usernameEt.text.toString().trim().isNotEmpty() &&
+                passwordEt.text.toString().trim().isNotEmpty()
+            )
+                viewModel.signUp(
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        phoneEt.text.toString()
+                    ),
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        usernameEt.text.toString()
+                    ),
+                    RequestBody.create(
+                        okhttp3.MultipartBody.FORM,
+                        passwordEt.text.toString()
+                    ),
+                    postImage
+                )
+            else
+                context?.showMessage("لطفا تمامی فیلدها را پر کنید")
+        }
+
+        viewModel.signUpResult.observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Success -> {
+                    setProgress(false)
+
+                    if (result.data.state) {
+                        activity?.showMessage("ثبت نام با موفقیت انجام شد")
+                        findNavController().navigate(LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
+                    } else
+                        activity?.showMessage("ثبت نام با شکست مواجه شد!!")
+                }
+                is Result.Loading -> {
+                    setProgress(true)
+                }
+
+                is Result.Error -> {
+                    setProgress(false)
+                    context?.showMessage("مشکل در اتصال به اینترنت")
+                }
+            }
         }
     }
 
@@ -97,11 +110,6 @@ class SignUpFragment : Fragment() {
             img_add.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
     }
 
     override fun onResume() {
