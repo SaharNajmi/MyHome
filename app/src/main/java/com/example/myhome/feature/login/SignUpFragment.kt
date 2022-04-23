@@ -15,7 +15,6 @@ import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
 import com.example.myhome.feature.main.MainActivity
 import com.example.myhome.services.UriToUploadable
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,7 +25,6 @@ import java.util.*
 class SignUpFragment : MyHomeFragment() {
 
     private val viewModel: AuthViewModel by viewModel()
-    private val compositeDisposable = CompositeDisposable()
     private val pickImage = 100
     private var postImage: MultipartBody.Part? = null
 

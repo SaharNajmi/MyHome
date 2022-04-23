@@ -102,7 +102,11 @@ class BannerDetailFragment : MyHomeFragment() {
 
             //edit banner
             edit_banner.setOnClickListener {
-                findNavController().navigate(BannerDetailFragmentDirections.actionBannerDetailFragmentToEditBannerFragment(banner))
+                findNavController().navigate(
+                    BannerDetailFragmentDirections.actionBannerDetailFragmentToEditBannerFragment(
+                        banner
+                    )
+                )
             }
 
             //delete banner

@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.app.AlertDialog.BUTTON_POSITIVE
 import android.app.AlertDialog.Builder
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -17,13 +16,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.MyHomeFragment
-import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.asyncNetworkRequest
+import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
-import com.example.myhome.data.model.State
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.dialog_user_edit.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MultipartBody
@@ -36,13 +32,7 @@ class ProfileFragment : MyHomeFragment() {
 
     private val viewModel: UserViewModel by viewModel()
     private val imageLoadingService: ImageLoadingService by inject()
-    private val compositeDisposable = CompositeDisposable()
-    private lateinit var customLayout: View
-    private var userId: Int? = null
-    private var image: String = ""
-    private var password: String = ""
     private val pickImage = 100
-    private var imageUri: Uri? = null
     private var postImage: MultipartBody.Part? = null
 
     override fun onCreateView(
@@ -53,9 +43,46 @@ class ProfileFragment : MyHomeFragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //get user info
+        viewModel.user.observe(requireActivity()) { user ->
+            prf_phone.text = user.phone
+            prf_name.text = user.username
+
+            if (user.image != "")
+                imageLoadingService.load(prf_image, "${BASE_URL}${user.image}")
+            else
+                prf_image.setImageResource(R.drawable.ic_profile)
+        }
+
+        //edit user result
+        viewModel.editUserResult.observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Success -> {
+                    setProgress(false)
+
+                    if (result.data.state)
+                        activity?.showMessage("پروفایل با موفقیت آپدیت شد")
+                    else
+                        activity?.showMessage("آپدیت پروفایل با شکست مواجه شد")
+                }
+                is Result.Loading -> {
+                    setProgress(true)
+                }
+
+                is Result.Error -> {
+                    setProgress(false)
+                    context?.showMessage("مشکل در اتصال به اینترنت")
+                }
+            }
+        }
+
+    }
+
     private fun checkAuthState() {
         if (viewModel.isSignIn) {
-
             //visible items view
             edtBtn.visibility = View.VISIBLE
             myBannerBtn.visibility = View.VISIBLE
@@ -79,21 +106,6 @@ class ProfileFragment : MyHomeFragment() {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileToUserBannerFragment())
             }
 
-            //get user
-            viewModel.user.observe(requireActivity()) { user ->
-                userId = user.id
-                image = user.image
-                password = user.password
-
-                //show values
-                prf_phone.text = user.phone
-                prf_name.text = user.username
-                if (image != "")
-                    imageLoadingService.load(prf_image, "${BASE_URL}${image}")
-                else
-                    prf_image.setImageResource(R.drawable.ic_profile)
-            }
-
         } else {
             //unVisible items view
             prf_image.setImageResource(R.drawable.ic_profile)
@@ -115,7 +127,7 @@ class ProfileFragment : MyHomeFragment() {
 
     //edit user
     private fun showDialogEditUser() {
-        customLayout = layoutInflater.inflate(R.layout.dialog_user_edit, null)
+        val customLayout = layoutInflater.inflate(R.layout.dialog_user_edit, null)
 
         //create alert dialog
         val dialog: AlertDialog = Builder(requireContext())
@@ -124,14 +136,16 @@ class ProfileFragment : MyHomeFragment() {
             .setNegativeButton("انصراف", null)
             .show()
 
-        //prevent a dialog from closing when a button is clicked
         val positiveButton: Button = dialog.getButton(BUTTON_POSITIVE)
 
         //show old value in dialog box
         customLayout.username.setText(prf_name.text.toString())
         customLayout.phone.setText(prf_phone.text.toString())
-        if (image != "")
-            imageLoadingService.load(customLayout.edit_image, "${BASE_URL}${image}")
+        if (viewModel.user.value?.image != "")
+            imageLoadingService.load(
+                customLayout.edit_image,
+                "${BASE_URL}${viewModel.user.value?.image}"
+            )
         else
             customLayout.edit_image.setImageResource(R.drawable.ic_add_photo)
 
@@ -141,51 +155,37 @@ class ProfileFragment : MyHomeFragment() {
             startActivityForResult(gallery, pickImage)
         }
 
-        //when click ok AlertDialog
-        positiveButton.setOnClickListener {
-            val phone = customLayout.phone.text.toString()
-            val username = customLayout.username.text.toString()
+        viewModel.selectedImageUri.observe(requireActivity()) { uri ->
+            customLayout.edit_image.setImageURI(uri)
+        }
 
-            if (password == customLayout.old_password.text.toString()
-                && phone != ""
-                && username != ""
+        //edit user
+        positiveButton.setOnClickListener {
+            if (viewModel.user.value?.password == customLayout.old_password.text.toString().trim()
+                && customLayout.phone.text.toString().trim().isNotEmpty()
+                && customLayout.username.text.toString().trim().isNotEmpty()
             ) {
-                //Edit user when the input information is correct
                 viewModel.editUser(
                     RequestBody.create(
                         okhttp3.MultipartBody.FORM,
-                        userId.toString()
+                        viewModel.user.value?.id.toString()
                     ),
                     RequestBody.create(
                         okhttp3.MultipartBody.FORM,
-                        phone
+                        customLayout.phone.text.toString().trim()
                     ),
                     RequestBody.create(
                         okhttp3.MultipartBody.FORM,
-                        username
+                        customLayout.username.text.toString().trim()
                     ), RequestBody.create(
                         okhttp3.MultipartBody.FORM,
-                        customLayout.new_password.text.toString()
+                        customLayout.new_password.text.toString().trim()
                     ),
                     postImage
-                ).asyncNetworkRequest()
-                    .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
-                        override fun onSuccess(t: State) {
-                            if (t.state) {
-                                activity?.showMessage("پروفایل با موفقیت آپدیت شد")
-
-                                //show update value
-                                prf_name.text = username
-                                prf_phone.text = phone
-                                prf_image.setImageURI(imageUri)
-
-                                dialog.dismiss()
-                            } else
-                                activity?.showMessage("آپدیت با شکست مواجه شد!!")
-                        }
-                    })
+                )
+                dialog.dismiss()
             } else
-                activity?.showMessage("اطاعات ورودی اشتباه است!!!")
+                activity?.showMessage("اطلاعات ورودی اشتباه است")
         }
     }
 
@@ -193,8 +193,8 @@ class ProfileFragment : MyHomeFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val upload = UriToUploadable(requireActivity())
         if (resultCode == Activity.RESULT_OK && requestCode == pickImage) {
-            imageUri = data?.data
-            customLayout.edit_image.setImageURI(imageUri)
+            val imageUri = data?.data
+            imageUri?.let { viewModel.setImageUri(it) }
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
     }
@@ -202,10 +202,5 @@ class ProfileFragment : MyHomeFragment() {
     override fun onResume() {
         super.onResume()
         checkAuthState()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
     }
 }

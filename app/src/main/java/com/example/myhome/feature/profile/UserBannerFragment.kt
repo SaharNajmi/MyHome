@@ -62,7 +62,11 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
     }
 
     override fun onBannerClick(banner: Banner) {
-        findNavController().navigate( UserBannerFragmentDirections.actionUserBannerFragmentToBannerDetailFragment(banner))
+        findNavController().navigate(
+            UserBannerFragmentDirections.actionUserBannerFragmentToBannerDetailFragment(
+                banner
+            )
+        )
     }
 
     override fun onFavoriteBtnClick(banner: Banner) {

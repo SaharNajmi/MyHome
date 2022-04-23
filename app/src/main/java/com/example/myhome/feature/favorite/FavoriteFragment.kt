@@ -52,7 +52,11 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
     }
 
     override fun onClick(banner: Banner) {
-        findNavController().navigate(FavoriteFragmentDirections.actionFavoriteToBannerDetailFragment(banner))
+        findNavController().navigate(
+            FavoriteFragmentDirections.actionFavoriteToBannerDetailFragment(
+                banner
+            )
+        )
     }
 
     override fun deleteItemClick(banner: Banner) {

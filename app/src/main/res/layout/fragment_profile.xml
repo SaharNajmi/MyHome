@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -32,7 +33,7 @@
                 android:layout_below="@id/prf_image"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="@string/username"
+                tools:text="@string/username"
                 android:textColor="@color/white" />
 
             <TextView
@@ -43,9 +44,9 @@
                 android:layout_below="@id/prf_name"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="@string/phone"
                 android:textColor="@color/white"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="@string/phone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -95,4 +96,4 @@
 
 
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
