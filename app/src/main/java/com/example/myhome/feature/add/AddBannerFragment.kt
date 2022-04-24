@@ -65,7 +65,7 @@ class AddBannerFragment : MyHomeFragment() {
         //check sign in before add Banner
         if (userViewModel.isSignIn) {
             showLayoutAdd.visibility = View.VISIBLE
-            authBtn.visibility = View.GONE
+            auth_btn.visibility = View.GONE
             txtAlert.visibility = View.GONE
 
             //spinner select sell or rent
@@ -91,11 +91,11 @@ class AddBannerFragment : MyHomeFragment() {
             }
         } else {
             showLayoutAdd.visibility = View.GONE
-            authBtn.visibility = View.VISIBLE
+            auth_btn.visibility = View.VISIBLE
             txtAlert.visibility = View.VISIBLE
 
             //go login
-            authBtn.setOnClickListener {
+            auth_btn.setOnClickListener {
                 findNavController().navigate(AddBannerFragmentDirections.actionAddToLoginOrSignUp())
             }
         }

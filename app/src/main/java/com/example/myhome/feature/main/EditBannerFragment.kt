@@ -23,7 +23,6 @@ import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
 import kotlinx.android.synthetic.main.fragment_edit_banner.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -53,7 +52,7 @@ class EditBannerFragment : MyHomeFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: BannerDetailFragmentArgs by navArgs()
+        val args: EditBannerFragmentArgs by navArgs()
         banner = args.bannerDetail
 
         //show old values
@@ -107,21 +106,10 @@ class EditBannerFragment : MyHomeFragment() {
             bannerViewModel.editBanner(
                 banner.id,
                 banner.userID,
-                RequestBody.create(
-                    MultipartBody.FORM,
-                    edit_title.text.toString().trim()
-                ),
-                RequestBody.create(
-                    MultipartBody.FORM,
-                    edit_description.text.toString()
-                ),
-                RequestBody.create(
-                    MultipartBody.FORM,
-                    edit_price.text.toString()
-                ), RequestBody.create(
-                    MultipartBody.FORM,
-                    edit_location.text.toString()
-                ),
+                edit_title.text.toString().trim(),
+                edit_description.text.toString(),
+                edit_price.text.toString(),
+                edit_location.text.toString(),
                 edit_category.selectedItemPosition + 1,
                 edit_sell_or_rent.selectedItemPosition + 1,
                 edit_home_size.text.toString().toInt(),
@@ -129,7 +117,6 @@ class EditBannerFragment : MyHomeFragment() {
                 postImage
             )
         }
-
     }
 
     private fun itemSelectSpinnerCategory() {

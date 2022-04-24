@@ -27,6 +27,21 @@
         <action
             android:id="@+id/action_profile_to_loginOrSignUp"
             app:destination="@id/loginOrSignUp" />
+        <action
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/editProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfile"
+        android:name="com.example.myhome.feature.profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <action
+            android:id="@+id/action_editProfile_to_profile"
+            app:destination="@id/profile" />
+        <argument
+            android:name="UserDetail"
+            app:argType="com.example.myhome.data.model.User" />
     </fragment>
     <fragment
         android:id="@+id/favorite"

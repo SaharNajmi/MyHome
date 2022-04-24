@@ -1,6 +1,5 @@
 package com.example.myhome.feature.profile
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myhome.common.MyHomeSingleObserver
@@ -16,7 +15,6 @@ import com.example.myhome.data.repository.UserRepository
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class UserViewModel(
     private val userRepository: UserRepository,
@@ -43,9 +41,6 @@ class UserViewModel(
     private val _editUserResult = MutableLiveData<Result<State>>()
     val editUserResult: LiveData<Result<State>> = _editUserResult
 
-    private val _selectedImageUri = MutableLiveData<Uri>()
-    val selectedImageUri: LiveData<Uri> = _selectedImageUri
-
     fun signOut() = userRepository.signOut()
 
     private fun getUser() = userRepository.getUser(userRepository.getPhoneNumber())
@@ -57,10 +52,10 @@ class UserViewModel(
         })
 
     fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ) = userRepository.editUser(id, phoneNumber, username, password, image)
         .asyncNetworkRequest()
@@ -89,9 +84,5 @@ class UserViewModel(
                     _banners.postValue(t)
                 }
             })
-    }
-
-    fun setImageUri(uri: Uri?) {
-        _selectedImageUri.value = uri
     }
 }

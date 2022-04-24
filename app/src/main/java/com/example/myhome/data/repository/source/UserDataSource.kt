@@ -29,10 +29,10 @@ interface UserDataSource {
     fun getUser(phone: String): Single<User>
 
     fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ): Single<State>
 }

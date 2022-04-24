@@ -53,13 +53,12 @@ class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : Us
     }
 
     override fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ): Single<State> {
         TODO("Not yet implemented")
     }
-
 }

@@ -47,19 +47,19 @@ class UserRepositoryImpl(
         userRemoteDataSource.getUser(phone)
 
     override fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ): Single<State> =
         userRemoteDataSource.editUser(id, phoneNumber, username, password, image).flatMap {
             //when user edits profile -> edit profile and login successful
             userRemoteDataSource.login(
-                requestBodyToString(phoneNumber),
-                requestBodyToString(password)
+                phoneNumber,
+                password
             ).doOnSuccess {
-                onSuccessfulLogin(requestBodyToString(phoneNumber), it)
+                onSuccessfulLogin(phoneNumber, it)
             }
         }
 

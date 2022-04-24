@@ -211,7 +211,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/authBtn"
+        android:id="@+id/auth_btn"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
