@@ -7,21 +7,17 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.myhome.R
-import com.example.myhome.common.Constants
+import com.example.myhome.common.*
 import com.example.myhome.common.Constants.CATEGORY
 import com.example.myhome.common.Constants.SELL_OR_RENT
-import com.example.myhome.common.MyHomeFragment
-import com.example.myhome.common.Result
-import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.FragmentEditBannerBinding
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
-import kotlinx.android.synthetic.main.fragment_edit_banner.*
 import okhttp3.MultipartBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -29,6 +25,7 @@ import org.koin.core.parameter.parametersOf
 import java.util.*
 
 class EditBannerFragment : MyHomeFragment() {
+    private lateinit var binding: FragmentEditBannerBinding
     lateinit var banner: Banner
     private val imageLoadingService: ImageLoadingService by inject()
     private var postImage: MultipartBody.Part? = null
@@ -47,7 +44,8 @@ class EditBannerFragment : MyHomeFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_edit_banner, container, false)
+        binding = FragmentEditBannerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,24 +53,32 @@ class EditBannerFragment : MyHomeFragment() {
         val args: EditBannerFragmentArgs by navArgs()
         banner = args.bannerDetail
 
-        //show old values
-        edit_title.setText(banner.title)
-        edit_location.setText(banner.location)
-        //delete ',' from price
-        edit_price.setText(banner.price.filter(Char::isDigit))
-        edit_description.setText(banner.description)
-        edit_home_size.setText(banner.homeSize.toString())
-        edit_number_of_room.setText(banner.numberOfRooms.toString())
-        edit_category.setSelection(banner.category - 1)
-        edit_sell_or_rent.setSelection(banner.sellOrRent - 1)
+        //hideBottom Navigation
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)!!.hideBottomNavigation()
+        }
+
+        binding.apply {
+            //show old values
+            editTitle.setText(banner.title)
+            editLocation.setText(banner.location)
+            //delete ',' from price
+            editPrice.setText(banner.price.filter(Char::isDigit))
+            editDescription.setText(banner.description)
+            editHomeSize.setText(banner.homeSize.toString())
+            editNumberOfRoom.setText(banner.numberOfRooms.toString())
+            editCategory.setSelection(banner.category - 1)
+            editSellOrRent.setSelection(banner.sellOrRent - 1)
+        }
+
         if (banner.bannerImage != "")
             imageLoadingService.load(
-                edit_banner_image,
+                binding.editBannerImage,
                 "${Constants.BASE_URL}${banner.bannerImage}"
             )
 
         bannerViewModel.selectedImageUri.observe(requireActivity()) { uri ->
-            edit_banner_image.setImageURI(uri)
+            binding.editBannerImage.setImageURI(uri)
         }
 
         bannerViewModel.editBannerResult.observe(requireActivity()) { result ->
@@ -93,56 +99,37 @@ class EditBannerFragment : MyHomeFragment() {
         }
 
         //load image in gallery
-        edit_banner_image.setOnClickListener {
+        binding.editBannerImage.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, Constants.REQUEST_CODE)
         }
 
-        itemSelectSpinnerCategory()
-        itemSelectedSpinnerSellOrRent()
+        //spinner select sell or rent
+        itemSelectedSpinner(binding.editSellOrRent, requireContext(), arrayOf("فروش", "اجاره"))
+
+        //spinner select category
+        itemSelectedSpinner(
+            binding.editCategory,
+            requireContext(),
+            resources.getStringArray(R.array.array_category)
+        )
 
         //edit banner
-        btn_edit_banner.setOnClickListener {
+        binding.btnEditBanner.setOnClickListener {
             bannerViewModel.editBanner(
                 banner.id,
                 banner.userID,
-                edit_title.text.toString().trim(),
-                edit_description.text.toString(),
-                edit_price.text.toString(),
-                edit_location.text.toString(),
-                edit_category.selectedItemPosition + 1,
-                edit_sell_or_rent.selectedItemPosition + 1,
-                edit_home_size.text.toString().toInt(),
-                edit_number_of_room.text.toString().toInt(),
+                binding.editTitle.text.toString().trim(),
+                binding.editDescription.text.toString(),
+                binding.editPrice.text.toString(),
+                binding.editLocation.text.toString(),
+                binding.editCategory.selectedItemPosition + 1,
+                binding.editSellOrRent.selectedItemPosition + 1,
+                binding.editHomeSize.text.toString().toInt(),
+                binding.editNumberOfRoom.text.toString().toInt(),
                 postImage
             )
         }
-    }
-
-    private fun itemSelectSpinnerCategory() {
-        val adapterCate = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item, resources.getStringArray(R.array.array_category)
-        )
-        //set dropdown
-        adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        edit_category.adapter = adapterCate
-
-        //item default spinner
-        edit_category.setSelection(banner.category - 1)
-    }
-
-    private fun itemSelectedSpinnerSellOrRent() {
-        val adapterCate = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item, arrayOf("فروش", "اجاره")
-        )
-        //set dropdown
-        adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        edit_sell_or_rent.adapter = adapterCate
-
-        //item default spinner
-        edit_sell_or_rent.setSelection(banner.sellOrRent - 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -152,6 +139,14 @@ class EditBannerFragment : MyHomeFragment() {
             val imageUri = data?.data
             imageUri?.let { bannerViewModel.setImageUri(it) }
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        //show BottomNavigation
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)!!.showBottomNavigation()
         }
     }
 }

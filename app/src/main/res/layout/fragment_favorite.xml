@@ -5,7 +5,7 @@
     tools:context="com.example.myhome.feature.favorite.FavoriteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_fav"
+        android:id="@+id/recycler_view_favorite"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

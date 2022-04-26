@@ -8,19 +8,19 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhome.R
 import com.example.myhome.common.Constants.CATEGORY
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.FragmentRentHomeBinding
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
-import kotlinx.android.synthetic.main.fragment_rent_home.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+    private lateinit var binding: FragmentRentHomeBinding
     private var SELL_OR_RENT = 2
     private val bannerViewModel: BannerViewModel by viewModel {
         parametersOf(
@@ -39,7 +39,8 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rent_home, container, false)
+        binding = FragmentRentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,10 +76,9 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
                 showEmptyState(true)
             } else {
                 bannerArrayList.banner = banners as ArrayList<Banner>
-                recycler_view_rent.layoutManager =
+                binding.recyclerViewRent.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                recycler_view_rent.adapter = bannerArrayList
-
+                binding.recyclerViewRent.adapter = bannerArrayList
                 showEmptyState(false)
             }
         }

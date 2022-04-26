@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import com.example.myhome.databinding.FragmentLoginOrSignUpBinding
 import com.example.myhome.feature.main.MainActivity
 
 class LoginOrSignUpFragment : Fragment() {
+    private lateinit var binding: FragmentLoginOrSignUpBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // return super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_login_or_sign_up, container, false)
+        binding = FragmentLoginOrSignUpBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

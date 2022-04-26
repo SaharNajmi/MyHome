@@ -12,7 +12,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class AuthViewModel(val repository: UserRepository) : MyHomeViewModel() {
 
@@ -40,9 +39,9 @@ class AuthViewModel(val repository: UserRepository) : MyHomeViewModel() {
         })
 
     fun signUp(
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        phoneNumber: String,
+        username: String,
+        password: String,
         imageProfile: MultipartBody.Part?
     ) =
         repository.signUp(phoneNumber, username, password, imageProfile).subscribeOn(

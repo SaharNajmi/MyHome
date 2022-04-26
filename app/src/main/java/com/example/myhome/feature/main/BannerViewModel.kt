@@ -7,11 +7,11 @@ import com.example.myhome.common.*
 import com.example.myhome.data.model.Banner
 import com.example.myhome.data.model.State
 import com.example.myhome.data.repository.BannerRepository
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import timber.log.Timber
 
 class BannerViewModel(
@@ -110,28 +110,27 @@ class BannerViewModel(
         image
     ).asyncNetworkRequest()
         .subscribe(object :
-            MyHomeSingleObserver<State>(compositeDisposable) {
+            SingleObserver<State> {
             override fun onSuccess(t: State) {
                 _editBannerResult.value = Result.Success(t)
             }
 
             override fun onSubscribe(d: Disposable) {
+                compositeDisposable.add(d)
                 _editBannerResult.value = Result.Loading
-                super.onSubscribe(d)
             }
 
             override fun onError(e: Throwable) {
                 _editBannerResult.value = Result.Error(e)
-                super.onError(e)
             }
         })
 
     fun addBanner(
         userID: Int,
-        title: RequestBody,
-        description: RequestBody,
-        price: RequestBody,
-        location: RequestBody,
+        title: String,
+        description: String,
+        price: String,
+        location: String,
         category: Int,
         sellOrRent: Int,
         homeSize: Int,
@@ -150,20 +149,19 @@ class BannerViewModel(
         image
     ).asyncNetworkRequest()
         .subscribe(object :
-            MyHomeSingleObserver<State>(compositeDisposable) {
+            SingleObserver<State> {
             override fun onSuccess(t: State) {
                 if (t.state)
                     _addBannerResult.value = Result.Success(t)
             }
 
             override fun onSubscribe(d: Disposable) {
+                compositeDisposable.add(d)
                 _addBannerResult.value = Result.Loading
-                super.onSubscribe(d)
             }
 
             override fun onError(e: Throwable) {
                 _addBannerResult.value = Result.Error(e)
-                super.onError(e)
             }
         })
 

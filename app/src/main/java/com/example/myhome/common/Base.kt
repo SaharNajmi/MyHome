@@ -42,6 +42,19 @@ interface MyHomeView {
         }
     }
 
+    /*    fun showEmptyState(mustShow: Boolean, showTextEmpty: String = "هیچ نتیجه ای یافت نشد!") {
+            rootView?.let {
+                viewContext?.let { context ->
+                    val loadView =
+                        LayoutEmptyViewBinding.inflate(LayoutInflater.from(context), it, false)
+                    if (mustShow) {
+                        loadView.txtEmpty.text = showTextEmpty
+                        it.addView(loadView.root)
+                    }
+                    loadView.emptyStateRootView.visibility = if (mustShow) View.VISIBLE else View.GONE
+                }
+            }
+        }*/
     fun showEmptyState(mustShow: Boolean) {
         rootView?.let {
             viewContext?.let { context ->

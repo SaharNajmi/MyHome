@@ -8,22 +8,22 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhome.R
 import com.example.myhome.common.Constants.CATEGORY
 import com.example.myhome.common.Constants.HOME_SIZE
 import com.example.myhome.common.Constants.NUMBER_OF_ROOM
 import com.example.myhome.common.Constants.PRICE
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.FragmentSellHomeBinding
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
-import kotlinx.android.synthetic.main.fragment_sell_home.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+    private lateinit var binding: FragmentSellHomeBinding
     private var SELL_OR_RENT = 1
     private val bannerArrayList: BannerListAdapter by inject()
 
@@ -45,7 +45,8 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         savedInstanceState: Bundle?
     ): View? {
         //Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sell_home, container, false)
+        binding = FragmentSellHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,10 +81,9 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
                 showEmptyState(true)
             } else {
                 bannerArrayList.banner = banners as ArrayList<Banner>
-                recycler_view_sell.layoutManager =
+                binding.recyclerViewSell.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                recycler_view_sell.adapter = bannerArrayList
-
+                binding.recyclerViewSell.adapter = bannerArrayList
                 showEmptyState(false)
             }
         }

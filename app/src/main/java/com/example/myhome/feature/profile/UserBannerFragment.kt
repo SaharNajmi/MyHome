@@ -8,18 +8,17 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.FragmentUserBannerBinding
 import com.example.myhome.feature.home.BannerListAdapter
 import com.example.myhome.feature.main.BannerViewModel
-import kotlinx.android.synthetic.main.fragment_user_banner.*
-import kotlinx.android.synthetic.main.layout_empty_view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+    private lateinit var binding: FragmentUserBannerBinding
     private val userViewModel: UserViewModel by viewModel()
     private val bannerViewModel: BannerViewModel by viewModel { parametersOf(1, 1) }
     private val bannerArrayList: BannerListAdapter by inject()
@@ -29,7 +28,8 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_banner, container, false)
+        binding = FragmentUserBannerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,12 +48,11 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
                 //show empty layout
                 showEmptyState(true)
 
-                txtEmpty.text = getString(R.string.emptyListUserBanner)
             } else {
                 bannerArrayList.banner = banners as ArrayList<Banner>
-                recycler_view_user_banner.layoutManager =
+                binding.recyclerViewUserBanner.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                recycler_view_user_banner.adapter = bannerArrayList
+                binding.recyclerViewUserBanner.adapter = bannerArrayList
 
                 //hide empty layout
                 showEmptyState(false)

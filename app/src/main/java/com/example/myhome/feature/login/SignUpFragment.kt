@@ -13,17 +13,16 @@ import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
+import com.example.myhome.databinding.FragmentSignUpBinding
 import com.example.myhome.feature.main.MainActivity
 import com.example.myhome.services.UriToUploadable
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 
 class SignUpFragment : MyHomeFragment() {
-
+    private lateinit var binding: FragmentSignUpBinding
     private val viewModel: AuthViewModel by viewModel()
     private val pickImage = 100
     private var postImage: MultipartBody.Part? = null
@@ -33,44 +32,36 @@ class SignUpFragment : MyHomeFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //go to fragment login
-        loginLinkBtn.setOnClickListener {
+        binding.loginLinkBtn.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, LoginFragment())
             }.commit()
         }
 
         //load image in gallery
-        img_add.setOnClickListener {
+        binding.imgAdd.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
 
         // sign up
-        signUpBtn.setOnClickListener {
-            if (phoneEt.text.toString().trim().isNotEmpty() &&
-                usernameEt.text.toString().trim().isNotEmpty() &&
-                passwordEt.text.toString().trim().isNotEmpty()
+        binding.signUpBtn.setOnClickListener {
+            if (binding.phoneEt.text.toString().trim().isNotEmpty() &&
+                binding.usernameEt.text.toString().trim().isNotEmpty() &&
+                binding.passwordEt.text.toString().trim().isNotEmpty()
             )
                 viewModel.signUp(
-                    RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
-                        phoneEt.text.toString()
-                    ),
-                    RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
-                        usernameEt.text.toString()
-                    ),
-                    RequestBody.create(
-                        okhttp3.MultipartBody.FORM,
-                        passwordEt.text.toString()
-                    ),
+                    binding.phoneEt.text.toString(),
+                    binding.usernameEt.text.toString(),
+                    binding.passwordEt.text.toString(),
                     postImage
                 )
             else
@@ -105,7 +96,7 @@ class SignUpFragment : MyHomeFragment() {
         val upload = UriToUploadable(requireActivity())
         if (resultCode == RESULT_OK && requestCode == pickImage) {
             val imageUri = data?.data
-            img_add.setImageURI(imageUri)
+            binding.imgAdd.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
     }

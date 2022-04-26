@@ -159,8 +159,8 @@
     </FrameLayout>
 
     <include
-        android:id="@+id/layout_contact_us"
-        layout="@layout/layout_profile"
+        android:id="@+id/layout_user_info"
+        layout="@layout/layout_contact_us"
         android:visibility="gone" />
 
     <include

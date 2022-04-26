@@ -11,9 +11,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_search_view" />
 
-        <include layout="@layout/layout_category" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_radius"
+                android:textColorHint="?android:textColorSecondary"
+                android:textCursorDrawable="@null"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null" />
+
+            <ImageView
+                android:id="@+id/filter_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="6"
+                android:background="@drawable/layout_radius_filter"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_filter_list" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_item_category"
+            layout="@layout/layout_category" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/mainTab"
@@ -30,7 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
 
-        <include layout="@layout/layout_bottom_sheet" />
+        <include
+            android:id="@+id/layout_filter"
+            layout="@layout/layout_bottom_sheet" />
     </LinearLayout>
 
 </FrameLayout>

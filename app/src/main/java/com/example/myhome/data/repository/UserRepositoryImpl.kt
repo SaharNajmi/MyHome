@@ -5,8 +5,6 @@ import com.example.myhome.data.model.User
 import com.example.myhome.data.repository.source.UserDataSource
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okio.Buffer
 
 class UserRepositoryImpl(
     private val userLocalDataSource: UserDataSource,
@@ -18,18 +16,18 @@ class UserRepositoryImpl(
         }
 
     override fun signUp(
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        phoneNumber: String,
+        username: String,
+        password: String,
         imageProfile: MultipartBody.Part?
     ): Single<State> =
         userRemoteDataSource.signUp(phoneNumber, username, password, imageProfile).flatMap {
             //when user registers -> login and register successful
             userRemoteDataSource.login(
-                requestBodyToString(phoneNumber),
-                requestBodyToString(password)
+                phoneNumber,
+                password
             ).doOnSuccess {
-                onSuccessfulLogin(requestBodyToString(phoneNumber), it)
+                onSuccessfulLogin(phoneNumber, it)
             }
         }
 
@@ -67,12 +65,5 @@ class UserRepositoryImpl(
         LoginUpdate.update(login.state)
         userLocalDataSource.saveLogin(login.state)
         userLocalDataSource.savePhoneNumber(phone)
-    }
-
-    //convert requestBody To String
-    private fun requestBodyToString(requestBody: RequestBody): String {
-        val buffer = Buffer()
-        requestBody.writeTo(buffer)
-        return buffer.readUtf8()
     }
 }

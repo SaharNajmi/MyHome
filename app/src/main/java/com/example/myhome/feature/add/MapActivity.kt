@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myhome.R
 import com.example.myhome.common.Constants.LOCATION
 import com.example.myhome.common.showMessage
+import com.example.myhome.databinding.ActivityMapBinding
+import com.example.myhome.databinding.LayoutMapBinding
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,7 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.layout_map.*
 import java.io.IOException
 import java.util.*
 
@@ -24,14 +25,16 @@ import java.util.*
 class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
     private var mMap: GoogleMap? = null
+    private lateinit var binding: LayoutMapBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        setContentView(ActivityMapBinding.inflate(layoutInflater).root)
 
         if (serviceOk()) {
             //show map in layout
-            setContentView(R.layout.layout_map)
+            binding = LayoutMapBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             initMap()
         } else {
             showMessage("سرویس مپ در دسترس نیست اتصال خود را بررسی کنید!")
@@ -117,7 +120,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
             val lng = 51.391692
             goToLocation(lat, lng, 11F)
 
-            btn_search_location.setOnClickListener {
+            binding.btnSearchLocation.setOnClickListener {
                 searchLocation()
             }
         }
@@ -150,9 +153,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
 
             //show address in textView
             val address = allAddresses[0].getAddressLine(0)
-            tv_maps_address.text = address.toString()
+            binding.tvMapsAddress.text = address.toString()
             LOCATION = address.toString()
-            btn_done_location.setOnClickListener {
+            binding.btnDoneLocation.setOnClickListener {
                 //send get address
                 finish()
             }

@@ -6,26 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myhome.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.myhome.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         //background fab is null
-        bottomNavigationView.background = null
+        binding.navigationBtn.bottomNavigationView.background = null
         val navController = findNavController(R.id.nav_host_fragment)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.navigationBtn.bottomNavigationView.setupWithNavController(navController)
     }
 
     fun hideBottomNavigation() {
-        btn_nav.visibility = View.GONE
+        binding.navigationBtn.layoutBottomNavigationView.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
-        btn_nav.visibility = View.VISIBLE
+        binding.navigationBtn.layoutBottomNavigationView.visibility = View.VISIBLE
     }
 }

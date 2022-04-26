@@ -9,14 +9,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.common.MyHomeFragment
+import com.example.myhome.databinding.FragmentProfileBinding
 import com.example.myhome.services.ImageLoadingService
-import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : MyHomeFragment() {
-
+    private lateinit var binding: FragmentProfileBinding
     private val viewModel: UserViewModel by viewModel()
     private val imageLoadingService: ImageLoadingService by inject()
 
@@ -25,7 +25,8 @@ class ProfileFragment : MyHomeFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,13 +34,13 @@ class ProfileFragment : MyHomeFragment() {
 
         //get user info
         viewModel.user.observe(requireActivity()) { user ->
-            user_phone_number.text = user.phone
-            user_name.text = user.username
+            binding.userPhoneNumber.text = user.phone
+            binding.userName.text = user.username
 
             if (user.image != "")
-                imageLoadingService.load(user_image, "${BASE_URL}${user.image}")
+                imageLoadingService.load(binding.userImage, "${BASE_URL}${user.image}")
             else
-                user_image.setImageResource(R.drawable.ic_profile)
+                binding.userImage.setImageResource(R.drawable.ic_profile)
         }
 
     }
@@ -47,20 +48,20 @@ class ProfileFragment : MyHomeFragment() {
     private fun checkAuthState() {
         if (viewModel.isSignIn) {
             //visible items edit profile
-            edit_btn.visibility = View.VISIBLE
-            user_banner_btn.visibility = View.VISIBLE
-            user_phone_number.visibility = View.VISIBLE
+            binding.editBtn.visibility = View.VISIBLE
+            binding.userBannerBtn.visibility = View.VISIBLE
+            binding.userPhoneNumber.visibility = View.VISIBLE
 
             //sign out
-            auth_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_out, 0)
-            auth_btn.text = getString(R.string.signOut)
-            auth_btn.setOnClickListener {
+            binding.authBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_out, 0)
+            binding.authBtn.text = getString(R.string.signOut)
+            binding.authBtn.setOnClickListener {
                 viewModel.signOut()
                 checkAuthState()
             }
 
             //edit user
-            edit_btn.setOnClickListener {
+            binding.editBtn.setOnClickListener {
                 findNavController().navigate(
                     ProfileFragmentDirections.actionProfileToEditProfile(
                         viewModel.user.value!!
@@ -69,23 +70,23 @@ class ProfileFragment : MyHomeFragment() {
             }
 
             //go UserBanner
-            user_banner_btn.setOnClickListener {
+            binding.userBannerBtn.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileToUserBannerFragment())
             }
 
         } else {
             //hide items edit profile
-            edit_btn.visibility = View.GONE
-            user_banner_btn.visibility = View.GONE
-            user_phone_number.visibility = View.GONE
+            binding.editBtn.visibility = View.GONE
+            binding.userBannerBtn.visibility = View.GONE
+            binding.userPhoneNumber.visibility = View.GONE
 
-            user_image.setImageResource(R.drawable.ic_profile)
-            user_name.text = getString(R.string.guest_user)
+            binding.userImage.setImageResource(R.drawable.ic_profile)
+            binding.userName.text = getString(R.string.guest_user)
 
             //sign in
-            auth_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_in, 0)
-            auth_btn.text = getString(R.string.signIn)
-            auth_btn.setOnClickListener {
+            binding.authBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_in, 0)
+            binding.authBtn.text = getString(R.string.signIn)
+            binding.authBtn.setOnClickListener {
                 viewModel.signOut()
                 findNavController().navigate(ProfileFragmentDirections.actionProfileToLoginOrSignUp())
             }

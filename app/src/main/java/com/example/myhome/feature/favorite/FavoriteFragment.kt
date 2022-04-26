@@ -8,16 +8,15 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.Banner
-import kotlinx.android.synthetic.main.fragment_favorite.*
-import kotlinx.android.synthetic.main.layout_empty_view.*
+import com.example.myhome.databinding.FragmentFavoriteBinding
 import org.koin.android.ext.android.get
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerClickListener {
+    private lateinit var binding: FragmentFavoriteBinding
     private val favoriteViewModel: FavoriteViewModel by viewModel()
 
     override fun onCreateView(
@@ -25,8 +24,8 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
-
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,11 +40,11 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
             if (banners.isEmpty()) {
                 //show empty layout
                 showEmptyState(true)
-                txtEmpty.text = getString(R.string.emptyFavorite)
             } else {
-                rec_fav.layoutManager =
+                binding.recyclerViewFavorite.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                rec_fav.adapter = FavoriteListAdapter(banners as ArrayList<Banner>, get(), this)
+                binding.recyclerViewFavorite.adapter =
+                    FavoriteListAdapter(banners as ArrayList<Banner>, get(), this)
                 showEmptyState(false)
             }
         }

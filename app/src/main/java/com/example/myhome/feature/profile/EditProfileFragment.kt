@@ -15,15 +15,17 @@ import com.example.myhome.common.Constants
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
+import com.example.myhome.databinding.FragmentEditProfileBinding
+import com.example.myhome.feature.main.MainActivity
 import com.example.myhome.services.ImageLoadingService
 import com.example.myhome.services.UriToUploadable
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MultipartBody
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 class EditProfileFragment : MyHomeFragment() {
+    private lateinit var binding: FragmentEditProfileBinding
     private val userViewModel: UserViewModel by viewModel()
     private val imageLoadingService: ImageLoadingService by inject()
     private val pickImage = 100
@@ -34,7 +36,8 @@ class EditProfileFragment : MyHomeFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,20 +46,25 @@ class EditProfileFragment : MyHomeFragment() {
         val args: EditProfileFragmentArgs by navArgs()
         val user = args.UserDetail
 
+        //hideBottom Navigation
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)!!.hideBottomNavigation()
+        }
+
         //set value
-        username.setText(user.username)
-        phone.setText(user.phone)
+        binding.username.setText(user.username)
+        binding.phone.setText(user.phone)
         if (user.image != "")
             imageLoadingService.load(
-                user_image,
+                binding.userImage,
                 "${Constants.BASE_URL}${user.image}"
             )
         else
-            user_image.setImageResource(R.drawable.ic_add_photo)
+            binding.userImage.setImageResource(R.drawable.ic_add_photo)
 
 
         //load image in gallery
-        user_image.setOnClickListener {
+        binding.userImage.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
@@ -84,16 +92,16 @@ class EditProfileFragment : MyHomeFragment() {
         }
 
         //click button edit profile
-        edit_profile_btn.setOnClickListener {
-            if (user.password == old_password.text.toString().trim()
-                && phone.text.toString().trim().isNotEmpty()
-                && username.text.toString().trim().isNotEmpty()
+        binding.editProfileBtn.setOnClickListener {
+            if (user.password == binding.oldPassword.text.toString().trim()
+                && binding.phone.text.toString().trim().isNotEmpty()
+                && binding.username.text.toString().trim().isNotEmpty()
             ) {
                 userViewModel.editUser(
                     user.id.toString(),
-                    phone.text.toString().trim(),
-                    username.text.toString().trim(),
-                    new_password.text.toString().trim(),
+                    binding.phone.text.toString().trim(),
+                    binding.username.text.toString().trim(),
+                    binding.newPassword.text.toString().trim(),
                     postImage
                 )
             } else
@@ -107,9 +115,16 @@ class EditProfileFragment : MyHomeFragment() {
         val upload = UriToUploadable(requireActivity())
         if (resultCode == Activity.RESULT_OK && requestCode == pickImage) {
             val imageUri = data?.data
-            user_image.setImageURI(imageUri)
+            binding.userImage.setImageURI(imageUri)
             postImage = upload.getUploaderFile(imageUri, "image", "${UUID.randomUUID()}")
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        //show BottomNavigation
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)!!.showBottomNavigation()
+        }
+    }
 }

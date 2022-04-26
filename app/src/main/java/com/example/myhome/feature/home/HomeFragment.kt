@@ -4,22 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.SeekBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.example.myhome.R
+import com.example.myhome.databinding.FragmentHomeBinding
+import com.example.myhome.databinding.LayoutBottomSheetBinding
 import com.example.myhome.feature.adapter.ViewPagerAdapter
 import com.example.myhome.feature.main.ShareViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.layout_category.*
-import kotlinx.android.synthetic.main.layout_search_view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var layoutBottomSheetBinding: LayoutBottomSheetBinding
+
     private val shareViewModel by sharedViewModel<ShareViewModel>()
     private var price = "all"
     private var homeSize = 0
@@ -27,40 +26,34 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var saveStatePrice = 0
     private var saveStateHomeSize = 0
 
-    private lateinit var seekBarPrice: SeekBar
-    private lateinit var seekBarHomeSize: SeekBar
-    private lateinit var radioGroup: RadioGroup
-    private lateinit var radioButton1: RadioButton
-    private lateinit var radioButton2: RadioButton
-    private lateinit var radioButton3: RadioButton
-    private lateinit var radioButton4: RadioButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         //Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //filter list
-        filter_list.setOnClickListener {
+        binding.filterList.setOnClickListener {
             showBottomSheet()
         }
 
         //tab layout
-        viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
-        mainTab.setupWithViewPager(viewPagerShowBanner)
+        binding.viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
+        binding.mainTab.setupWithViewPager(binding.viewPagerShowBanner)
 
         //selection category using radio button
-        radio_button_cate_1.setOnClickListener(this)
-        radio_button_cate_2.setOnClickListener(this)
-        radio_button_cate_3.setOnClickListener(this)
-        radio_button_cate_4.setOnClickListener(this)
-        radio_button_cate_1.isChecked = true
+        binding.layoutItemCategory.radioButtonCate1.isChecked = true
+        binding.layoutItemCategory.radioButtonCate1.setOnClickListener(this)
+        binding.layoutItemCategory.radioButtonCate2.setOnClickListener(this)
+        binding.layoutItemCategory.radioButtonCate3.setOnClickListener(this)
+        binding.layoutItemCategory.radioButtonCate4.setOnClickListener(this)
 
         //Send text search to another fragments
         sendTextSearch()
@@ -71,34 +64,34 @@ class HomeFragment : Fragment(), View.OnClickListener {
             R.id.radio_button_cate_1 -> {
                 //send Data between Fragments
                 shareViewModel.changeCategory(1)
-                radio_button_cate_2.isChecked = false
-                radio_button_cate_3.isChecked = false
-                radio_button_cate_4.isChecked = false
+                binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                binding.layoutItemCategory.radioButtonCate3.isChecked = false
+                binding.layoutItemCategory.radioButtonCate4.isChecked = false
             }
             R.id.radio_button_cate_2 -> {
                 shareViewModel.changeCategory(2)
-                radio_button_cate_1.isChecked = false
-                radio_button_cate_3.isChecked = false
-                radio_button_cate_4.isChecked = false
+                binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                binding.layoutItemCategory.radioButtonCate3.isChecked = false
+                binding.layoutItemCategory.radioButtonCate4.isChecked = false
             }
             R.id.radio_button_cate_3 -> {
                 shareViewModel.changeCategory(3)
-                radio_button_cate_1.isChecked = false
-                radio_button_cate_2.isChecked = false
-                radio_button_cate_4.isChecked = false
+                binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                binding.layoutItemCategory.radioButtonCate4.isChecked = false
             }
             R.id.radio_button_cate_4 -> {
                 shareViewModel.changeCategory(4)
-                radio_button_cate_1.isChecked = false
-                radio_button_cate_2.isChecked = false
-                radio_button_cate_3.isChecked = false
+                binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                binding.layoutItemCategory.radioButtonCate3.isChecked = false
             }
         }
     }
 
     private fun sendTextSearch() {
-        search_view.queryHint = "جستجو"
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.queryHint = "جستجو"
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -113,19 +106,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun showBottomSheet() {
         //create a new bottom sheet dialog
         val dialog = BottomSheetDialog(requireContext())
-
         //inflating layout
         val view = layoutInflater.inflate(R.layout.layout_bottom_sheet, null)
-        val btnClose = view.findViewById<Button>(R.id.btnDismissFilter)
-        val btnApply = view.findViewById<Button>(R.id.btnApplyFilter)
-        seekBarHomeSize = view!!.findViewById<SeekBar>(R.id.seekBarHomeSize)
-        seekBarPrice = view.findViewById<SeekBar>(R.id.seekBarPrice)
-        radioGroup = view.findViewById(R.id.radio_group_room) as RadioGroup
-        radioButton1 = view.findViewById(R.id.btn_any) as RadioButton
-        radioButton2 = view.findViewById(R.id.btn_one) as RadioButton
-        radioButton3 = view.findViewById(R.id.btn_two) as RadioButton
-        radioButton4 = view.findViewById(R.id.btn_more) as RadioButton
-
+        layoutBottomSheetBinding =
+            LayoutBottomSheetBinding.inflate(layoutInflater, view as ViewGroup, false)
         //Show old values inside BottomSheet
         saveOldValue()
 
@@ -133,8 +117,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         seekBar()
 
         //Apply changes the dialog button
-        btnApply.setOnClickListener {
-
+        layoutBottomSheetBinding.btnApplyFilter.setOnClickListener {
             //RadioButton item selected numberOfRooms
             checkedRadioButton()
 
@@ -145,7 +128,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         //dismissing the dialog button
-        btnClose.setOnClickListener {
+        layoutBottomSheetBinding.btnDismissFilter.setOnClickListener {
             //delete value filter list
             saveStatePrice = 0
             saveStateHomeSize = 0
@@ -158,16 +141,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
             dialog.dismiss()
         }
         dialog.setCancelable(false)
-        dialog.setContentView(view)
+        dialog.setContentView(layoutBottomSheetBinding.root)
         dialog.show()
     }
 
     private fun checkedRadioButton() {
         //RadioButton item selected numberOfRooms
-        val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+        val selectedRadioButtonId = layoutBottomSheetBinding.radioGroupRoom.checkedRadioButtonId
 
-        val radioButton: View = radioGroup.findViewById(selectedRadioButtonId)
-        when (radioGroup.indexOfChild(radioButton)) {
+        val radioButton: View =
+            layoutBottomSheetBinding.radioGroupRoom.findViewById(selectedRadioButtonId)
+        when (layoutBottomSheetBinding.radioGroupRoom.indexOfChild(radioButton)) {
             0 -> numberOfRooms = 0
             1 -> numberOfRooms = 1
             2 -> numberOfRooms = 2
@@ -177,7 +161,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private fun seekBar() {
         //seekBar HomeSize
-        seekBarHomeSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        layoutBottomSheetBinding.seekBarHomeSize.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
 
             }
@@ -209,7 +194,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
 
         //seekBar Price
-        seekBarPrice.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        layoutBottomSheetBinding.seekBarPrice.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
 
             }
@@ -242,16 +228,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun saveOldValue() {
-        seekBarHomeSize.progress = saveStateHomeSize
-        seekBarPrice.progress = saveStatePrice
+        layoutBottomSheetBinding.seekBarHomeSize.progress = saveStateHomeSize
+        layoutBottomSheetBinding.seekBarPrice.progress = saveStatePrice
         when (numberOfRooms) {
-            0 -> radioButton1.isChecked = true
+            0 -> layoutBottomSheetBinding.btnAnyRoom.isChecked = true
 
-            1 -> radioButton2.isChecked = true
+            1 -> layoutBottomSheetBinding.btnOneRoom.isChecked = true
 
-            2 -> radioButton3.isChecked = true
+            2 -> layoutBottomSheetBinding.btnTwoRoom.isChecked = true
 
-            3 -> radioButton4.isChecked = true
+            3 -> layoutBottomSheetBinding.btnMoreRoom.isChecked = true
         }
     }
 }

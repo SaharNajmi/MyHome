@@ -129,7 +129,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/btn_any"
+                android:id="@+id/btn_any_room"
                 android:layout_width="15dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
@@ -142,7 +142,7 @@
                 android:textColor="@color/state_radio_button_room_filter" />
 
             <RadioButton
-                android:id="@+id/btn_one"
+                android:id="@+id/btn_one_room"
                 android:layout_width="15dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
@@ -155,7 +155,7 @@
 
 
             <RadioButton
-                android:id="@+id/btn_two"
+                android:id="@+id/btn_two_room"
                 android:layout_width="15dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
@@ -167,7 +167,7 @@
                 android:textColor="@color/state_radio_button_room_filter" />
 
             <RadioButton
-                android:id="@+id/btn_more"
+                android:id="@+id/btn_more_room"
                 android:layout_width="15dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"

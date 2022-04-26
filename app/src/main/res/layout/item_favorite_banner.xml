@@ -8,7 +8,7 @@
     android:background="@drawable/layout_radius">
 
     <com.example.myhome.view.MyHomeImageView
-        android:id="@+id/img_fav"
+        android:id="@+id/image_favorite"
         app:roundedCornerRadius="10dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -16,7 +16,7 @@
         android:layout_margin="10dp" />
 
     <ImageView
-        android:id="@+id/deleteFav"
+        android:id="@+id/delete_favorite_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -25,12 +25,12 @@
         app:srcCompat="@drawable/ic_delete" />
 
     <TextView
-        android:id="@+id/title_fav"
+        android:id="@+id/title_favorite"
         android:textColor="@color/myBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/img_fav"
+        android:layout_toLeftOf="@id/image_favorite"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         tools:text="@string/titleBanner" />

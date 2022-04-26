@@ -10,11 +10,11 @@ import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.Result
 import com.example.myhome.common.showMessage
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.example.myhome.databinding.FragmentLoginBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginFragment : MyHomeFragment() {
-
+    private lateinit var binding: FragmentLoginBinding
     private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
@@ -22,24 +22,25 @@ class LoginFragment : MyHomeFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        signUpLinkBtn.setOnClickListener {
+        binding.signUpLinkBtn.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, SignUpFragment())
             }.commit()
         }
 
         //login
-        loginBtn.setOnClickListener {
-            if (phoneEt.text.toString().trim().isNotEmpty() &&
-                passwordEt.text.toString().trim().isNotEmpty()
+        binding.loginBtn.setOnClickListener {
+            if (binding.phoneEt.text.toString().trim().isNotEmpty() &&
+                binding.passwordEt.text.toString().trim().isNotEmpty()
             )
-                viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
+                viewModel.login(binding.phoneEt.text.toString(), binding.passwordEt.text.toString())
             else
                 context?.showMessage("لطفا تمامی فیلدها را پر کنید")
         }
