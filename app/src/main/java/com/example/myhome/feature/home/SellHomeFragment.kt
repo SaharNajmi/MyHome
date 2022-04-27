@@ -17,16 +17,17 @@ import com.example.myhome.data.model.Banner
 import com.example.myhome.databinding.FragmentSellHomeBinding
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
+import com.example.myhome.services.ImageLoadingService
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
     private lateinit var binding: FragmentSellHomeBinding
     private var SELL_OR_RENT = 1
-    private val bannerArrayList: BannerListAdapter by inject()
-
+    //private val bannerListAdapter: BannerListAdapter by inject()
+    
     private val bannerViewModel by viewModel<BannerViewModel>() {
         parametersOf(
             CATEGORY,
@@ -52,9 +53,10 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         //get text search in another fragment
         shareViewModel.search.observe(requireActivity()) {
-            bannerArrayList.filter.filter(it)
+            bannerListAdapter!!.filter.filter(it)
         }
 
         //get category in another fragment -> get Data between Fragments
@@ -68,7 +70,7 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         }
 
         //setOnClickListener item recyclerView
-        bannerArrayList.bannerOnClickListener = this
+        bannerListAdapter!!.bannerOnClickListener = this
 
         //show all banners
         getBanners()
@@ -80,10 +82,10 @@ class SellHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
                 //show empty layout
                 showEmptyState(true)
             } else {
-                bannerArrayList.banner = banners as ArrayList<Banner>
+                bannerListAdapter!!.banner = banners as ArrayList<Banner>
                 binding.recyclerViewSell.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                binding.recyclerViewSell.adapter = bannerArrayList
+                binding.recyclerViewSell.adapter = bannerListAdapter
                 showEmptyState(false)
             }
         }

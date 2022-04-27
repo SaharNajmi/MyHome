@@ -12,12 +12,19 @@ import com.example.myhome.databinding.FragmentHomeBinding
 import com.example.myhome.databinding.LayoutBottomSheetBinding
 import com.example.myhome.feature.adapter.ViewPagerAdapter
 import com.example.myhome.feature.main.ShareViewModel
+import com.example.myhome.services.ImageLoadingService
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var layoutBottomSheetBinding: LayoutBottomSheetBinding
+
+    val imageLoad: ImageLoadingService by inject()
+    private val sellBannerArrayList = BannerListAdapter(imageLoad)
+    private val rentBannerArrayList = BannerListAdapter(imageLoad)
+
 
     private val shareViewModel by sharedViewModel<ShareViewModel>()
     private var price = "all"
@@ -45,7 +52,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         //tab layout
-        binding.viewPagerShowBanner.adapter = ViewPagerAdapter(childFragmentManager)
+        binding.viewPagerShowBanner.adapter = ViewPagerAdapter(
+            childFragmentManager,
+            sellBannerArrayList,
+            rentBannerArrayList
+        )
         binding.mainTab.setupWithViewPager(binding.viewPagerShowBanner)
 
         //selection category using radio button

@@ -14,12 +14,12 @@ import com.example.myhome.data.model.Banner
 import com.example.myhome.databinding.FragmentRentHomeBinding
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListener {
+class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHomeFragment(),
+    BannerListAdapter.BannerOnClickListener {
     private lateinit var binding: FragmentRentHomeBinding
     private var SELL_OR_RENT = 2
     private val bannerViewModel: BannerViewModel by viewModel {
@@ -32,8 +32,6 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         )
     }
     private val shareViewModel by sharedViewModel<ShareViewModel>()
-    private val bannerArrayList: BannerListAdapter by inject()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,9 +44,13 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val test = savedInstanceState?.getBoolean("key", false)
+        //context?.showMessage(test.toString())
+
         //get value search in another fragment
         shareViewModel.search.observe(requireActivity()) {
-            bannerArrayList.filter.filter(it)
+            bannerListAdapter!!.filter.filter(it)
         }
 
         //get category in another fragment -> get Data between Fragments
@@ -62,7 +64,7 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
         }
 
         //setOnClickListener item recyclerView
-        bannerArrayList.bannerOnClickListener = this
+        bannerListAdapter!!.bannerOnClickListener = this
 
         //show all banners
         getBanners()
@@ -75,10 +77,10 @@ class RentHomeFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickListen
                 //show empty layout
                 showEmptyState(true)
             } else {
-                bannerArrayList.banner = banners as ArrayList<Banner>
+                bannerListAdapter!!.banner = banners as ArrayList<Banner>
                 binding.recyclerViewRent.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                binding.recyclerViewRent.adapter = bannerArrayList
+                binding.recyclerViewRent.adapter = bannerListAdapter
                 showEmptyState(false)
             }
         }
