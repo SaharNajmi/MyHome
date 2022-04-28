@@ -154,8 +154,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
             //show address in textView
             val address = allAddresses[0].getAddressLine(0)
             binding.tvMapsAddress.text = address.toString()
-            LOCATION = address.toString()
             binding.btnDoneLocation.setOnClickListener {
+                LOCATION = address.toString()
                 //send get address
                 finish()
             }

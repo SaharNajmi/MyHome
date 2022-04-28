@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.data.model.Banner
 import com.example.myhome.databinding.FragmentUserBannerBinding
@@ -38,6 +40,10 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
         //onClick item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         //get banners
         getUserBanners()
     }
@@ -46,8 +52,8 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
         userViewModel.banners.observe(requireActivity()) { banners ->
             if (banners.isEmpty()) {
                 //show empty layout
-                showEmptyState(true)
-
+                binding.emptyLayout.isVisible = true
+                binding.emptyLayout.setText(resources.getString(R.string.emptyListUserBanner))
             } else {
                 bannerArrayList.banner = banners as ArrayList<Banner>
                 binding.recyclerViewUserBanner.layoutManager =
@@ -55,7 +61,7 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
                 binding.recyclerViewUserBanner.adapter = bannerArrayList
 
                 //hide empty layout
-                showEmptyState(false)
+                binding.emptyLayout.isVisible = false
             }
         }
     }

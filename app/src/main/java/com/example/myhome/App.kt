@@ -54,7 +54,7 @@ class App : Application() {
                 )
             }
 
-          //  factory { BannerListAdapter(get()) }
+            factory { BannerListAdapter(get()) }
 
             single<UserRepository> {
                 UserRepositoryImpl(

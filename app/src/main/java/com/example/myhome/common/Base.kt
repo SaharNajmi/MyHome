@@ -41,33 +41,6 @@ interface MyHomeView {
             }
         }
     }
-
-    /*    fun showEmptyState(mustShow: Boolean, showTextEmpty: String = "هیچ نتیجه ای یافت نشد!") {
-            rootView?.let {
-                viewContext?.let { context ->
-                    val loadView =
-                        LayoutEmptyViewBinding.inflate(LayoutInflater.from(context), it, false)
-                    if (mustShow) {
-                        loadView.txtEmpty.text = showTextEmpty
-                        it.addView(loadView.root)
-                    }
-                    loadView.emptyStateRootView.visibility = if (mustShow) View.VISIBLE else View.GONE
-                }
-            }
-        }*/
-    fun showEmptyState(mustShow: Boolean) {
-        rootView?.let {
-            viewContext?.let { context ->
-                var loadView = it.findViewById<View>(R.id.emptyStateRootView)
-                if (loadView == null && mustShow) {
-                    loadView =
-                        LayoutInflater.from(context).inflate(R.layout.layout_empty_view, it, false)
-                    it.addView(loadView)
-                }
-                loadView?.visibility = if (mustShow) View.VISIBLE else View.GONE
-            }
-        }
-    }
 }
 
 abstract class MyHomeViewModel : ViewModel() {

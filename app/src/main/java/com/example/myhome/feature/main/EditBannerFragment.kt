@@ -58,6 +58,10 @@ class EditBannerFragment : MyHomeFragment() {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }
 
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.apply {
             //show old values
             editTitle.setText(banner.title)
@@ -93,7 +97,7 @@ class EditBannerFragment : MyHomeFragment() {
                 is Result.Success -> {
                     setProgress(false)
                     context?.showMessage("آگهی مورد نظر با موفقیت آپدیت شد منتظر تایید آگهیتان باشید!")
-                    findNavController().navigate(EditBannerFragmentDirections.actionEditBannerFragmentToUserBannerFragment())
+                    findNavController().popBackStack()
                 }
             }
         }

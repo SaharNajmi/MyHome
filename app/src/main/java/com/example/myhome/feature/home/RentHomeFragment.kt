@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,13 +76,13 @@ class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         bannerViewModel.banners.observe(viewLifecycleOwner) { banners ->
             if (banners.isEmpty()) {
                 //show empty layout
-                showEmptyState(true)
+                binding.emptyLayout.isVisible = true
             } else {
                 bannerListAdapter!!.banner = banners as ArrayList<Banner>
                 binding.recyclerViewRent.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 binding.recyclerViewRent.adapter = bannerListAdapter
-                showEmptyState(false)
+                binding.emptyLayout.isVisible = false
             }
         }
     }

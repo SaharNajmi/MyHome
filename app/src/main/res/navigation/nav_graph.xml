@@ -36,9 +36,6 @@
         android:name="com.example.myhome.feature.profile.EditProfileFragment"
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile">
-        <action
-            android:id="@+id/action_editProfile_to_profile"
-            app:destination="@id/profile" />
         <argument
             android:name="UserDetail"
             app:argType="com.example.myhome.data.model.User" />

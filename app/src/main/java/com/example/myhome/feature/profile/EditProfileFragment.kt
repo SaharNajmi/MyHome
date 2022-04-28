@@ -76,7 +76,7 @@ class EditProfileFragment : MyHomeFragment() {
                     setProgress(false)
                     if (result.data.state) {
                         activity?.showMessage("پروفایل با موفقیت آپدیت شد")
-                        findNavController().navigate(EditProfileFragmentDirections.actionEditProfileToProfile())
+                        findNavController().popBackStack()
                     } else
                         activity?.showMessage("آپدیت پروفایل با شکست مواجه شد")
                 }

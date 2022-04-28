@@ -57,6 +57,10 @@ class BannerDetailFragment : MyHomeFragment() {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }
 
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.apply {
             imageLoadingService.load(
                 layoutUserInfo.userImage,
@@ -97,7 +101,7 @@ class BannerDetailFragment : MyHomeFragment() {
                 is Result.Success -> {
                     setProgress(false)
                     context?.showMessage("آگهی مورد نظر حذف شد")
-                    findNavController().navigate(BannerDetailFragmentDirections.actionBannerDetailFragmentToUserBannerFragment())
+                    findNavController().popBackStack()
                 }
             }
         }

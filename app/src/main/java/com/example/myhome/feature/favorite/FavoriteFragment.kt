@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myhome.R
 import com.example.myhome.common.MyHomeFragment
 import com.example.myhome.common.showMessage
 import com.example.myhome.data.model.Banner
@@ -39,13 +41,16 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
         favoriteViewModel.banners.observe(viewLifecycleOwner) { banners ->
             if (banners.isEmpty()) {
                 //show empty layout
-                showEmptyState(true)
+                binding.emptyLayout.isVisible = true
+                binding.emptyLayout.setText(resources.getString(R.string.emptyFavorite))
             } else {
                 binding.recyclerViewFavorite.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 binding.recyclerViewFavorite.adapter =
                     FavoriteListAdapter(banners as ArrayList<Banner>, get(), this)
-                showEmptyState(false)
+
+                binding.emptyLayout.isVisible = false
+
             }
         }
     }
