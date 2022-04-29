@@ -51,6 +51,35 @@ class HomeFragment : Fragment(), View.OnClickListener {
             showBottomSheet()
         }
 
+        shareViewModel.category.observe(requireActivity()) {
+            when (it) {
+                1 -> {
+                    binding.layoutItemCategory.radioButtonCate1.isChecked = true
+                    binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate3.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate4.isChecked = false
+                }
+                2 -> {
+                    binding.layoutItemCategory.radioButtonCate2.isChecked = true
+                    binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate3.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate4.isChecked = false
+                }
+                3 -> {
+                    binding.layoutItemCategory.radioButtonCate3.isChecked = true
+                    binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate4.isChecked = false
+                }
+                4 -> {
+                    binding.layoutItemCategory.radioButtonCate4.isChecked = true
+                    binding.layoutItemCategory.radioButtonCate1.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate2.isChecked = false
+                    binding.layoutItemCategory.radioButtonCate3.isChecked = false
+                }
+            }
+        }
+
         //tab layout
         binding.viewPagerShowBanner.adapter = ViewPagerAdapter(
             childFragmentManager,
@@ -60,7 +89,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.mainTab.setupWithViewPager(binding.viewPagerShowBanner)
 
         //selection category using radio button
-        binding.layoutItemCategory.radioButtonCate1.isChecked = true
         binding.layoutItemCategory.radioButtonCate1.setOnClickListener(this)
         binding.layoutItemCategory.radioButtonCate2.setOnClickListener(this)
         binding.layoutItemCategory.radioButtonCate3.setOnClickListener(this)
