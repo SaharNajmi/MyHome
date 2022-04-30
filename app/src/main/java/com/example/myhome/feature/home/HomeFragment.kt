@@ -21,17 +21,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var layoutBottomSheetBinding: LayoutBottomSheetBinding
 
-    val imageLoad: ImageLoadingService by inject()
+    private val imageLoad: ImageLoadingService by inject()
     private val sellBannerArrayList = BannerListAdapter(imageLoad)
     private val rentBannerArrayList = BannerListAdapter(imageLoad)
-
 
     private val shareViewModel by sharedViewModel<ShareViewModel>()
     private var price = "all"
     private var homeSize = 0
     private var numberOfRooms = 0
-    private var saveStatePrice = 0
-    private var saveStateHomeSize = 0
 
 
     override fun onCreateView(
@@ -152,8 +149,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         //Show old values inside BottomSheet
         saveOldValue()
 
-        //seekBar HomeSize and Price
-        seekBar()
+        //filter HomeSize/Price
+        seekBarHomeSize()
+        seekBarPrice()
 
         //Apply changes the dialog button
         layoutBottomSheetBinding.btnApplyFilter.setOnClickListener {
@@ -169,13 +167,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         //dismissing the dialog button
         layoutBottomSheetBinding.btnDismissFilter.setOnClickListener {
             //delete value filter list
-            saveStatePrice = 0
-            saveStateHomeSize = 0
-            price = "all"
-            homeSize = 0
-            numberOfRooms = 0
-
-            shareViewModel.setDataFilter(price, numberOfRooms, homeSize)
+            shareViewModel.setDataFilter("all", 0, 0)
 
             dialog.dismiss()
         }
@@ -198,8 +190,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun seekBar() {
-        //seekBar HomeSize
+    private fun seekBarHomeSize() {
         layoutBottomSheetBinding.seekBarHomeSize.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -212,27 +203,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 when (seekBar?.progress) {
-                    0 -> {
-                        homeSize = 0
-                        saveStateHomeSize = 0
-                    }
-                    1 -> {
-                        homeSize = 100
-                        saveStateHomeSize = 1
-                    }
-                    2 -> {
-                        homeSize = 250
-                        saveStateHomeSize = 2
-                    }
-                    3 -> {
-                        homeSize = 251
-                        saveStateHomeSize = 3
-                    }
+                    0 -> homeSize = 0
+                    1 -> homeSize = 100
+                    2 -> homeSize = 250
+                    3 -> homeSize = 251
                 }
             }
         })
+    }
 
-        //seekBar Price
+    private fun seekBarPrice() {
         layoutBottomSheetBinding.seekBarPrice.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -245,38 +225,41 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 when (seekBar?.progress) {
-                    0 -> {
-                        price = "all"
-                        saveStatePrice = 0
-                    }
-                    1 -> {
-                        price = "500000000"
-                        saveStatePrice = 1
-                    }
-                    2 -> {
-                        price = "1000000000"
-                        saveStatePrice = 2
-                    }
-                    3 -> {
-                        price = "1000000001"
-                        saveStatePrice = 3
-                    }
+                    0 -> price = "all"
+                    1 -> price = "500000000"
+                    2 -> price = "1000000000"
+                    3 -> price = "1000000001"
                 }
             }
         })
     }
 
     private fun saveOldValue() {
-        layoutBottomSheetBinding.seekBarHomeSize.progress = saveStateHomeSize
-        layoutBottomSheetBinding.seekBarPrice.progress = saveStatePrice
-        when (numberOfRooms) {
-            0 -> layoutBottomSheetBinding.btnAnyRoom.isChecked = true
+        shareViewModel.filterPrice.observe(requireActivity()) { price ->
+            when (price) {
+                "all" -> layoutBottomSheetBinding.seekBarPrice.progress = 0
+                "500000000" -> layoutBottomSheetBinding.seekBarPrice.progress = 1
+                "1000000000" -> layoutBottomSheetBinding.seekBarPrice.progress = 2
+                "1000000001" -> layoutBottomSheetBinding.seekBarPrice.progress = 3
+            }
+        }
 
-            1 -> layoutBottomSheetBinding.btnOneRoom.isChecked = true
+        shareViewModel.filterHomeSize.observe(requireActivity()) { homeSize ->
+            when (homeSize) {
+                0 -> layoutBottomSheetBinding.seekBarHomeSize.progress = 0
+                100 -> layoutBottomSheetBinding.seekBarHomeSize.progress = 1
+                250 -> layoutBottomSheetBinding.seekBarHomeSize.progress = 2
+                251 -> layoutBottomSheetBinding.seekBarHomeSize.progress = 3
+            }
+        }
 
-            2 -> layoutBottomSheetBinding.btnTwoRoom.isChecked = true
-
-            3 -> layoutBottomSheetBinding.btnMoreRoom.isChecked = true
+        shareViewModel.filterNumberOfRooms.observe(requireActivity()) { numberOfRooms ->
+            when (numberOfRooms) {
+                0 -> layoutBottomSheetBinding.btnAnyRoom.isChecked = true
+                1 -> layoutBottomSheetBinding.btnOneRoom.isChecked = true
+                2 -> layoutBottomSheetBinding.btnTwoRoom.isChecked = true
+                3 -> layoutBottomSheetBinding.btnMoreRoom.isChecked = true
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
 
         //get text search in another fragment
         shareViewModel.search.observe(requireActivity()) {
-            bannerListAdapter!!.filter.filter(it)
+            bannerListAdapter.filter.filter(it)
         }
 
         //get category in another fragment -> get Data between Fragments
@@ -65,12 +65,12 @@ class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         }
 
         //filter banner list
-        shareViewModel.filter.observe(requireActivity()) {
+        shareViewModel.filterResult.observe(requireActivity()) {
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
         }
 
         //setOnClickListener item recyclerView
-        bannerListAdapter!!.bannerOnClickListener = this
+        bannerListAdapter.bannerOnClickListener = this
 
         //show all banners
         getBanners()

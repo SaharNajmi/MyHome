@@ -60,7 +60,7 @@ class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         }
 
         //filter banner list
-        shareViewModel.filter.observe(requireActivity()) {
+        shareViewModel.filterResult.observe(requireActivity()) {
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
         }
 
