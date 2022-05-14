@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.myhome.feature.home.RentHomeFragment">
 
-    <include
-        android:id="@+id/emptyLayout"
-        layout="@layout/layout_empty_view"
-        android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_rent"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.example.myhome.common.EmptyView
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </FrameLayout>

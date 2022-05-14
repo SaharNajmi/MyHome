@@ -41,6 +41,7 @@
             app:cardCornerRadius="12dp">
 
             <RadioButton
+                android:checked="true"
                 android:id="@+id/radio_button_cate_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

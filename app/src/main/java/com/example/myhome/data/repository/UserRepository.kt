@@ -4,16 +4,15 @@ import com.example.myhome.data.model.State
 import com.example.myhome.data.model.User
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 interface UserRepository {
 
     fun login(phone: String, password: String): Single<State>
 
     fun signUp(
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        phoneNumber: String,
+        username: String,
+        password: String,
         imageProfile: MultipartBody.Part?
     ): Single<State>
 
@@ -26,10 +25,10 @@ interface UserRepository {
     fun getUser(phone: String): Single<User>
 
     fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ): Single<State>
 }

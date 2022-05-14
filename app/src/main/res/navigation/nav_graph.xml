@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.myhome.feature.home.HomeFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_bannerDetailFragment"
+            app:destination="@id/bannerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.myhome.feature.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_userBannerFragment"
+            app:destination="@id/userBannerFragment" />
+        <action
+            android:id="@+id/action_profile_to_loginOrSignUp"
+            app:destination="@id/loginOrSignUp" />
+        <action
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/editProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfile"
+        android:name="com.example.myhome.feature.profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="UserDetail"
+            app:argType="com.example.myhome.data.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/favorite"
+        android:name="com.example.myhome.feature.favorite.FavoriteFragment"
+        android:label="FavoriteFragment"
+        tools:layout="@layout/fragment_favorite">
+        <action
+            android:id="@+id/action_favorite_to_bannerDetailFragment"
+            app:destination="@id/bannerDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/add"
+        android:name="com.example.myhome.feature.add.AddBannerFragment"
+        android:label="NewAdFragment"
+        tools:layout="@layout/fragment_add_banner">
+        <action
+            android:id="@+id/action_add_to_loginOrSignUp"
+            app:destination="@id/loginOrSignUp" />
+    </fragment>
+    <fragment
+        android:id="@+id/bannerDetailFragment"
+        android:name="com.example.myhome.feature.main.BannerDetailFragment"
+        android:label="BannerDetailFragment"
+        tools:layout="@layout/fragment_banner_detail">
+        <action
+            android:id="@+id/action_bannerDetailFragment_to_editBannerFragment"
+            app:destination="@id/editBannerFragment" />
+        <argument
+            android:name="bannerDetail"
+            app:argType="com.example.myhome.data.model.Banner" />
+        <action
+            android:id="@+id/action_bannerDetailFragment_to_userBannerFragment"
+            app:destination="@id/userBannerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editBannerFragment"
+        android:name="com.example.myhome.feature.main.EditBannerFragment"
+        android:label="EditBannerFragment"
+        tools:layout="@layout/fragment_edit_banner">
+        <argument
+            android:name="bannerDetail"
+            app:argType="com.example.myhome.data.model.Banner" />
+        <action
+            android:id="@+id/action_editBannerFragment_to_userBannerFragment"
+            app:destination="@id/userBannerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userBannerFragment"
+        android:name="com.example.myhome.feature.profile.UserBannerFragment"
+        android:label="UserBannerFragment"
+        tools:layout="@layout/fragment_user_banner">
+        <action
+            android:id="@+id/action_userBannerFragment_to_bannerDetailFragment"
+            app:destination="@id/bannerDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginOrSignUp"
+        android:name="com.example.myhome.feature.login.LoginOrSignUpFragment"
+        android:label="LoginOrSignUpActivity"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginOrSignUp_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
+</navigation>

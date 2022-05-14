@@ -9,7 +9,6 @@ import com.example.myhome.data.repository.LoginUpdate
 import com.example.myhome.data.repository.source.UserDataSource
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : UserDataSource {
 
@@ -18,9 +17,9 @@ class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : Us
     }
 
     override fun signUp(
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        phoneNumber: String,
+        username: String,
+        password: String,
         imageProfile: MultipartBody.Part?
     ): Single<State> {
         TODO("Not yet implemented")
@@ -53,13 +52,12 @@ class UserLocalDataSource(private val sharedPreferences: SharedPreferences) : Us
     }
 
     override fun editUser(
-        id: RequestBody,
-        phoneNumber: RequestBody,
-        username: RequestBody,
-        password: RequestBody,
+        id: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
         image: MultipartBody.Part?
     ): Single<State> {
         TODO("Not yet implemented")
     }
-
 }

@@ -1,15 +1,12 @@
 package com.example.myhome.feature.favorite
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.ItemFavoriteBannerBinding
 import com.example.myhome.services.ImageLoadingService
-import kotlinx.android.synthetic.main.item_favorite_banner.view.*
 
 class FavoriteListAdapter(
     var banners: MutableList<Banner>,
@@ -19,20 +16,19 @@ class FavoriteListAdapter(
     RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>() {
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: com.example.myhome.view.MyHomeImageView = itemView.findViewById(R.id.img_fav)
-        val title: TextView = itemView.findViewById(R.id.title_fav)
+    inner class ViewHolder(private val binding: ItemFavoriteBannerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindBanner(banner: Banner) {
-            imageLoadingService.load(image, "$BASE_URL${banner.bannerImage}")
-            title.text = banner.title
+            imageLoadingService.load(binding.imageFavorite, "$BASE_URL${banner.bannerImage}")
+            binding.titleFavorite.text = banner.title
 
             //item click recyclerView
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 favoriteBannerClickListener.onClick(banner)
             }
 
             //delete banner
-            itemView.deleteFav.setOnClickListener {
+            binding.deleteFavoriteBtn.setOnClickListener {
                 favoriteBannerClickListener.deleteItemClick(banner)
                 banners.remove(banner)
                 notifyItemRemoved(adapterPosition)
@@ -40,11 +36,13 @@ class FavoriteListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_favorite_banner, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        ItemFavoriteBannerBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+    )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bindBanner(banners[position])

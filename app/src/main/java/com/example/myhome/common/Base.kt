@@ -41,20 +41,6 @@ interface MyHomeView {
             }
         }
     }
-
-    fun showEmptyState(mustShow: Boolean) {
-        rootView?.let {
-            viewContext?.let { context ->
-                var loadView = it.findViewById<View>(R.id.emptyStateRootView)
-                if (loadView == null && mustShow) {
-                    loadView =
-                        LayoutInflater.from(context).inflate(R.layout.layout_empty_view, it, false)
-                    it.addView(loadView)
-                }
-                loadView?.visibility = if (mustShow) View.VISIBLE else View.GONE
-            }
-        }
-    }
 }
 
 abstract class MyHomeViewModel : ViewModel() {

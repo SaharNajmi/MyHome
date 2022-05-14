@@ -7,7 +7,6 @@ import com.example.myhome.data.repository.source.BannerDataSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 @Dao
 interface BannerLocalDataSource : BannerDataSource {
@@ -38,10 +37,10 @@ interface BannerLocalDataSource : BannerDataSource {
     override fun editBanner(
         id: Int,
         userID: Int,
-        title: RequestBody,
-        description: RequestBody,
-        price: RequestBody,
-        location: RequestBody,
+        title: String,
+        description: String,
+        price: String,
+        location: String,
         category: Int,
         sellOrRent: Int,
         homeSize: Int,
@@ -53,10 +52,10 @@ interface BannerLocalDataSource : BannerDataSource {
 
     override fun addBanner(
         userID: Int,
-        title: RequestBody,
-        description: RequestBody,
-        price: RequestBody,
-        location: RequestBody,
+        title: String,
+        description: String,
+        price: String,
+        location: String,
         category: Int,
         sellOrRent: Int,
         homeSize: Int,

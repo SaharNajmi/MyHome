@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.example.myhome.R
-import com.example.myhome.common.MyHomeSingleObserver
-import com.example.myhome.common.asyncNetworkRequest
-import com.example.myhome.data.model.State
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.example.myhome.common.MyHomeFragment
+import com.example.myhome.common.Result
+import com.example.myhome.common.showMessage
+import com.example.myhome.databinding.FragmentLoginBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LoginFragment : Fragment() {
-
-    private val compositeDisposable = CompositeDisposable()
+class LoginFragment : MyHomeFragment() {
+    private lateinit var binding: FragmentLoginBinding
     private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
@@ -24,38 +22,51 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        signUpLinkBtn.setOnClickListener {
+        binding.signUpLinkBtn.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, SignUpFragment())
             }.commit()
         }
 
-        loginBtn.setOnClickListener {
-            viewModel.login(phoneEt.text.toString(), passwordEt.text.toString())
-                .asyncNetworkRequest()
-                .subscribe(object : MyHomeSingleObserver<State>(compositeDisposable) {
-                    override fun onSuccess(t: State) {
-                        if (t.state)
-                            requireActivity().finish()
-                        else
-                            Toast.makeText(
-                                requireContext(),
-                                "!شماره موبایل یا رمز عبور اشتباه است",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                    }
-                })
+        //login
+        binding.loginBtn.setOnClickListener {
+            if (binding.phoneEt.text.toString().trim().isNotEmpty() &&
+                binding.passwordEt.text.toString().trim().isNotEmpty()
+            )
+                viewModel.login(binding.phoneEt.text.toString(), binding.passwordEt.text.toString())
+            else
+                context?.showMessage("لطفا تمامی فیلدها را پر کنید")
         }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
+        viewModel.loginResult.observe(requireActivity()) { result ->
+            when (result) {
+                is Result.Success -> {
+                    setProgress(false)
+
+                    if (result.data.state) {
+                        activity?.showMessage("ورود با موفقیت انجام شد")
+                        findNavController().navigate(LoginOrSignUpFragmentDirections.actionLoginOrSignUpToProfile())
+                    } else
+                        activity?.showMessage("شماره موبایل یا رمز عبور اشتباه است")
+
+                }
+                is Result.Loading -> {
+                    setProgress(true)
+                }
+
+                is Result.Error -> {
+                    setProgress(false)
+                    context?.showMessage("مشکل در اتصال به اینترنت")
+                }
+            }
+        }
+
     }
 }

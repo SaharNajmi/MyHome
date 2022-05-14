@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="edit_btn,user_banner_btn,user_phone_number" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +24,7 @@
             android:background="@color/myBlue">
 
             <com.example.myhome.view.MyHomeImageView
-                android:id="@+id/prf_image"
+                android:id="@+id/user_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
@@ -25,27 +32,27 @@
                 app:srcCompat="@drawable/ic_profile" />
 
             <TextView
-                android:id="@+id/prf_name"
+                android:id="@+id/user_name"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/prf_image"
+                android:layout_below="@id/user_image"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="@string/username"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                tools:text="@string/username" />
 
             <TextView
-                android:id="@+id/prf_phone"
+                android:id="@+id/user_phone_number"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/prf_name"
+                android:layout_below="@id/user_name"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
-                android:text="@string/phone"
                 android:textColor="@color/white"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="@string/phone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -61,7 +68,7 @@
                 android:layout_marginTop="40dp">
 
                 <TextView
-                    android:id="@+id/myBannerBtn"
+                    android:id="@+id/user_banner_btn"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="@string/myBanner"
@@ -70,10 +77,10 @@
                     app:drawableStartCompat="@drawable/ic_list" />
 
                 <TextView
-                    android:id="@+id/edtBtn"
+                    android:id="@+id/edit_btn"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/myBannerBtn"
+                    android:layout_below="@id/user_banner_btn"
                     android:layout_margin="5dp"
                     android:text="@string/editProf"
                     android:textColor="@color/myBlue"
@@ -81,10 +88,10 @@
                     app:drawableStartCompat="@drawable/ic_edit" />
 
                 <TextView
-                    android:id="@+id/authBtn"
+                    android:id="@+id/auth_btn"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/edtBtn"
+                    android:layout_below="@id/edit_btn"
                     android:layout_margin="5dp"
                     android:text="@string/signIn"
                     android:textColor="@color/myBlue"
@@ -95,4 +102,4 @@
 
 
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

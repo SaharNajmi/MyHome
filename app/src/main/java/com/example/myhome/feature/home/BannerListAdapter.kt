@@ -1,16 +1,14 @@
 package com.example.myhome.feature.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhome.R
 import com.example.myhome.common.Constants.BASE_URL
 import com.example.myhome.data.model.Banner
+import com.example.myhome.databinding.ItemBannerBinding
 import com.example.myhome.services.ImageLoadingService
 
 class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
@@ -32,46 +30,45 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val myHomeImage: com.example.myhome.view.MyHomeImageView =
-            itemView.findViewById(R.id.image_banner)
-        val price: TextView = itemView.findViewById(R.id.txt_price)
-        val title: TextView = itemView.findViewById(R.id.txt_title)
-        val location: TextView = itemView.findViewById(R.id.txt_location)
-        val room: TextView = itemView.findViewById(R.id.txt_number_of_rooms)
-        val homeSize: TextView = itemView.findViewById(R.id.txt_home_size)
-        private val buttonFavorite: ImageView = itemView.findViewById(R.id.btn_fav)
+    inner class ViewHolder(private val binding: ItemBannerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bindBanner(banner: Banner) {
-            imageLoadingService.load(myHomeImage, "$BASE_URL${banner.bannerImage}")
-            title.text = banner.title
-            price.text = "${banner.price} تومان "
-            location.text = banner.location
-            room.text = banner.numberOfRooms.toString()
-            homeSize.text = banner.homeSize.toString()
+            imageLoadingService.load(binding.imageBanner, "$BASE_URL${banner.bannerImage}")
+            binding.apply {
+                txtTitle.text = banner.title
+                txtPrice.text = "${banner.price} تومان "
+                txtLocation.text = banner.location
+                txtNumberOfRooms.text = banner.numberOfRooms.toString()
+                txtHomeSize.text = banner.homeSize.toString()
+            }
+
 
             if (banner.fav)
-                buttonFavorite.setImageResource(R.drawable.ic_bookmarked)
+                binding.favoriteBtn.setImageResource(R.drawable.ic_bookmarked)
             else
-                buttonFavorite.setImageResource(R.drawable.ic_not_bookmarked)
+                binding.favoriteBtn.setImageResource(R.drawable.ic_not_bookmarked)
 
             //click favorite Button
-            buttonFavorite.setOnClickListener {
+            binding.favoriteBtn.setOnClickListener {
                 banner.fav = !banner.fav
                 notifyItemChanged(adapterPosition)
                 bannerOnClickListener!!.onFavoriteBtnClick(banner)
             }
 
-            itemView.setOnClickListener {
+            //item click
+            binding.root.setOnClickListener {
                 bannerOnClickListener!!.onBannerClick(banner)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_banner, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(
+            ItemBannerBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
-    }
 
     override fun getItemCount(): Int = banner.size
 

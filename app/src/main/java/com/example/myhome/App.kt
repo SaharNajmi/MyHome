@@ -3,7 +3,6 @@ package com.example.myhome
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import androidx.room.Room
 import com.example.myhome.data.dp.AppDataBase
 import com.example.myhome.data.repository.BannerRepository
@@ -17,7 +16,6 @@ import com.example.myhome.data.repository.source.remote.UserRemoteDataSource
 import com.example.myhome.feature.favorite.FavoriteViewModel
 import com.example.myhome.feature.home.BannerListAdapter
 import com.example.myhome.feature.login.AuthViewModel
-import com.example.myhome.feature.main.BannerDetailViewModel
 import com.example.myhome.feature.main.BannerViewModel
 import com.example.myhome.feature.main.ShareViewModel
 import com.example.myhome.feature.profile.UserViewModel
@@ -69,7 +67,6 @@ class App : Application() {
                 BannerViewModel(get(), cate, sellOrRent, price, homeSize, numberOfRooms)
             }
             viewModel { ShareViewModel() }
-            viewModel { (bundle: Bundle) -> BannerDetailViewModel(bundle) }
             viewModel { AuthViewModel(get()) }
             viewModel { UserViewModel(get(), get()) }
             viewModel { FavoriteViewModel(get()) }

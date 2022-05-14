@@ -8,11 +8,20 @@ class ShareViewModel : ViewModel() {
     private val _category: MutableLiveData<Int> = MutableLiveData()
     val category: LiveData<Int> = _category
 
+    private val _filterResult: MutableLiveData<ArrayList<Any>> = MutableLiveData()
+    val filterResult: LiveData<ArrayList<Any>> = _filterResult
+
+    private val _filterPrice: MutableLiveData<String> = MutableLiveData()
+    val filterPrice: LiveData<String> = _filterPrice
+
+    private val _filterNumberOfRooms: MutableLiveData<Int> = MutableLiveData()
+    val filterNumberOfRooms: LiveData<Int> = _filterNumberOfRooms
+
+    private val _filterHomeSize: MutableLiveData<Int> = MutableLiveData()
+    val filterHomeSize: LiveData<Int> = _filterHomeSize
+
     private val _search: MutableLiveData<String> = MutableLiveData()
     val search: LiveData<String> = _search
-
-    private val _filter: MutableLiveData<ArrayList<Any>> = MutableLiveData()
-    val filter: LiveData<ArrayList<Any>> = _filter
 
     fun changeCategory(categorySelected: Int) {
         _category.value = categorySelected
@@ -24,6 +33,9 @@ class ShareViewModel : ViewModel() {
 
     fun setDataFilter(price: String, numberOfRooms: Int, homeSize: Int) {
         val array: ArrayList<Any> = arrayListOf(price, numberOfRooms, homeSize)
-        _filter.value = array
+        _filterResult.value = array
+        _filterPrice.value = price
+        _filterNumberOfRooms.value = numberOfRooms
+        _filterHomeSize.value = homeSize
     }
 }
