@@ -22,12 +22,10 @@ class FavoriteListAdapter(
             imageLoadingService.load(binding.imageFavorite, "$BASE_URL${banner.bannerImage}")
             binding.titleFavorite.text = banner.title
 
-            //item click recyclerView
             binding.root.setOnClickListener {
                 favoriteBannerClickListener.onClick(banner)
             }
 
-            //delete banner
             binding.deleteFavoriteBtn.setOnClickListener {
                 favoriteBannerClickListener.deleteItemClick(banner)
                 banners.remove(banner)

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.myhome.data.dp.AppDataBase
+import com.example.myhome.data.db.AppDataBase
 import com.example.myhome.data.repository.BannerRepository
 import com.example.myhome.data.repository.BannerRepositoryImpl
 import com.example.myhome.data.repository.UserRepository

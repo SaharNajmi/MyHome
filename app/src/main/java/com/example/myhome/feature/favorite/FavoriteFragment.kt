@@ -25,7 +25,6 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,14 +32,12 @@ class FavoriteFragment : MyHomeFragment(), FavoriteListAdapter.FavoriteBannerCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ////show all banners
         getBanners()
     }
 
     private fun getBanners() {
         favoriteViewModel.banners.observe(viewLifecycleOwner) { banners ->
             if (banners.isEmpty()) {
-                //show empty layout
                 binding.emptyLayout.isVisible = true
                 binding.emptyLayout.setText(resources.getString(R.string.emptyFavorite))
             } else {

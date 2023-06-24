@@ -42,7 +42,6 @@ class BannerDetailFragment : MyHomeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentBannerDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -52,7 +51,6 @@ class BannerDetailFragment : MyHomeFragment() {
         val args: BannerDetailFragmentArgs by navArgs()
         banner = args.bannerDetail
 
-        //hideBottom Navigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }
@@ -79,16 +77,13 @@ class BannerDetailFragment : MyHomeFragment() {
             layoutUserInfo.userName.text = banner.username
         }
 
-        //favorite
         checkFavorite(banner.fav)
         binding.favoriteBtn.setOnClickListener {
             changeFavorite(banner)
         }
 
-        //edit or delete banner
         checkUserBanner()
 
-        //delete banner
         bannerViewModel.deleteBannerResult.observe(requireActivity()) { result ->
             when (result) {
                 is Result.Error -> {
@@ -112,7 +107,6 @@ class BannerDetailFragment : MyHomeFragment() {
         if (viewModel.phoneNumber == banner.phone) {
             binding.layoutEditOrDelete.layoutEditBanner.visibility = View.VISIBLE
 
-            //edit banner
             binding.layoutEditOrDelete.editBanner.setOnClickListener {
                 findNavController().navigate(
                     BannerDetailFragmentDirections.actionBannerDetailFragmentToEditBannerFragment(
@@ -121,18 +115,12 @@ class BannerDetailFragment : MyHomeFragment() {
                 )
             }
 
-            //delete banner
             binding.layoutEditOrDelete.deleteBanner.setOnClickListener {
                 deleteBanner()
             }
 
         } else {
             binding.layoutUserInfo.layoutUserInfo.visibility = View.VISIBLE
-
-            //call
-            binding.layoutUserInfo.userPhone.setOnClickListener {
-                //
-            }
         }
     }
 
@@ -167,7 +155,6 @@ class BannerDetailFragment : MyHomeFragment() {
 
     override fun onStop() {
         super.onStop()
-        //show BottomNavigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.showBottomNavigation()
         }

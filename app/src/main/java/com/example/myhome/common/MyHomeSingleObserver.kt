@@ -5,7 +5,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-//use class SingleObserver for not implement Duplicate method
 abstract class MyHomeSingleObserver<T>(val compositeDisposable: CompositeDisposable) :
     SingleObserver<T> {
 

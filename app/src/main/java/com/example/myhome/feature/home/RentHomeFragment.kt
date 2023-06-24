@@ -37,7 +37,6 @@ class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentRentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,27 +46,21 @@ class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
 
 
         val test = savedInstanceState?.getBoolean("key", false)
-        //context?.showMessage(test.toString())
 
-        //get value search in another fragment
         shareViewModel.search.observe(requireActivity()) {
             bannerListAdapter!!.filter.filter(it)
         }
 
-        //get category in another fragment -> get Data between Fragments
         shareViewModel.category.observe(requireActivity()) {
             bannerViewModel.chaneCategory(it)
         }
 
-        //filter banner list
         shareViewModel.filterResult.observe(requireActivity()) {
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
         }
 
-        //setOnClickListener item recyclerView
         bannerListAdapter!!.bannerOnClickListener = this
 
-        //show all banners
         getBanners()
     }
 
@@ -75,7 +68,6 @@ class RentHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
     private fun getBanners() {
         bannerViewModel.banners.observe(viewLifecycleOwner) { banners ->
             if (banners.isEmpty()) {
-                //show empty layout
                 binding.emptyLayout.isVisible = true
             } else {
                 bannerListAdapter!!.banner = banners as ArrayList<Banner>

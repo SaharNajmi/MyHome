@@ -24,7 +24,6 @@ class ProfileFragment : MyHomeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,7 +31,6 @@ class ProfileFragment : MyHomeFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //get user info
         viewModel.user.observe(requireActivity()) { user ->
             binding.userPhoneNumber.text = user.phone
             binding.userName.text = user.username
@@ -47,12 +45,10 @@ class ProfileFragment : MyHomeFragment() {
 
     private fun checkAuthState() {
         if (viewModel.isSignIn) {
-            //visible items edit profile
             binding.editBtn.visibility = View.VISIBLE
             binding.userBannerBtn.visibility = View.VISIBLE
             binding.userPhoneNumber.visibility = View.VISIBLE
 
-            //sign out
             binding.authBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_out, 0)
             binding.authBtn.text = getString(R.string.signOut)
             binding.authBtn.setOnClickListener {
@@ -60,7 +56,6 @@ class ProfileFragment : MyHomeFragment() {
                 checkAuthState()
             }
 
-            //edit user
             binding.editBtn.setOnClickListener {
                 findNavController().navigate(
                     ProfileFragmentDirections.actionProfileToEditProfile(
@@ -69,13 +64,11 @@ class ProfileFragment : MyHomeFragment() {
                 )
             }
 
-            //go UserBanner
             binding.userBannerBtn.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileToUserBannerFragment())
             }
 
         } else {
-            //hide items edit profile
             binding.editBtn.visibility = View.GONE
             binding.userBannerBtn.visibility = View.GONE
             binding.userPhoneNumber.visibility = View.GONE
@@ -83,7 +76,6 @@ class ProfileFragment : MyHomeFragment() {
             binding.userImage.setImageResource(R.drawable.ic_profile)
             binding.userName.text = getString(R.string.guest_user)
 
-            //sign in
             binding.authBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_sign_in, 0)
             binding.authBtn.text = getString(R.string.signIn)
             binding.authBtn.setOnClickListener {

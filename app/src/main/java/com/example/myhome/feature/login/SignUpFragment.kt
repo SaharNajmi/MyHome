@@ -31,7 +31,6 @@ class SignUpFragment : MyHomeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,20 +38,17 @@ class SignUpFragment : MyHomeFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //go to fragment login
         binding.loginLinkBtn.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, LoginFragment())
             }.commit()
         }
 
-        //load image in gallery
         binding.imgAdd.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
         }
 
-        // sign up
         binding.signUpBtn.setOnClickListener {
             if (binding.phoneEt.text.toString().trim().isNotEmpty() &&
                 binding.usernameEt.text.toString().trim().isNotEmpty() &&
@@ -103,7 +99,6 @@ class SignUpFragment : MyHomeFragment() {
 
     override fun onResume() {
         super.onResume()
-        //hideBottom Navigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }

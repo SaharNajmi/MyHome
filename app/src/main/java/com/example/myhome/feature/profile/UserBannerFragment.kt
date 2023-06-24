@@ -29,7 +29,6 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentUserBannerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,21 +36,18 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //onClick item recyclerView
         bannerArrayList.bannerOnClickListener = this
 
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        //get banners
         getUserBanners()
     }
 
     private fun getUserBanners() {
         userViewModel.banners.observe(requireActivity()) { banners ->
             if (banners.isEmpty()) {
-                //show empty layout
                 binding.emptyLayout.isVisible = true
                 binding.emptyLayout.setText(resources.getString(R.string.emptyListUserBanner))
             } else {
@@ -60,7 +56,6 @@ class UserBannerFragment : MyHomeFragment(), BannerListAdapter.BannerOnClickList
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 binding.recyclerViewUserBanner.adapter = bannerArrayList
 
-                //hide empty layout
                 binding.emptyLayout.isVisible = false
             }
         }

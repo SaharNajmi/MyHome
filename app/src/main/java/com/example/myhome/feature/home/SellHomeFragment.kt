@@ -26,7 +26,6 @@ class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
     BannerListAdapter.BannerOnClickListener {
     private lateinit var binding: FragmentSellHomeBinding
     private var SELL_OR_RENT = 1
-    //private val bannerListAdapter: BannerListAdapter by inject()
 
     private val bannerViewModel by viewModel<BannerViewModel>() {
         parametersOf(
@@ -38,14 +37,12 @@ class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         )
     }
 
-    //sharing data between Fragments
     private val shareViewModel by sharedViewModel<ShareViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //Inflate the layout for this fragment
         binding = FragmentSellHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,32 +51,26 @@ class SellHomeFragment(private val bannerListAdapter: BannerListAdapter) : MyHom
         super.onViewCreated(view, savedInstanceState)
 
 
-        //get text search in another fragment
         shareViewModel.search.observe(requireActivity()) {
             bannerListAdapter.filter.filter(it)
         }
 
-        //get category in another fragment -> get Data between Fragments
         shareViewModel.category.observe(requireActivity()) {
             bannerViewModel.chaneCategory(it)
         }
 
-        //filter banner list
         shareViewModel.filterResult.observe(requireActivity()) {
             bannerViewModel.filter(it[0] as String, it[1] as Int, it[2] as Int)
         }
 
-        //setOnClickListener item recyclerView
         bannerListAdapter.bannerOnClickListener = this
 
-        //show all banners
         getBanners()
     }
 
     private fun getBanners() {
         bannerViewModel.banners.observe(viewLifecycleOwner) { banners ->
             if (banners.isEmpty()) {
-                //show empty layout
                 binding.emptyLayout.isVisible = true
             } else {
                 bannerListAdapter.banner = banners as ArrayList<Banner>

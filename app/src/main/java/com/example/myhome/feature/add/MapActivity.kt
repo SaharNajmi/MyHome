@@ -32,7 +32,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         setContentView(ActivityMapBinding.inflate(layoutInflater).root)
 
         if (serviceOk()) {
-            //show map in layout
             binding = LayoutMapBinding.inflate(layoutInflater)
             setContentView(binding.root)
             initMap()
@@ -63,7 +62,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun goToLocation(lat: Double, lng: Double, zoom: Float) {
-        // Add a marker and move the camera
         val latLang = LatLng(lat, lng)
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLang, zoom))
 
@@ -114,8 +112,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         isMapReady = true;
         mMap = googleMap
         if (mMap != null) {
-            // showMessage("INIT")
-            //Go to Tehran location
+            //Tehran location
             val lat = 35.690599
             val lng = 51.391692
             goToLocation(lat, lng, 11F)
@@ -132,31 +129,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         var marker: Marker? = null
 
         if (marker == null) {
-            //No locations selected
             marker = mMap!!.addMarker(
                 MarkerOptions().position(latLng).title("user destination")
             )
         } else {
-            //new location
             marker.position = latLng
         }
 
         mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng), 300, null)
 
-        //get Address When MapLongClick
         val geocoder: Geocoder = Geocoder(this, Locale("fa", "IR"))
-        //  val geocoder = Geocoder(context, Locale.getDefault())
         try {
             val allAddresses = geocoder.getFromLocation(
                 latLng.latitude, latLng.longitude, 1
             )
 
-            //show address in textView
             val address = allAddresses[0].getAddressLine(0)
             binding.tvMapsAddress.text = address.toString()
             binding.btnDoneLocation.setOnClickListener {
                 LOCATION = address.toString()
-                //send get address
                 finish()
             }
         } catch (e: IOException) {

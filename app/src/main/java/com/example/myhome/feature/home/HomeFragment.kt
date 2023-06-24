@@ -35,7 +35,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,7 +42,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //filter list
         binding.filterList.setOnClickListener {
             showBottomSheet()
         }
@@ -77,7 +75,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        //tab layout
         binding.viewPagerShowBanner.adapter = ViewPagerAdapter(
             childFragmentManager,
             sellBannerArrayList,
@@ -85,20 +82,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
         )
         binding.mainTab.setupWithViewPager(binding.viewPagerShowBanner)
 
-        //selection category using radio button
         binding.layoutItemCategory.radioButtonCate1.setOnClickListener(this)
         binding.layoutItemCategory.radioButtonCate2.setOnClickListener(this)
         binding.layoutItemCategory.radioButtonCate3.setOnClickListener(this)
         binding.layoutItemCategory.radioButtonCate4.setOnClickListener(this)
 
-        //Send text search to another fragments
         sendTextSearch()
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.radio_button_cate_1 -> {
-                //send Data between Fragments
                 shareViewModel.changeCategory(1)
                 binding.layoutItemCategory.radioButtonCate2.isChecked = false
                 binding.layoutItemCategory.radioButtonCate3.isChecked = false
@@ -140,33 +134,24 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showBottomSheet() {
-        //create a new bottom sheet dialog
         val dialog = BottomSheetDialog(requireContext())
-        //inflating layout
         val view = layoutInflater.inflate(R.layout.layout_bottom_sheet, null)
         layoutBottomSheetBinding =
             LayoutBottomSheetBinding.inflate(layoutInflater, view as ViewGroup, false)
-        //Show old values inside BottomSheet
         saveOldValue()
 
-        //filter HomeSize/Price
         seekBarHomeSize()
         seekBarPrice()
 
-        //Apply changes the dialog button
         layoutBottomSheetBinding.btnApplyFilter.setOnClickListener {
-            //RadioButton item selected numberOfRooms
             checkedRadioButton()
 
-            //send Data when click btn apply filter list to sell and rent fragment
             shareViewModel.setDataFilter(price, numberOfRooms, homeSize)
 
             dialog.dismiss()
         }
 
-        //dismissing the dialog button
         layoutBottomSheetBinding.btnDismissFilter.setOnClickListener {
-            //delete value filter list
             shareViewModel.setDataFilter("all", 0, 0)
 
             dialog.dismiss()
@@ -177,7 +162,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun checkedRadioButton() {
-        //RadioButton item selected numberOfRooms
         val selectedRadioButtonId = layoutBottomSheetBinding.radioGroupRoom.checkedRadioButtonId
 
         val radioButton: View =

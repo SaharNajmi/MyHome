@@ -53,7 +53,6 @@ class EditBannerFragment : MyHomeFragment() {
         val args: EditBannerFragmentArgs by navArgs()
         banner = args.bannerDetail
 
-        //hideBottom Navigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }
@@ -63,7 +62,6 @@ class EditBannerFragment : MyHomeFragment() {
         }
 
         binding.apply {
-            //show old values
             editTitle.setText(banner.title)
             editLocation.setText(banner.location)
             //delete ',' from price
@@ -102,23 +100,19 @@ class EditBannerFragment : MyHomeFragment() {
             }
         }
 
-        //load image in gallery
         binding.editBannerImage.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, Constants.REQUEST_CODE)
         }
 
-        //spinner select sell or rent
         itemSelectedSpinner(binding.editSellOrRent, requireContext(), arrayOf("فروش", "اجاره"))
 
-        //spinner select category
         itemSelectedSpinner(
             binding.editCategory,
             requireContext(),
             resources.getStringArray(R.array.array_category)
         )
 
-        //edit banner
         binding.btnEditBanner.setOnClickListener {
             bannerViewModel.editBanner(
                 banner.id,
@@ -148,7 +142,6 @@ class EditBannerFragment : MyHomeFragment() {
 
     override fun onStop() {
         super.onStop()
-        //show BottomNavigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.showBottomNavigation()
         }

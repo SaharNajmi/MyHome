@@ -49,14 +49,12 @@ class BannerListAdapter(val imageLoadingService: ImageLoadingService) :
             else
                 binding.favoriteBtn.setImageResource(R.drawable.ic_not_bookmarked)
 
-            //click favorite Button
             binding.favoriteBtn.setOnClickListener {
                 banner.fav = !banner.fav
                 notifyItemChanged(adapterPosition)
                 bannerOnClickListener!!.onFavoriteBtnClick(banner)
             }
 
-            //item click
             binding.root.setOnClickListener {
                 bannerOnClickListener!!.onBannerClick(banner)
             }

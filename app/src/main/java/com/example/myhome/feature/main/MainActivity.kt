@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //background fab is null
         binding.navigationBtn.bottomNavigationView.background = null
         val navController = findNavController(R.id.nav_host_fragment)
         binding.navigationBtn.bottomNavigationView.setupWithNavController(navController)

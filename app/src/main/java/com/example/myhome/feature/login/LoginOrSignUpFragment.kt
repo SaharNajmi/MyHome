@@ -26,7 +26,6 @@ class LoginOrSignUpFragment : Fragment() {
         activity?.supportFragmentManager?.beginTransaction()
             ?.apply { replace(R.id.fragmentContainer, LoginFragment()).commit() }
 
-        //hideBottom Navigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.hideBottomNavigation()
         }
@@ -34,7 +33,6 @@ class LoginOrSignUpFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        //show BottomNavigation
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)!!.showBottomNavigation()
         }

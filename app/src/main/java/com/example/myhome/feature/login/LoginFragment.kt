@@ -21,7 +21,6 @@ class LoginFragment : MyHomeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,7 +34,6 @@ class LoginFragment : MyHomeFragment() {
             }.commit()
         }
 
-        //login
         binding.loginBtn.setOnClickListener {
             if (binding.phoneEt.text.toString().trim().isNotEmpty() &&
                 binding.passwordEt.text.toString().trim().isNotEmpty()

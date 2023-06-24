@@ -45,16 +45,13 @@ class AddBannerFragment : MyHomeFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentAddBannerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //default image
         binding.addBannerImage.setImageResource(R.drawable.ic_add_photo)
-        //add location
         binding.btnAddLocation.setOnClickListener {
             startActivity(
                 Intent(
@@ -63,7 +60,6 @@ class AddBannerFragment : MyHomeFragment() {
                 )
             )
         }
-        //check sign in before add Banner
         if (userViewModel.isSignIn) {
 
             binding.showLayoutAdd.visibility = View.VISIBLE
@@ -71,28 +67,23 @@ class AddBannerFragment : MyHomeFragment() {
             binding.txtAlert.visibility = View.GONE
 
 
-            //spinner select sell or rent
             itemSelectedSpinner(binding.addSellOrRent, requireContext(), arrayOf("فروش", "اجاره"))
 
-            //spinner select category
             itemSelectedSpinner(
                 binding.addCategory,
                 requireContext(),
                 resources.getStringArray(R.array.array_category)
             )
 
-            //load image in gallery
             binding.addBannerImage.setOnClickListener {
                 val gallery =
                     Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, REQUEST_CODE)
             }
 
-            //btn add banner
             binding.btnAdd.setOnClickListener {
                 addBanner()
             }
-            ///btn clear field
             binding.btnClear.setOnClickListener {
                 clearAllField()
             }
@@ -101,13 +92,11 @@ class AddBannerFragment : MyHomeFragment() {
             binding.authBtn.visibility = View.VISIBLE
             binding.txtAlert.visibility = View.VISIBLE
 
-            //go login
             binding.authBtn.setOnClickListener {
                 findNavController().navigate(AddBannerFragmentDirections.actionAddToLoginOrSignUp())
             }
         }
 
-        //add banner Result
         bannerViewModel.addBannerResult.observe(requireActivity()) { result ->
             when (result) {
                 is Result.Error -> {
@@ -144,7 +133,6 @@ class AddBannerFragment : MyHomeFragment() {
     }
 
     private fun clearAllField() {
-        //clear value
         binding.apply {
             addTitle.setText("")
             addDescription.setText("")
@@ -161,7 +149,6 @@ class AddBannerFragment : MyHomeFragment() {
 
     override fun onResume() {
         super.onResume()
-        //show location in editText
         binding.addLocation.setText(LOCATION)
     }
 
