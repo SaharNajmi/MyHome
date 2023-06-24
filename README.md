@@ -8,7 +8,7 @@
 * Google Map
 
 # API
-https://gitlab.com/saharnajmi/MyHomeAPI
+https://github.com/SaharNajmi/MyHomeAPI
 
 ## Screenshots
 ## Home
